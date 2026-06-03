@@ -1,0 +1,2522 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nihel Sliti — Data Engineer</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Barlow+Condensed:wght@400;600;700;800&family=Barlow:wght@300;400;500&display=swap"
+    rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0
+    }
+
+    :root {
+      --bg: #06090f;
+      --bg1: #0b1018;
+      --bg2: #0f1520;
+      --c-pl: #f59e0b;
+      --c-done: #10b981;
+      --c-muted: #6a8aaa;
+      --c-txt: #ffffff;
+      --c-txt2: #ffffff;
+      --c-border: rgba(245, 158, 11, 0.12);
+      --c-border2: rgba(16, 185, 129, 0.18);
+      --mono: 'Share Tech Mono', monospace;
+      --head: 'Barlow Condensed', sans-serif;
+      --body: 'Barlow', sans-serif;
+    }
+
+    html.light {
+      --bg: #f4f6f9;
+      --bg1: #ffffff;
+      --bg2: #eef1f6;
+      --c-pl: #d97706;
+      --c-done: #059669;
+      --c-muted: #94a3b8;
+      --c-txt: #1e293b;
+      --c-txt2: #64748b;
+      --c-border: rgba(217, 119, 6, 0.18);
+      --c-border2: rgba(5, 150, 105, 0.2);
+    }
+
+    html {
+      scroll-behavior: smooth
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--c-txt);
+      font-family: var(--body);
+      min-height: 100vh;
+      overflow-x: hidden;
+      transition: background .3s, color .3s
+    }
+
+    html:not(.light) body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0, 0, 0, 0.08) 2px, rgba(0, 0, 0, 0.08) 4px)
+    }
+
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      background-image: linear-gradient(rgba(245, 158, 11, 0.025) 1px, transparent 1px), linear-gradient(90deg, rgba(245, 158, 11, 0.025) 1px, transparent 1px);
+      background-size: 50px 50px
+    }
+
+    html.light body::after {
+      background-image: linear-gradient(rgba(217, 119, 6, 0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(217, 119, 6, 0.06) 1px, transparent 1px)
+    }
+
+    .page {
+      display: none;
+      position: relative;
+      z-index: 1
+    }
+
+    .page.active {
+      display: block
+    }
+
+    .wrap {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 0 1.2rem
+    }
+
+    /* ── NAV ── */
+    .topnav {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: var(--bg);
+      border-bottom: 1px solid var(--c-border);
+      padding: .55rem 0;
+      transition: background .3s
+    }
+
+    .topnav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: .8rem;
+      flex-wrap: wrap
+    }
+
+    .nav-brand {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--c-pl);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      cursor: pointer;
+      white-space: nowrap
+    }
+
+    .nav-links {
+      display: flex;
+      gap: .25rem;
+      flex-wrap: wrap
+    }
+
+    .navlink {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+      padding: 4px 9px;
+      border-radius: 2px;
+      border: 1px solid transparent;
+      color: var(--c-txt2);
+      cursor: pointer;
+      background: transparent;
+      transition: all .2s
+    }
+
+    .navlink:hover {
+      border-color: var(--c-pl);
+      color: var(--c-pl);
+      background: rgba(245, 158, 11, .07)
+    }
+
+    .navlink.active {
+      border-color: var(--c-pl);
+      color: var(--c-pl);
+      background: rgba(245, 158, 11, .1)
+    }
+
+    .navlink.nl-done:hover,
+    .navlink.nl-done.active {
+      border-color: var(--c-done);
+      color: var(--c-done);
+      background: rgba(16, 185, 129, .08)
+    }
+
+    .theme-btn {
+      background: var(--bg1);
+      border: 1px solid var(--c-border);
+      border-radius: 20px;
+      padding: 4px 10px 4px 8px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--c-txt2);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      transition: all .2s;
+      white-space: nowrap
+    }
+
+    .theme-btn:hover {
+      border-color: var(--c-pl);
+      color: var(--c-pl)
+    }
+
+    /* ── TYPOGRAPHY ── */
+    .eyebrow {
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--c-pl);
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      margin-bottom: .5rem
+    }
+
+    h1 {
+      font-family: var(--head);
+      font-size: clamp(2.2rem, 5vw, 3.6rem);
+      font-weight: 800;
+      letter-spacing: 1px;
+      line-height: 1;
+      color: var(--c-txt);
+      margin-bottom: .4rem
+    }
+
+    h1 .accent {
+      color: var(--c-pl)
+    }
+
+    h1 .ag {
+      color: var(--c-done)
+    }
+
+    .subtitle {
+      font-family: var(--body);
+      font-size: .9rem;
+      color: var(--c-txt2);
+      font-weight: 300
+    }
+
+    .sec {
+      margin-top: 2.5rem
+    }
+
+    .sec-lbl {
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--c-muted);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 1.2rem
+    }
+
+    .sec-lbl::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--c-border)
+    }
+
+    /* ── BACK BTN ── */
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--c-txt2);
+      cursor: pointer;
+      background: none;
+      border: 1px solid var(--c-border);
+      padding: 5px 12px;
+      border-radius: 3px;
+      margin-bottom: 1.5rem;
+      transition: all .2s
+    }
+
+    .back-btn:hover {
+      color: var(--c-pl);
+      border-color: var(--c-pl)
+    }
+
+    /* ── SKILL TAGS ── */
+    .skill-tag {
+      font-family: var(--mono);
+      font-size: .7rem;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      padding: 4px 11px;
+      border-radius: 3px;
+      border: 1px solid
+    }
+
+    .sk-lang {
+      color: #60a5fa;
+      border-color: rgba(96, 165, 250, .25);
+      background: rgba(96, 165, 250, .07)
+    }
+
+    .sk-viz {
+      color: var(--c-pl);
+      border-color: rgba(245, 158, 11, .25);
+      background: rgba(245, 158, 11, .07)
+    }
+
+    .sk-cloud {
+      color: #a78bfa;
+      border-color: rgba(167, 139, 250, .25);
+      background: rgba(167, 139, 250, .07)
+    }
+
+    .sk-ai {
+      color: #f472b6;
+      border-color: rgba(244, 114, 182, .25);
+      background: rgba(244, 114, 182, .07)
+    }
+
+    .sk-data {
+      color: var(--c-done);
+      border-color: rgba(16, 185, 129, .25);
+      background: rgba(16, 185, 129, .07)
+    }
+
+    .sk-dev {
+      color: #38bdf8;
+      border-color: rgba(56, 189, 248, .25);
+      background: rgba(56, 189, 248, .07)
+    }
+
+    /* ── CV CERT ROWS ── */
+    .cv-cert-row {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      background: var(--bg1);
+      border: 1px solid rgba(255, 255, 255, .05);
+      border-radius: 7px;
+      padding: .85rem 1.1rem;
+      transition: border-color .2s, transform .15s;
+      flex-wrap: wrap;
+      cursor: pointer
+    }
+
+    html.light .cv-cert-row {
+      border-color: rgba(0, 0, 0, .07)
+    }
+
+    .cv-cert-row:hover {
+      border-color: var(--c-border);
+      transform: translateX(3px)
+    }
+
+    .cv-cert-row.no-link {
+      cursor: default
+    }
+
+    .cv-cert-row.no-link:hover {
+      transform: none;
+      border-color: rgba(255, 255, 255, .05)
+    }
+
+    html.light .cv-cert-row.no-link:hover {
+      border-color: rgba(0, 0, 0, .07)
+    }
+
+    .cv-dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      flex-shrink: 0
+    }
+
+    .cv-dot.done {
+      background: var(--c-done);
+      box-shadow: 0 0 5px var(--c-done)
+    }
+
+    .cv-dot.prog {
+      background: var(--c-pl);
+      box-shadow: 0 0 5px var(--c-pl);
+      animation: blink 1.4s infinite
+    }
+
+    .cv-dot.todo {
+      background: var(--c-muted)
+    }
+
+    .cv-cert-name {
+      font-family: var(--head);
+      font-size: .95rem;
+      font-weight: 600;
+      color: var(--c-txt)
+    }
+
+    .cv-cert-sub {
+      font-family: var(--mono);
+      font-size: .68rem;
+      color: var(--c-txt2);
+      margin-top: 2px
+    }
+
+    .cv-badge {
+      font-family: var(--mono);
+      font-size: .62rem;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      padding: 2px 8px;
+      border-radius: 2px;
+      white-space: nowrap;
+      margin-left: auto
+    }
+
+    .cv-badge.done {
+      background: rgba(16, 185, 129, .1);
+      color: var(--c-done);
+      border: 1px solid rgba(16, 185, 129, .3)
+    }
+
+    .cv-badge.prog {
+      background: rgba(245, 158, 11, .1);
+      color: var(--c-pl);
+      border: 1px solid rgba(245, 158, 11, .3)
+    }
+
+    .cv-badge.todo {
+      background: rgba(100, 116, 139, .08);
+      color: var(--c-muted);
+      border: 1px solid rgba(100, 116, 139, .15)
+    }
+
+    .cv-arrow {
+      font-family: var(--mono);
+      font-size: .85rem;
+      color: var(--c-muted);
+      transition: color .2s, transform .2s;
+      flex-shrink: 0
+    }
+
+    .cv-cert-row:hover .cv-arrow {
+      color: var(--c-pl);
+      transform: translateX(3px)
+    }
+
+    /* ── XP TIMELINE ── */
+    .xp-item {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 1.5rem
+    }
+
+    .xp-left {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 28px;
+      flex-shrink: 0
+    }
+
+    .xp-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--c-pl);
+      border: 2px solid var(--bg);
+      box-shadow: 0 0 0 2px var(--c-pl);
+      flex-shrink: 0;
+      margin-top: 4px
+    }
+
+    .xp-dot.g {
+      background: var(--c-done);
+      box-shadow: 0 0 0 2px var(--c-done)
+    }
+
+    .xp-line {
+      flex: 1;
+      width: 1px;
+      background: var(--c-border);
+      margin: 4px 0
+    }
+
+    .xp-item:last-child .xp-line {
+      display: none
+    }
+
+    .xp-date {
+      font-family: var(--mono);
+      font-size: .68rem;
+      color: var(--c-muted);
+      letter-spacing: 1px;
+      margin-bottom: .25rem
+    }
+
+    .xp-title {
+      font-family: var(--head);
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--c-txt);
+      line-height: 1.2
+    }
+
+    .xp-company {
+      font-family: var(--mono);
+      font-size: .72rem;
+      color: var(--c-pl);
+      margin: .2rem 0 .4rem
+    }
+
+    .xp-company.g {
+      color: var(--c-done)
+    }
+
+    .xp-desc {
+      font-size: .82rem;
+      color: var(--c-txt2);
+      line-height: 1.65
+    }
+
+    .xp-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .35rem;
+      margin-top: .5rem
+    }
+
+    .xp-tag {
+      font-family: var(--mono);
+      font-size: .62rem;
+      color: var(--c-muted);
+      border: 1px solid rgba(255, 255, 255, .07);
+      padding: 2px 7px;
+      border-radius: 2px
+    }
+
+    html.light .xp-tag {
+      border-color: rgba(0, 0, 0, .1)
+    }
+
+    /* ── FORMATION ── */
+    .edu-item {
+      background: var(--bg1);
+      border: 1px solid rgba(255, 255, 255, .05);
+      border-radius: 7px;
+      padding: .9rem 1.1rem;
+      margin-bottom: .6rem
+    }
+
+    html.light .edu-item {
+      border-color: rgba(0, 0, 0, .07)
+    }
+
+    .edu-degree {
+      font-family: var(--head);
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--c-txt)
+    }
+
+    .edu-school {
+      font-family: var(--mono);
+      font-size: .72rem;
+      color: var(--c-pl);
+      margin: .2rem 0 .1rem
+    }
+
+    .edu-dates {
+      font-family: var(--mono);
+      font-size: .65rem;
+      color: var(--c-muted)
+    }
+
+    /* ── CENTRES D'INTÉRÊT ── */
+    .interest-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: .8rem
+    }
+
+    .interest-card {
+      background: var(--bg1);
+      border: 1px solid rgba(255, 255, 255, .05);
+      border-radius: 8px;
+      padding: 1rem 1.2rem
+    }
+
+    html.light .interest-card {
+      border-color: rgba(0, 0, 0, .07)
+    }
+
+    .int-icon {
+      font-size: 1.5rem;
+      margin-bottom: .5rem
+    }
+
+    .int-title {
+      font-family: var(--head);
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--c-txt);
+      margin-bottom: .25rem
+    }
+
+    .int-desc {
+      font-size: .8rem;
+      color: var(--c-txt2);
+      line-height: 1.5
+    }
+
+    /* ── PL-300 HERO ── */
+    .pl-hero {
+      background: var(--bg1);
+      border: 1px solid var(--c-border);
+      border-radius: 10px;
+      padding: 1.8rem;
+      position: relative;
+      overflow: hidden
+    }
+
+    .pl-hero::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--c-pl), transparent)
+    }
+
+    .badge-prog {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-family: var(--mono);
+      font-size: 9px;
+      letter-spacing: 1.5px;
+      background: rgba(245, 158, 11, .1);
+      color: var(--c-pl);
+      border: 1px solid rgba(245, 158, 11, .3);
+      padding: 3px 10px;
+      border-radius: 2px;
+      text-transform: uppercase;
+      margin-bottom: 1.4rem
+    }
+
+    .pulse {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--c-pl);
+      animation: blink 1.2s infinite
+    }
+
+    @keyframes blink {
+
+      0%,
+      100% {
+        opacity: 1
+      }
+
+      50% {
+        opacity: .2
+      }
+    }
+
+    /* ── PROGRESS BAR ── */
+    .prog-section {
+      margin-bottom: 2rem
+    }
+
+    .prog-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 6px
+    }
+
+    .prog-label {
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--c-txt2);
+      letter-spacing: 1px;
+      text-transform: uppercase
+    }
+
+    .prog-pct {
+      font-family: var(--mono);
+      font-size: .85rem;
+      color: var(--c-pl)
+    }
+
+    .prog-outer {
+      height: 6px;
+      background: rgba(255, 255, 255, .05);
+      border-radius: 3px;
+      position: relative;
+      margin-top: 28px;
+      margin-bottom: .3rem
+    }
+
+    html.light .prog-outer {
+      background: rgba(0, 0, 0, .07)
+    }
+
+    .prog-inner {
+      height: 100%;
+      border-radius: 3px;
+      background: linear-gradient(90deg, #92400e, var(--c-pl));
+      transition: width 1.2s cubic-bezier(.4, 0, .2, 1)
+    }
+
+    .walker-on-bar {
+      position: absolute;
+      top: -26px;
+      transform: translateX(-50%);
+      transition: left 1.2s cubic-bezier(.4, 0, .2, 1);
+      filter: drop-shadow(0 0 4px var(--c-pl));
+      pointer-events: none
+    }
+
+    .walker-on-bar svg {
+      display: block
+    }
+
+    @keyframes walk-legs {
+
+      0%,
+      100% {
+        transform: rotate(0deg)
+      }
+
+      25% {
+        transform: rotate(20deg)
+      }
+
+      75% {
+        transform: rotate(-20deg)
+      }
+    }
+
+    @keyframes walk-body {
+
+      0%,
+      100% {
+        transform: translateY(0)
+      }
+
+      50% {
+        transform: translateY(-1px)
+      }
+    }
+
+    .fig-body {
+      animation: walk-body .5s infinite
+    }
+
+    .fig-leg-l {
+      transform-origin: 50% 0;
+      animation: walk-legs .5s infinite
+    }
+
+    .fig-leg-r {
+      transform-origin: 50% 0;
+      animation: walk-legs .5s infinite reverse
+    }
+
+    .fig-arm-l {
+      transform-origin: 50% 0;
+      animation: walk-legs .5s infinite reverse
+    }
+
+    .fig-arm-r {
+      transform-origin: 50% 0;
+      animation: walk-legs .5s infinite
+    }
+
+    /* ── CHAPTERS ── */
+    .chapters {
+      display: flex;
+      flex-direction: column;
+      gap: .6rem;
+      margin-top: 1.5rem
+    }
+
+    .chapter {
+      border: 1px solid rgba(255, 255, 255, .05);
+      border-radius: 6px;
+      overflow: hidden;
+      background: var(--bg2);
+      transition: border-color .2s
+    }
+
+    html.light .chapter {
+      border-color: rgba(0, 0, 0, .07)
+    }
+
+    .chapter.active {
+      border-color: rgba(245, 158, 11, .4)
+    }
+
+    .chapter.completed {
+      border-color: rgba(16, 185, 129, .25)
+    }
+
+    .chapter.locked {
+      opacity: .5
+    }
+
+    .chap-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: .75rem 1rem;
+      cursor: pointer;
+      user-select: none
+    }
+
+    .chap-num {
+      font-family: var(--mono);
+      font-size: .7rem;
+      color: var(--c-muted);
+      min-width: 24px
+    }
+
+    .chap-title {
+      font-family: var(--head);
+      font-size: 1rem;
+      font-weight: 600;
+      flex: 1;
+      color: var(--c-txt);
+      line-height: 1.2
+    }
+
+    .chapter.active .chap-title {
+      color: var(--c-pl)
+    }
+
+    .chapter.completed .chap-title {
+      color: var(--c-done)
+    }
+
+    .chap-meta {
+      font-size: .7rem;
+      color: var(--c-txt2);
+      font-family: var(--mono);
+      white-space: nowrap
+    }
+
+    .chap-status {
+      font-size: .62rem;
+      font-family: var(--mono);
+      letter-spacing: 1px;
+      padding: 2px 8px;
+      border-radius: 2px;
+      text-transform: uppercase;
+      white-space: nowrap
+    }
+
+    .s-active {
+      background: rgba(245, 158, 11, .1);
+      color: var(--c-pl);
+      border: 1px solid rgba(245, 158, 11, .3)
+    }
+
+    .s-done {
+      background: rgba(16, 185, 129, .1);
+      color: var(--c-done);
+      border: 1px solid rgba(16, 185, 129, .3)
+    }
+
+    .s-lock {
+      background: rgba(100, 116, 139, .08);
+      color: var(--c-muted);
+      border: 1px solid rgba(100, 116, 139, .15)
+    }
+
+    .chap-body {
+      padding: 0 1rem;
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height .35s ease, padding .35s ease
+    }
+
+    .chapter.open .chap-body {
+      max-height: 500px;
+      padding: .4rem 1rem .9rem
+    }
+
+    .module-list {
+      display: flex;
+      flex-direction: column;
+      gap: 4px
+    }
+
+    .mod-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      font-size: .82rem;
+      color: var(--c-txt2);
+      padding: 3px 0
+    }
+
+    .mod-item.done-mod {
+      color: var(--c-txt)
+    }
+
+    .mod-check {
+      width: 13px;
+      height: 13px;
+      border-radius: 2px;
+      flex-shrink: 0;
+      border: 1px solid var(--c-muted);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 8px;
+      margin-top: 2px
+    }
+
+    .mod-item.done-mod .mod-check {
+      background: rgba(16, 185, 129, .15);
+      border-color: var(--c-done);
+      color: var(--c-done)
+    }
+
+    .mod-item.active-mod .mod-check {
+      background: rgba(245, 158, 11, .15);
+      border-color: var(--c-pl);
+      color: var(--c-pl)
+    }
+
+    .mod-item.active-mod {
+      color: var(--c-pl)
+    }
+
+    .git-box {
+      background: var(--bg2);
+      border: 1px solid rgba(255, 255, 255, .06);
+      border-radius: 6px;
+      padding: .9rem 1rem;
+      margin-top: 1.2rem;
+      display: flex;
+      align-items: flex-start;
+      gap: 10px
+    }
+
+    html.light .git-box {
+      border-color: rgba(0, 0, 0, .08)
+    }
+
+    .git-icon {
+      font-size: 1rem;
+      color: var(--c-muted);
+      flex-shrink: 0;
+      margin-top: 1px
+    }
+
+    .git-txt {
+      font-family: var(--mono);
+      font-size: .73rem;
+      color: var(--c-txt2);
+      line-height: 1.6
+    }
+
+    .git-txt strong {
+      color: var(--c-txt);
+      font-weight: normal
+    }
+
+    .git-txt a {
+      color: var(--c-pl);
+      text-decoration: none
+    }
+
+    .git-txt a:hover {
+      text-decoration: underline
+    }
+
+    /* ── PROJECT CARDS ── */
+    .proj-card {
+      background: var(--bg1);
+      border: 1px solid rgba(255, 255, 255, .06);
+      border-radius: 10px;
+      overflow: hidden;
+      transition: transform .2s, border-color .2s
+    }
+
+    html.light .proj-card {
+      border-color: rgba(0, 0, 0, .08)
+    }
+
+    .proj-card:hover {
+      transform: translateY(-3px);
+      border-color: var(--c-border)
+    }
+
+    .proj-img {
+      width: 100%;
+      height: 160px;
+      object-fit: cover;
+      display: block;
+      background: var(--bg2)
+    }
+
+    .proj-img-placeholder {
+      width: 100%;
+      height: 160px;
+      background: var(--bg2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.5rem
+    }
+
+    .proj-body {
+      padding: 1rem 1.2rem 1.2rem
+    }
+
+    .proj-cat {
+      font-family: var(--mono);
+      font-size: .62rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--c-pl);
+      margin-bottom: .4rem
+    }
+
+    .proj-title {
+      font-family: var(--head);
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--c-txt);
+      margin-bottom: .4rem;
+      line-height: 1.2
+    }
+
+    .proj-desc {
+      font-size: .82rem;
+      color: var(--c-txt2);
+      line-height: 1.6;
+      margin-bottom: .8rem
+    }
+
+    .proj-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .3rem;
+      margin-bottom: .8rem
+    }
+
+    .proj-tag {
+      font-family: var(--mono);
+      font-size: .6rem;
+      color: var(--c-muted);
+      border: 1px solid rgba(255, 255, 255, .07);
+      padding: 2px 7px;
+      border-radius: 2px
+    }
+
+    html.light .proj-tag {
+      border-color: rgba(0, 0, 0, .1)
+    }
+
+    .proj-links {
+      display: flex;
+      gap: .5rem;
+      flex-wrap: wrap
+    }
+
+    .proj-link {
+      font-family: var(--mono);
+      font-size: .68rem;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      border-radius: 3px;
+      text-decoration: none;
+      border: 1px solid;
+      transition: all .2s
+    }
+
+    .proj-link.gh {
+      color: var(--c-txt2);
+      border-color: rgba(255, 255, 255, .1)
+    }
+
+    .proj-link.gh:hover {
+      color: var(--c-pl);
+      border-color: var(--c-pl)
+    }
+
+    html.light .proj-link.gh {
+      border-color: rgba(0, 0, 0, .15)
+    }
+
+    .proj-link.live {
+      color: var(--c-done);
+      border-color: rgba(16, 185, 129, .3)
+    }
+
+    .proj-link.live:hover {
+      background: rgba(16, 185, 129, .08)
+    }
+
+    /* ── BENEVOLAT ── */
+    .benev-card {
+      background: var(--bg1);
+      border: 1px solid rgba(220, 38, 38, .2);
+      border-radius: 10px;
+      padding: 1.3rem 1.5rem;
+      position: relative;
+      overflow: hidden
+    }
+
+    .benev-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, #dc2626, transparent)
+    }
+
+    .benev-icon {
+      font-size: 1.8rem;
+      margin-bottom: .5rem
+    }
+
+    .benev-title {
+      font-family: var(--head);
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--c-txt);
+      margin-bottom: .2rem
+    }
+
+    .benev-org {
+      font-family: var(--mono);
+      font-size: .72rem;
+      color: #ef4444;
+      margin-bottom: .5rem
+    }
+
+    .benev-desc {
+      font-size: .83rem;
+      color: var(--c-txt2);
+      line-height: 1.65
+    }
+
+    /* INTEREST CARD FULL */
+    .cert-page-hero {
+      background: var(--bg1);
+      border: 1px solid var(--c-border2);
+      border-radius: 12px;
+      padding: 2rem;
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 2rem
+    }
+
+    .cert-page-hero::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, transparent, var(--c-done), transparent)
+    }
+
+    .cert-page-stamp {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 2px;
+      background: rgba(16, 185, 129, .1);
+      color: var(--c-done);
+      border: 1px solid rgba(16, 185, 129, .35);
+      padding: 5px 14px;
+      border-radius: 3px;
+      text-transform: uppercase;
+      margin-bottom: 1rem
+    }
+
+    .cert-page-code {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--c-txt2);
+      letter-spacing: 2px;
+      margin-bottom: .3rem
+    }
+
+    .cert-page-name {
+      font-family: var(--head);
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--c-txt);
+      line-height: 1.1;
+      margin-bottom: .4rem
+    }
+
+    .cert-page-issuer {
+      font-family: var(--body);
+      font-size: .88rem;
+      color: var(--c-txt2);
+      font-weight: 300
+    }
+
+    .cert-walker-lg {
+      position: absolute;
+      bottom: 1.5rem;
+      right: 1.8rem
+    }
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: .8rem;
+      margin-bottom: 2rem
+    }
+
+    .info-card {
+      background: var(--bg2);
+      border-radius: 6px;
+      padding: .9rem 1rem
+    }
+
+    .info-card-lbl {
+      font-family: var(--mono);
+      font-size: .62rem;
+      letter-spacing: 1.5px;
+      color: var(--c-muted);
+      text-transform: uppercase;
+      margin-bottom: .3rem
+    }
+
+    .info-card-val {
+      font-family: var(--head);
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--c-done)
+    }
+
+    .syllabus-block {
+      background: var(--bg1);
+      border: 1px solid var(--c-border);
+      border-radius: 8px;
+      overflow: hidden;
+      margin-bottom: .8rem
+    }
+
+    .syl-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: .9rem 1.2rem;
+      cursor: pointer;
+      user-select: none;
+      transition: background .2s
+    }
+
+    .syl-header:hover {
+      background: rgba(255, 255, 255, .02)
+    }
+
+    html.light .syl-header:hover {
+      background: rgba(0, 0, 0, .02)
+    }
+
+    .syl-num {
+      font-family: var(--mono);
+      font-size: .65rem;
+      color: var(--c-done);
+      min-width: 24px
+    }
+
+    .syl-title {
+      font-family: var(--head);
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--c-txt);
+      flex: 1
+    }
+
+    .syl-tag {
+      font-family: var(--mono);
+      font-size: .62rem;
+      background: rgba(16, 185, 129, .1);
+      color: var(--c-done);
+      border: 1px solid rgba(16, 185, 129, .25);
+      padding: 2px 8px;
+      border-radius: 2px;
+      text-transform: uppercase
+    }
+
+    .syl-chevron {
+      font-size: .7rem;
+      color: var(--c-muted);
+      transition: transform .3s
+    }
+
+    .syllabus-block.open .syl-chevron {
+      transform: rotate(90deg)
+    }
+
+    .syl-body {
+      padding: 0 1.2rem;
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height .3s ease, padding .3s ease
+    }
+
+    .syllabus-block.open .syl-body {
+      max-height: 400px;
+      padding: .3rem 1.2rem 1rem
+    }
+
+    .syl-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      font-size: .83rem;
+      color: var(--c-txt2);
+      padding: 5px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, .03)
+    }
+
+    html.light .syl-item {
+      border-color: rgba(0, 0, 0, .04)
+    }
+
+    .syl-item:last-child {
+      border-bottom: none
+    }
+
+    .syl-dot {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--c-done);
+      flex-shrink: 0;
+      margin-top: 6px;
+      opacity: .6
+    }
+
+    /* ── STATS ROW ── */
+    .stats-row {
+      display: flex;
+      gap: 0;
+      padding: 1.2rem 0;
+      border-bottom: 1px solid var(--c-border);
+      flex-wrap: wrap
+    }
+
+    .stat-b {
+      padding: 0 2rem 0 0;
+      display: flex;
+      flex-direction: column;
+      gap: 2px
+    }
+
+    .stat-b:not(:last-child) {
+      border-right: 1px solid var(--c-border);
+      margin-right: 2rem
+    }
+
+    .sval {
+      font-family: var(--mono);
+      font-size: 1.8rem;
+      line-height: 1;
+      color: var(--c-pl)
+    }
+
+    .sval.g {
+      color: var(--c-done)
+    }
+
+    .slbl {
+      font-size: .62rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--c-muted);
+      font-family: var(--mono)
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      margin-top: 3.5rem;
+      padding: 1.2rem 0;
+      border-top: 1px solid var(--c-border);
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--c-muted);
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: .5rem
+    }
+
+    .ft-acc {
+      color: var(--c-pl)
+    }
+
+    @media(max-width:580px) {
+      .nav-links {
+        gap: .15rem
+      }
+
+      .navlink {
+        font-size: 9px;
+        padding: 3px 6px
+      }
+
+      .stat-b:not(:last-child) {
+        border-right: none;
+        margin-right: 0;
+        padding-right: .8rem
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ══ NAV ══ -->
+  <nav class="topnav">
+    <div class="wrap topnav-inner">
+      <span class="nav-brand" onclick="goPage('home')">// nihel.sliti</span>
+      <div class="nav-links">
+        <button class="navlink" id="nav-home" onclick="goPage('home')">CV</button>
+        <button class="navlink" id="nav-pl300" onclick="goPage('pl300')">PL-300</button>
+        <button class="navlink nl-done" id="nav-pcap" onclick="goPage('pcap')">PCAP</button>
+        <button class="navlink nl-done" id="nav-ai900" onclick="goPage('ai900')">AI-900</button>
+        <button class="navlink" id="nav-interests" onclick="goPage('interests')">Projets</button>
+      </div>
+      <button class="theme-btn" onclick="toggleTheme()">
+        <span id="themeIcon">☀️</span><span id="themeLbl">Clair</span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- ══════════════════════════════════════════
+     PAGE CV
+══════════════════════════════════════════ -->
+  <div class="page active" id="page-home">
+    <div class="wrap">
+
+      <header style="padding:2.5rem 0 1.8rem;border-bottom:1px solid var(--c-border)">
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:2rem;flex-wrap:wrap">
+          <div style="flex:1;min-width:260px">
+            <div class="eyebrow">// data engineer · alternante orange · nantes</div>
+            <h1>Nihel <span class="accent">Sliti</span></h1>
+            <div
+              style="font-family:var(--head);font-size:1.25rem;font-weight:600;color:var(--c-txt2);letter-spacing:1px;margin-bottom:.7rem">
+              Data Engineer · Master 2 DSP Paris</div>
+            <p class="subtitle" style="max-width:560px;line-height:1.75">Ingénieure en développement logiciel chez
+              Orange, je construis des pipelines CI/CD, des use cases IA/ML et des fonctions Python pour optimiser le
+              réseau mobile. Actuellement en Master 2 Data Engineering à la DSP Digital School of Paris, je certifie
+              activement mon expertise cloud et data avec Microsoft.</p>
+            <div style="display:flex;gap:.5rem;flex-wrap:wrap;margin-top:1.1rem">
+              <a href="https://github.com/nihel-sliti" target="_blank" class="skill-tag sk-dev"
+                style="text-decoration:none">⎇ GitHub</a>
+              <a href="https://www.linkedin.com/in/nihel-sliti" target="_blank" class="skill-tag sk-cloud"
+                style="text-decoration:none">in LinkedIn</a>
+              <a href="https://www.credly.com/badges/754fc925-d3ff-460c-82ab-cbd9ecd06b20/public_url" target="_blank"
+                class="skill-tag sk-data" style="text-decoration:none">✓ Credly</a>
+              <span class="skill-tag sk-lang" style="cursor:default">📍 Nantes, France</span>
+            </div>
+          </div>
+          <div>
+            <a href="Youtube" target="_blank" title="Presentation de moi"
+              style="display:flex;flex-direction:column;align-items:center;gap:.5rem;text-decoration:none;flex-shrink:0">
+              <img src="nihel.jpg" alt="Nihe Sliti"
+                style="width:120px;height:120px;border-radius:50%;border:2px solid rgba(222, 145, 3, 0.911);box-shadow:0 0 16px rgba(222, 145, 3, 0.911);transition:transform .2s,box-shadow .2s"
+                onmouseover="this.style.transform='scale(1.06)';this.style.boxShadow='0 0 24px rgba(16,185,129,.4)'"
+                onmouseout="this.style.transform='scale(1)';this.style.boxShadow='0 0 16px rgba(16,185,129,.2)'">
+
+            </a>
+          </div>
+        </div>
+      </header>
+
+      <!-- COMPÉTENCES -->
+      <div class="sec">
+        <div class="sec-lbl">Compétences techniques</div>
+        <div style="display:flex;flex-wrap:wrap;gap:.45rem">
+          <span class="skill-tag sk-lang">Python</span>
+          <span class="skill-tag sk-lang">SQL</span>
+          <span class="skill-tag sk-viz">Power BI</span>
+          <span class="skill-tag sk-cloud">Azure</span>
+          <span class="skill-tag sk-cloud">Microsoft Fabric</span>
+          <span class="skill-tag sk-ai">AI / ML</span>
+          <span class="skill-tag sk-ai">MLflow</span>
+          <span class="skill-tag sk-ai">NLP</span>
+          <span class="skill-tag sk-data">ETL / Pipelines</span>
+          <span class="skill-tag sk-dev">CI/CD</span>
+          <span class="skill-tag sk-dev">Flutter</span>
+          <span class="skill-tag sk-dev">IoT</span>
+          <span class="skill-tag sk-data">Big Data</span>
+          <span class="skill-tag sk-lang">Arduino</span>
+        </div>
+      </div>
+
+
+      <!-- EXPÉRIENCES -->
+      <div class="sec">
+        <div class="sec-lbl">Expériences professionnelles</div>
+
+        <div class="xp-item">
+          <div class="xp-left">
+            <div class="xp-dot"></div>
+            <div class="xp-line"></div>
+          </div>
+          <div>
+            <div class="xp-date">Sept 2025 – Présent · 10 mois</div>
+            <div class="xp-title">Ingénieure Développement & Automatisation Logiciel</div>
+            <div class="xp-company">Orange · Nantes, France</div>
+            <div class="xp-desc">Développement de la chaîne CI/CD d'un projet d'automatisation réseau. Conception et
+              mise en œuvre de use cases IA/ML innovants. Développement de fonctions d'orchestration et Python pour
+              optimiser le réseau mobile.</div>
+            <div class="xp-tags"><span class="xp-tag">Python</span><span class="xp-tag">CI/CD</span><span
+                class="xp-tag">ML</span><span class="xp-tag">Orchestration</span><span class="xp-tag">Réseau
+                mobile</span></div>
+          </div>
+        </div>
+
+        <div class="xp-item">
+          <div class="xp-left">
+            <div class="xp-dot"></div>
+            <div class="xp-line"></div>
+          </div>
+          <div>
+            <div class="xp-date">Mars – Sept 2025 · 7 mois</div>
+            <div class="xp-title">Stagiaire — Développeur Mobile & Machine Learning</div>
+            <div class="xp-company">Orange Innovation · Nice, France</div>
+            <div class="xp-desc">Développement d'une application Flutter intégrant WhatsApp avec ML et NLP via les
+              services Azure, testée au Sénégal. Participation au CI/CD dans une équipe multiculturelle R&D. Avancement
+              projet à 75%.</div>
+            <div class="xp-tags"><span class="xp-tag">Flutter</span><span class="xp-tag">Azure</span><span
+                class="xp-tag">NLP</span><span class="xp-tag">Machine Learning</span><span class="xp-tag">CI/CD</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="xp-item">
+          <div class="xp-left">
+            <div class="xp-dot g"></div>
+            <div class="xp-line"></div>
+          </div>
+          <div>
+            <div class="xp-date">Déc 2024 – Mars 2025 · 4 mois</div>
+            <div class="xp-title">Instructrice Python</div>
+            <div class="xp-company g">TEK-UP University · Tunis, Tunisie</div>
+            <div class="xp-desc">Formation Python avec préparation à la certification PCAP. Animation de sessions
+              présentiel et en ligne, élaboration du contenu pédagogique, évaluation et mentorat d'apprenants.</div>
+            <div class="xp-tags"><span class="xp-tag">Python</span><span class="xp-tag">PCAP</span><span
+                class="xp-tag">Pédagogie</span><span class="xp-tag">Mentorat</span></div>
+          </div>
+        </div>
+
+        <div class="xp-item">
+          <div class="xp-left">
+            <div class="xp-dot g"></div>
+            <div class="xp-line"></div>
+          </div>
+          <div>
+            <div class="xp-date">Sept 2023 – Oct 2024 · 1 an 2 mois</div>
+            <div class="xp-title">Instructrice Data Science</div>
+            <div class="xp-company g">GoMyCode · Tunisie</div>
+            <div class="xp-desc">Conception et animation d'ateliers data science, Python, ML et SQL. Encadrement de 2
+              promotions (6 mois chacune), projets concrets (ChatBots). Taux de progression apprenants supérieur à 80%.
+            </div>
+            <div class="xp-tags"><span class="xp-tag">Data Science</span><span class="xp-tag">Python</span><span
+                class="xp-tag">SQL</span><span class="xp-tag">ML</span><span class="xp-tag">Visualisation</span></div>
+          </div>
+        </div>
+
+        <div class="xp-item">
+          <div class="xp-left">
+            <div class="xp-dot"></div>
+            <div class="xp-line"></div>
+          </div>
+          <div>
+            <div class="xp-date">Mars – Juin 2022 · 4 mois</div>
+            <div class="xp-title">Stagiaire — Système IoT Détection d'Incendies</div>
+            <div class="xp-company">IRESA · Tunis, Tunisie</div>
+            <div class="xp-desc">Réseau LoRa en forêt via carte LoRaESP32 et capteurs. Gateway sur Raspberry Pi 3.
+              Application mobile Flutter pour consultation des données et alertes en temps réel.</div>
+            <div class="xp-tags"><span class="xp-tag">IoT</span><span class="xp-tag">LoRa</span><span
+                class="xp-tag">Flutter</span><span class="xp-tag">Raspberry Pi</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- FORMATION -->
+      <div class="sec">
+        <div class="sec-lbl">Formation</div>
+        <div class="edu-item">
+          <div class="edu-degree">Master 2 — Data Engineer</div>
+          <div class="edu-school">DSP Digital School of Paris</div>
+          <div class="edu-dates">Sept 2025 – Jan 2027</div>
+        </div>
+        <div class="edu-item">
+          <div class="edu-degree">Diplôme d'ingénieur — Développement Mobile, Web & Multimédia</div>
+          <div class="edu-school">TEK-UP University</div>
+          <div class="edu-dates">Sept 2023 – Sept 2025</div>
+        </div>
+        <div class="edu-item">
+          <div class="edu-degree">Master — Smart Systems</div>
+          <div class="edu-school">ENSI — École Nationale des Sciences de l'Informatique</div>
+          <div class="edu-dates">Oct 2022 – Sept 2025</div>
+        </div>
+        <div class="edu-item">
+          <div class="edu-degree">Licence — Systèmes Embarqués & Mobile</div>
+          <div class="edu-school">ISET Rades</div>
+          <div class="edu-dates">2019 – 2022</div>
+        </div>
+      </div>
+      <!-- CERTIFICATIONS -->
+      <div class="sec">
+        <div class="sec-lbl">Certifications</div>
+        <div style="display:flex;flex-direction:column;gap:.55rem">
+          <div class="cv-cert-row" onclick="goPage('pl300')">
+            <div class="cv-dot prog"></div>
+            <div style="flex:1">
+              <div class="cv-cert-name">PL-300 — Power BI Data Analyst</div>
+              <div class="cv-cert-sub">Microsoft · En cours — Chapitre 2 actif</div>
+            </div>
+            <span class="cv-badge prog">En cours</span><span class="cv-arrow">→</span>
+          </div>
+          <div class="cv-cert-row" onclick="goPage('pcap')">
+            <div class="cv-dot done"></div>
+            <div style="flex:1">
+              <div class="cv-cert-name">PCAP-31-03 — Python Associate Programmer</div>
+              <div class="cv-cert-sub">Python Institute</div>
+            </div>
+            <span class="cv-badge done">Certifié ✓</span><span class="cv-arrow">→</span>
+          </div>
+          <div class="cv-cert-row" onclick="goPage('ai900')">
+            <div class="cv-dot done"></div>
+            <div style="flex:1">
+              <div class="cv-cert-name">AI-900 — Azure AI Fundamentals</div>
+              <div class="cv-cert-sub">Microsoft Azure</div>
+            </div>
+            <span class="cv-badge done">Certifié ✓</span><span class="cv-arrow">→</span>
+          </div>
+          <div class="cv-cert-row no-link">
+            <div class="cv-dot todo"></div>
+            <div style="flex:1">
+              <div class="cv-cert-name">DP-600 — Fabric Analytics Engineer</div>
+              <div class="cv-cert-sub">Microsoft Fabric · Prochaine étape</div>
+            </div>
+            <span class="cv-badge todo">À venir</span>
+          </div>
+          <div class="cv-cert-row no-link">
+            <div class="cv-dot todo"></div>
+            <div style="flex:1">
+              <div class="cv-cert-name">DP-203 — Azure Data Engineer Associate</div>
+              <div class="cv-cert-sub">Microsoft · Objectif final</div>
+            </div>
+            <span class="cv-badge todo">À venir</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- CENTRES D'INTÉRÊT -->
+      <div class="sec">
+        <div class="sec-lbl">Centres d'intérêt & Projets</div>
+        <div class="cv-cert-row" onclick="goPage('interests')" style="background:var(--bg1)">
+          <div style="display:flex;gap:.7rem;flex-wrap:wrap;flex:1;align-items:center">
+            <span style="font-size:1.3rem">🏆🤖📊🌍🩺☁️</span>
+            <div>
+              <div class="cv-cert-name">Innovation · IA · Data Viz · Tech for Good · Bénévolat · MLOps</div>
+              <div class="cv-cert-sub">Projets, récompenses, bénévolat Croissant Rouge & détails complets</div>
+            </div>
+          </div>
+          <span class="cv-badge prog">Voir tout</span>
+          <span class="cv-arrow">→</span>
+        </div>
+      </div>
+
+    </div><!-- /wrap -->
+    <footer class="wrap"><span>// nihel-sliti · data engineer <span class="ft-acc">2025</span></span><span
+        id="lastUpdate"></span></footer>
+  </div><!-- /page-home -->
+
+
+  <!-- ══════════════════════════════════════════
+     PAGE INTERESTS & PROJETS
+══════════════════════════════════════════ -->
+  <div class="page" id="page-interests">
+    <div class="wrap">
+
+      <header style="padding:2rem 0 1.5rem;border-bottom:1px solid var(--c-border)">
+        <div class="eyebrow">// centres d'intérêt · projets · bénévolat</div>
+        <h1>Projets & <span class="accent">Intérêts</span></h1>
+        <p class="subtitle">Challenges remportés, projets techniques, bénévolat et veille active</p>
+      </header>
+
+      <!-- BÉNÉVOLAT -->
+      <div class="sec">
+        <div class="sec-lbl">🩺 Bénévolat</div>
+        <div class="benev-card">
+          <div class="benev-icon">🩺</div>
+          <div class="benev-title">Bénévole — Secourisme & Aide humanitaire</div>
+          <div class="benev-org">Croissant Rouge Tunisien</div>
+          <div class="benev-desc">Participation active aux actions de secourisme, sensibilisation aux premiers secours
+            et aide aux populations vulnérables. Engagement dans des missions humanitaires locales en Tunisie,
+            renforçant les compétences de travail en équipe sous pression, leadership et gestion de crise.</div>
+          <div style="display:flex;flex-wrap:wrap;gap:.35rem;margin-top:.8rem">
+            <span class="proj-tag">Secourisme</span>
+            <span class="proj-tag">Aide humanitaire</span>
+            <span class="proj-tag">Travail en équipe</span>
+            <span class="proj-tag">Leadership</span>
+            <span class="proj-tag">Tunisie</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- CHALLENGES & RÉCOMPENSES -->
+      <div class="sec">
+        <div class="sec-lbl">🏆 Challenges & Récompenses</div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1rem">
+
+          <div class="proj-card">
+            <div class="proj-img-placeholder">🏆</div>
+            <div class="proj-body">
+              <div class="proj-cat">Mai 2023 · Paris, France</div>
+              <div class="proj-title">1er Prix Orange Foundation — ChangeNOW</div>
+              <div class="proj-desc">Grand gagnant du prix #OrangeFoundation au summit ChangeNOW Paris. Solution
+                innovante récompensée parmi des équipes internationales pour son impact environnemental.</div>
+              <div class="proj-tags"><span class="proj-tag">Innovation</span><span class="proj-tag">Orange
+                  Foundation</span><span class="proj-tag">Paris</span></div>
+              <div class="proj-links">
+                <a href="https://www.changenow.world/" target="_blank" class="proj-link live">🌐 ChangeNOW ↗</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="proj-card">
+            <div class="proj-img-placeholder">💧</div>
+            <div class="proj-body">
+              <div class="proj-cat">Mars – Mai 2023 · Tunisie / France</div>
+              <div class="proj-title">1er Prix Fablab — ECOWATRE</div>
+              <div class="proj-desc">Solution innovante de recyclage et filtration d'eau pour prolonger sa durée de vie.
+                1er prix du challenge international Orange Tunisie au El Fab Space Lac. Participation au challenge
+                France le 24 mai.</div>
+              <div class="proj-tags"><span class="proj-tag">IoT</span><span class="proj-tag">Environnement</span><span
+                  class="proj-tag">Fablab</span><span class="proj-tag">Orange Tunisie</span></div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- PROJETS TECHNIQUES -->
+      <div class="sec">
+        <div class="sec-lbl">💻 Projets techniques</div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1rem">
+
+          <div class="proj-card">
+            <div class="proj-img-placeholder">📱</div>
+            <div class="proj-body">
+              <div class="proj-cat">Orange Innovation · Mars – Août 2025</div>
+              <div class="proj-title">App Flutter + ML + NLP sur Azure</div>
+              <div class="proj-desc">Application mobile Flutter intégrant WhatsApp avec Machine Learning et NLP via les
+                services Azure. Testée à Thiès, Sénégal. Développée dans une équipe multiculturelle R&D, avancement à
+                75%.</div>
+              <div class="proj-tags"><span class="proj-tag">Flutter</span><span class="proj-tag">Azure</span><span
+                  class="proj-tag">NLP</span><span class="proj-tag">ML</span><span class="proj-tag">WhatsApp API</span>
+              </div>
+              <div class="proj-links">
+                <span style="font-family:var(--mono);font-size:.65rem;color:var(--c-muted)">// projet confidentiel
+                  Orange</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="proj-card">
+            <div class="proj-img-placeholder">🔥</div>
+            <div class="proj-body">
+              <div class="proj-cat">IRESA · Mars – Juin 2022</div>
+              <div class="proj-title">Système IoT — Détection d'incendies</div>
+              <div class="proj-desc">Réseau LoRa déployé en forêt avec carte LoRaESP32 et capteurs environnementaux.
+                Gateway Raspberry Pi 3. Application Flutter pour visualiser les données et recevoir des alertes en temps
+                réel.</div>
+              <div class="proj-tags"><span class="proj-tag">IoT</span><span class="proj-tag">LoRa</span><span
+                  class="proj-tag">Raspberry Pi</span><span class="proj-tag">Flutter</span><span
+                  class="proj-tag">Capteurs</span></div>
+            </div>
+          </div>
+
+          <div class="proj-card">
+            <div class="proj-img-placeholder">⚡</div>
+            <div class="proj-body">
+              <div class="proj-cat">STEG · Août – Sept 2021</div>
+              <div class="proj-title">Smart Mètre — Mesure de consommation</div>
+              <div class="proj-desc">Smart meter basé sur mesure indirecte du courant via champ magnétique. Calcul de la
+                consommation en puissance apparente. Affichage sur écran OLED et application Android via Firebase.</div>
+              <div class="proj-tags"><span class="proj-tag">Arduino</span><span class="proj-tag">Firebase</span><span
+                  class="proj-tag">Android</span><span class="proj-tag">Électronique</span></div>
+            </div>
+          </div>
+
+          <div class="proj-card">
+            <div class="proj-img-placeholder">📊</div>
+            <div class="proj-body">
+              <div class="proj-cat">Certification en cours · 2025</div>
+              <div class="proj-title">PL-300 — Notes & Résumés Power BI</div>
+              <div class="proj-desc">Repo GitHub dédié à la préparation de la certification Power BI Data Analyst.
+                Résumés des chapitres, exercices pratiques et ressources organisés par parcours d'apprentissage
+                Microsoft.</div>
+              <div class="proj-tags"><span class="proj-tag">Power BI</span><span class="proj-tag">Microsoft
+                  Learn</span><span class="proj-tag">PL-300</span></div>
+              <div class="proj-links">
+                <a href="https://github.com/nihel-sliti/PowerBiCertificationSupport" target="_blank"
+                  class="proj-link gh">⎇ GitHub ↗</a>
+              </div>
+            </div>
+          </div>
+
+          <!-- CARTE VIDE — à remplir -->
+          <div class="proj-card" style="border-style:dashed;opacity:.6">
+            <div class="proj-img-placeholder" style="height:80px;font-size:1.5rem">＋</div>
+            <div class="proj-body">
+              <div class="proj-cat">Ton prochain projet</div>
+              <div class="proj-title" style="color:var(--c-muted)">Ajouter un projet</div>
+              <div class="proj-desc" style="color:var(--c-muted)">Remplace cette carte avec ton projet — ajoute une
+                image, un lien GitHub ou une URL de démo.</div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- CENTRES D'INTÉRÊT DÉTAIL -->
+      <div class="sec">
+        <div class="sec-lbl">✨ Centres d'intérêt</div>
+        <div class="interest-grid">
+          <div class="interest-card">
+            <div class="int-icon">🤖</div>
+            <div class="int-title">IA Générative & LLM</div>
+            <div class="int-desc">Veille active sur GPT, Claude, Azure OpenAI. Expérimentation RAG, fine-tuning et
+              déploiement de modèles NLP en production via Azure ML.</div>
+          </div>
+          <div class="interest-card">
+            <div class="int-icon">📊</div>
+            <div class="int-title">Data Visualisation</div>
+            <div class="int-desc">Storytelling avec les données, tableaux de bord Power BI décisionnels, rapports
+              interactifs et DAX avancé.</div>
+          </div>
+          <div class="interest-card">
+            <div class="int-icon">🌍</div>
+            <div class="int-title">Tech for Good</div>
+            <div class="int-desc">Solutions mobiles pour marchés émergents (Sénégal), projets IoT environnementaux,
+              innovation à impact social et durable.</div>
+          </div>
+          <div class="interest-card">
+            <div class="int-icon">📚</div>
+            <div class="int-title">Mentorat & Pédagogie</div>
+            <div class="int-desc">Formatrice Python et Data Science chez GoMyCode (1 an 2 mois) et TEK-UP. Taux de
+              progression apprenants &gt;80%.</div>
+          </div>
+          <div class="interest-card">
+            <div class="int-icon">☁️</div>
+            <div class="int-title">Cloud & MLOps</div>
+            <div class="int-desc">Pipelines CI/CD, MLflow, déploiement ML sur Azure. Objectif certifications DP-600
+              Fabric et DP-203 Data Engineer.</div>
+          </div>
+          <div class="interest-card">
+            <div class="int-icon">🎵</div>
+            <div class="int-title">Musique & Créativité</div>
+            <div class="int-desc">Équilibre entre rigueur technique et expression créative. La musique comme source
+              d'inspiration et de concentration.</div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /wrap -->
+    <footer class="wrap"><span>// nihel-sliti · projets &amp; intérêts <span class="ft-acc">2025</span></span>
+  </div><!-- /page-interests -->
+
+
+  <!-- ══════════════════════════════════════════
+     PAGE PL-300
+══════════════════════════════════════════ -->
+  <div class="page" id="page-pl300">
+    <div class="wrap">
+
+      <header style="padding:2rem 0 1.5rem;border-bottom:1px solid var(--c-border)">
+        <div class="eyebrow">// microsoft · power bi · en cours</div>
+        <h1>PL-300 — <span class="accent">Power BI</span><br>Data Analyst</h1>
+        <p class="subtitle">Parcours Data Engineer · Analyste de données · Intermédiaire</p>
+      </header>
+
+      <div class="stats-row">
+        <div class="stat-b"><span class="sval">5</span><span class="slbl">Chapitres</span></div>
+        <div class="stat-b"><span class="sval g">1</span><span class="slbl">Terminé</span></div>
+        <div class="stat-b"><span class="sval">1</span><span class="slbl">En cours</span></div>
+        <div class="stat-b"><span class="sval" id="pctLabel">25%</span><span class="slbl">Progression</span></div>
+      </div>
+
+      <div class="sec">
+        <div class="pl-hero">
+          <div class="badge-prog"><span class="pulse"></span><span id="chapBadge">En cours — Chapitre 2 actif</span>
+          </div>
+
+          <div class="prog-section">
+            <div class="prog-top">
+              <span class="prog-label">Avancement PL-300</span>
+              <span class="prog-pct" id="pctLabel2">25%</span>
+            </div>
+            <div class="prog-outer">
+              <div class="prog-inner" id="progInner" style="width:25%"></div>
+              <div class="walker-on-bar" id="walkerBar" style="left:25%">
+                <svg width="18" height="22" viewBox="0 0 16 20">
+                  <g class="fig-body">
+                    <rect x="5" y="0" width="6" height="5" rx="2" fill="#f59e0b" />
+                    <rect x="5" y="6" width="6" height="6" fill="#f59e0b" opacity=".9" />
+                    <g class="fig-arm-l">
+                      <rect x="2" y="7" width="2" height="4" rx="1" fill="#f59e0b" opacity=".8" />
+                    </g>
+                    <g class="fig-arm-r">
+                      <rect x="12" y="7" width="2" height="4" rx="1" fill="#f59e0b" opacity=".8" />
+                    </g>
+                    <g class="fig-leg-l">
+                      <rect x="5" y="13" width="2" height="5" rx="1" fill="#f59e0b" opacity=".7" />
+                    </g>
+                    <g class="fig-leg-r">
+                      <rect x="9" y="13" width="2" height="5" rx="1" fill="#f59e0b" opacity=".7" />
+                    </g>
+                  </g>
+                </svg>
+              </div>
+            </div>
+            <div
+              style="display:flex;justify-content:space-between;font-family:var(--mono);font-size:.6rem;color:var(--c-muted);margin-top:4px">
+              <span>Départ</span><span>Chap 1</span><span>Chap 2</span><span>Chap 3</span><span>Chap 4</span><span>Chap
+                5</span><span>✓ Certif</span>
+            </div>
+          </div>
+
+          <div class="chapters" id="chapters">
+            <div class="chapter completed open" data-chap="1">
+              <div class="chap-header" onclick="toggleChap(this)">
+                <span class="chap-num">01</span>
+                <div style="flex:1">
+                  <div class="chap-title">Prise en main de l'Analytique données Microsoft</div>
+                </div>
+                <span class="chap-meta">4 modules</span>
+                <span class="chap-status s-done">Terminé</span>
+              </div>
+              <div class="chap-body">
+                <div class="module-list">
+                  <div class="mod-item done-mod">
+                    <div class="mod-check">✓</div>
+                    <div style="flex:1"><span>Découvrir l'analyse de données</span>
+                      <div style="font-size:.75rem;color:var(--c-txt2);margin-top:2px">Rôles de l'analyste données,
+                        storytelling avec les données</div>
+                    </div>
+                  </div>
+                  <div class="mod-item done-mod">
+                    <div class="mod-check">✓</div>
+                    <div style="flex:1"><span>Prise en main de la création avec Power BI</span>
+                      <div style="font-size:.75rem;color:var(--c-txt2);margin-top:2px">Blocs élémentaires, flux Power
+                        BI, états interactifs</div>
+                    </div>
+                  </div>
+                  <div class="mod-item done-mod">
+                    <div class="mod-check">✓</div>
+                    <div style="flex:1"><span>Analytique de bout en bout avec Microsoft Fabric</span>
+                      <div style="font-size:.75rem;color:var(--c-txt2);margin-top:2px">Plateforme Fabric, besoins
+                        d'analyse unifiés</div>
+                    </div>
+                  </div>
+                  <div class="mod-item done-mod">
+                    <div class="mod-check">✓</div>
+                    <div style="flex:1"><span>Prise en main de Copilot dans Power BI</span>
+                      <div style="font-size:.75rem;color:var(--c-txt2);margin-top:2px">Modèles sémantiques, insights en
+                        langage naturel</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="git-box" style="margin-top:1rem">
+                  <span class="git-icon">⎇</span>
+                  <div class="git-txt"><strong>Résumé sur GitHub</strong> — Notions de base, concepts théoriques.<br>
+                    <a href="https://github.com/nihel-sliti/PowerBiCertificationSupport/blob/main/chap01/README.md"
+                      target="_blank">→ nihel-sliti / PowerBiCertificationSupport / chap01 ↗</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="chapter active open" data-chap="2">
+              <div class="chap-header" onclick="toggleChap(this)">
+                <span class="chap-num">02</span>
+                <div style="flex:1">
+                  <div class="chap-title">Préparer des données pour l'analyse Power BI</div>
+                </div>
+                <span class="chap-meta">3 modules</span><span class="chap-status s-active">En cours</span>
+              </div>
+              <div class="chap-body">
+                <div class="module-list">
+                  <div class="mod-item active-mod">
+                    <div class="mod-check">▶</div><span>Obtenir des données dans Power BI</span>
+                  </div>
+                  <div class="mod-item">
+                    <div class="mod-check"></div><span>Nettoyer, transformer et charger des données</span>
+                  </div>
+                  <div class="mod-item">
+                    <div class="mod-check"></div><span>Profiler les données</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="chapter locked" data-chap="3">
+              <div class="chap-header" onclick="toggleChap(this)">
+                <span class="chap-num">03</span>
+                <div style="flex:1">
+                  <div class="chap-title">Modéliser des données avec Power BI</div>
+                </div>
+                <span class="chap-meta">7 modules</span><span class="chap-status s-lock">À venir</span>
+              </div>
+              <div class="chap-body">
+                <div class="module-list">
+                  <div class="mod-item">
+                    <div class="mod-check"></div><span>Concevoir un modèle de données</span>
+                  </div>
+                  <div class="mod-item">
+                    <div class="mod-check"></div><span>Travailler avec des tables de dates</span>
+                  </div>
+                  <div class="mod-item">
+                    <div class="mod-check"></div><span>Créer des mesures DAX</span>
+                  </div>
+                  <div class="mod-item">
+                    <div class="mod-check"></div><span>Optimiser un modèle</span>
+                  </div>
+                  <div class="mod-item">
+                    <div class="mod-check"></div><span>Relations et cardinalité</span>
+                  </div>
+                  <div class="mod-item">
+                    <div class="mod-check"></div><span>Contexte de filtre</span>
+                  </div>
+                  <div class="mod-item">
+                    <div class="mod-check"></div><span>Time intelligence en DAX</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="chapter locked" data-chap="4">
+              <div class="chap-header" onclick="toggleChap(this)">
+                <span class="chap-num">04</span>
+                <div style="flex:1">
+                  <div class="chap-title">Concevoir des états efficaces dans Power BI</div>
+                </div>
+                <span class="chap-meta">4 modules</span><span class="chap-status s-lock">À venir</span>
+              </div>
+              <div class="chap-body">
+                <div class="module-list">
+                  <div class="mod-item">
+                    <div class="mod-check"></div><span>Concevoir des rapports Power BI</span>
+                  </div>
+                  <div class="mod-item">
+                    <div class="mod-check"></div><span>Améliorer les rapports avec interactions</span>
+                  </div>
+                  <div class="mod-item">
+                    <div class="mod-check"></div><span>Identifier les outliers et les tendances</span>
+                  </div>
+                  <div class="mod-item">
+                    <div class="mod-check"></div><span>Améliorer les performances des rapports</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="chapter locked" data-chap="5">
+              <div class="chap-header" onclick="toggleChap(this)">
+                <span class="chap-num">05</span>
+                <div style="flex:1">
+                  <div class="chap-title">Gérer et sécuriser Power BI</div>
+                </div>
+                <span class="chap-meta">5 modules</span><span class="chap-status s-lock">À venir</span>
+              </div>
+              <div class="chap-body">
+                <div class="module-list">
+                  <div class="mod-item">
+                    <div class="mod-check"></div><span>Créer et gérer des workspaces</span>
+                  </div>
+                  <div class="mod-item">
+                    <div class="mod-check"></div><span>Gérer les datasets</span>
+                  </div>
+                  <div class="mod-item">
+                    <div class="mod-check"></div><span>Implémentation de la sécurité</span>
+                  </div>
+                  <div class="mod-item">
+                    <div class="mod-check"></div><span>Déploiement de pipelines</span>
+                  </div>
+                  <div class="mod-item">
+                    <div class="mod-check"></div><span>Collaboration et partage</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="git-box" style="margin-top:1.5rem">
+            <span class="git-icon">⎇</span>
+            <div class="git-txt"><strong>Sync GitHub automatique</strong> — dossiers détectés → marcheur avance
+              automatiquement.<br>
+              <a href="https://github.com/nihel-sliti/PowerBiCertificationSupport" target="_blank">→ nihel-sliti /
+                PowerBiCertificationSupport ↗</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /wrap -->
+    <footer class="wrap"><span>// pl-300 · power bi data analyst <span class="ft-acc">en cours</span></span>
+  </div><!-- /page-pl300 -->
+
+
+  <!-- ══════════════════════════════════════════
+     PAGE PCAP
+══════════════════════════════════════════ -->
+  <div class="page" id="page-pcap">
+    <div class="wrap" style="padding-top:2rem">
+
+
+      <div class="cert-page-hero">
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:1.5rem;flex-wrap:wrap">
+          <div>
+            <div class="cert-page-stamp">✓ Certifié</div>
+            <div class="cert-page-code">PCAP-31-03 · PYTHON INSTITUTE</div>
+            <div class="cert-page-name">Python Certified<br>Associate Programmer</div>
+            <div class="cert-page-issuer">Python Institute · Fondations de la programmation Python</div>
+          </div>
+          <a href="https://www.credly.com/badges/754fc925-d3ff-460c-82ab-cbd9ecd06b20/public_url" target="_blank"
+            title="Voir le badge Credly"
+            style="display:flex;flex-direction:column;align-items:center;gap:.5rem;text-decoration:none;flex-shrink:0">
+            <img src="pcap-badge.png" alt="Badge PCAP"
+              style="width:90px;height:90px;border-radius:50%;border:2px solid rgba(16,185,129,.4);box-shadow:0 0 16px rgba(16,185,129,.2);transition:transform .2s,box-shadow .2s"
+              onmouseover="this.style.transform='scale(1.06)';this.style.boxShadow='0 0 24px rgba(16,185,129,.4)'"
+              onmouseout="this.style.transform='scale(1)';this.style.boxShadow='0 0 16px rgba(16,185,129,.2)'">
+            <span
+              style="font-family:var(--mono);font-size:.65rem;color:var(--c-done);letter-spacing:1px;text-transform:uppercase">Voir
+              le badge ↗</span>
+          </a>
+        </div>
+
+      </div>
+
+      <div class="info-grid">
+        <div class="info-card">
+          <div class="info-card-lbl">Organisme</div>
+          <div class="info-card-val">Python Institute</div>
+        </div>
+        <div class="info-card">
+          <div class="info-card-lbl">Niveau</div>
+          <div class="info-card-val">Associate</div>
+        </div>
+        <div class="info-card">
+          <div class="info-card-lbl">Durée examen</div>
+          <div class="info-card-val">65 min</div>
+        </div>
+        <div class="info-card">
+          <div class="info-card-lbl">Score minimum</div>
+          <div class="info-card-val">70 %</div>
+        </div>
+      </div>
+
+      <div class="sec-lbl">Syllabus — Domaines couverts</div>
+      <div class="syllabus-block open">
+        <div class="syl-header" onclick="toggleSyl(this)"><span class="syl-num">01</span><span class="syl-title">Les
+            bases du langage Python</span><span class="syl-tag">✓ Maîtrisé</span><span class="syl-chevron">▶</span>
+        </div>
+        <div class="syl-body">
+          <div class="syl-item">
+            <div class="syl-dot"></div><span>Syntaxe de base, types de données, variables</span>
+          </div>
+          <div class="syl-item">
+            <div class="syl-dot"></div><span>Opérateurs arithmétiques, logiques et de comparaison</span>
+          </div>
+          <div class="syl-item">
+            <div class="syl-dot"></div><span>Entrées / sorties, formatage de chaînes</span>
+          </div>
+          <div class="syl-item">
+            <div class="syl-dot"></div><span>Structures de contrôle : if, elif, else</span>
+          </div>
+        </div>
+      </div>
+      <div class="syllabus-block">
+        <div class="syl-header" onclick="toggleSyl(this)"><span class="syl-num">02</span><span
+            class="syl-title">Structures de données</span><span class="syl-tag">✓ Maîtrisé</span><span
+            class="syl-chevron">▶</span></div>
+        <div class="syl-body">
+          <div class="syl-item">
+            <div class="syl-dot"></div><span>Listes, tuples, sets et opérations associées</span>
+          </div>
+          <div class="syl-item">
+            <div class="syl-dot"></div><span>Dictionnaires : création, accès, méthodes</span>
+          </div>
+          <div class="syl-item">
+            <div class="syl-dot"></div><span>Compréhensions de listes et d'expressions</span>
+          </div>
+        </div>
+      </div>
+      <div class="syllabus-block">
+        <div class="syl-header" onclick="toggleSyl(this)"><span class="syl-num">03</span><span
+            class="syl-title">Fonctions et modules</span><span class="syl-tag">✓ Maîtrisé</span><span
+            class="syl-chevron">▶</span></div>
+        <div class="syl-body">
+          <div class="syl-item">
+            <div class="syl-dot"></div><span>Définition, paramètres, valeurs de retour</span>
+          </div>
+          <div class="syl-item">
+            <div class="syl-dot"></div><span>Portée des variables (scope), closures</span>
+          </div>
+          <div class="syl-item">
+            <div class="syl-dot"></div><span>Modules standard : math, random, os, datetime</span>
+          </div>
+          <div class="syl-item">
+            <div class="syl-dot"></div><span>Import, packages, namespaces</span>
+          </div>
+        </div>
+      </div>
+      <div class="syllabus-block">
+        <div class="syl-header" onclick="toggleSyl(this)"><span class="syl-num">04</span><span
+            class="syl-title">Programmation orientée objet</span><span class="syl-tag">✓ Maîtrisé</span><span
+            class="syl-chevron">▶</span></div>
+        <div class="syl-body">
+          <div class="syl-item">
+            <div class="syl-dot"></div><span>Classes, instances, attributs et méthodes</span>
+          </div>
+          <div class="syl-item">
+            <div class="syl-dot"></div><span>Héritage, polymorphisme, encapsulation</span>
+          </div>
+          <div class="syl-item">
+            <div class="syl-dot"></div><span>Méthodes spéciales (__init__, __str__, etc.)</span>
+          </div>
+        </div>
+      </div>
+      <div class="syllabus-block">
+        <div class="syl-header" onclick="toggleSyl(this)"><span class="syl-num">05</span><span class="syl-title">Gestion
+            des exceptions et fichiers</span><span class="syl-tag">✓ Maîtrisé</span><span class="syl-chevron">▶</span>
+        </div>
+        <div class="syl-body">
+          <div class="syl-item">
+            <div class="syl-dot"></div><span>Try, except, finally, raise</span>
+          </div>
+          <div class="syl-item">
+            <div class="syl-dot"></div><span>Lecture et écriture de fichiers texte</span>
+          </div>
+          <div class="syl-item">
+            <div class="syl-dot"></div><span>Gestionnaires de contexte (with)</span>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /wrap -->
+    <footer class="wrap"><span>// pcap · python institute <span class="ft-acc">✓ certifié</span></span>
+  </div><!-- /page-pcap -->
+
+
+  <!-- ══════════════════════════════════════════
+     PAGE AI-900
+══════════════════════════════════════════ -->
+  <div class="page" id="page-ai900">
+    <div class="wrap" style="padding-top:2rem">
+
+      <div class="cert-page-hero" style="border-color:rgba(0,168,232,0.25)">
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:1.5rem;flex-wrap:wrap">
+          <div>
+            <div class="cert-page-stamp">✓ Certifié</div>
+            <div class="cert-page-code">AI-900 · MICROSOFT AZURE</div>
+            <div class="cert-page-name">Azure AI<br>Fundamentals</div>
+            <div class="cert-page-issuer">Microsoft · Fondamentaux de l'intelligence artificielle sur Azure</div>
+          </div>
+          <a href="https://learn.microsoft.com/api/credentials/share/fr-fr/NihelSliti-7728/443E1E34686289A8?sharingId=65DBE0EEBE00B4B0"
+            target="_blank" title="Voir le badge Microsoft Learn"
+            style="display:flex;flex-direction:column;align-items:center;gap:.5rem;text-decoration:none;flex-shrink:0">
+            <img src="Azure-badge.png"
+              onerror="this.src='https://img.shields.io/badge/Microsoft-AI--900-0078d4?style=for-the-badge&logo=microsoft'"
+              alt="Badge AI-900 Microsoft Learn"
+              style="width:90px;height:90px;border-radius:50%;border:2px solid rgba(0,168,232,.4);box-shadow:0 0 16px rgba(0,168,232,.2);background:#fff;padding:6px;transition:transform .2s,box-shadow .2s"
+              onmouseover="this.style.transform='scale(1.06)';this.style.boxShadow='0 0 24px rgba(0,168,232,.45)'"
+              onmouseout="this.style.transform='scale(1)';this.style.boxShadow='0 0 16px rgba(0,168,232,.2)'">
+            <span
+              style="font-family:var(--mono);font-size:.65rem;color:#00a8e8;letter-spacing:1px;text-transform:uppercase">Voir
+              le badge ↗</span>
+          </a>
+        </div>
+        <div class="cert-walker-lg">
+          <svg viewBox="0 0 16 20" width="28" height="28">
+            <g class="fig-body">
+              <rect x="5" y="0" width="6" height="5" rx="2" fill="#10b981" />
+              <rect x="5" y="6" width="6" height="6" fill="#10b981" opacity=".9" />
+              <g class="fig-arm-l">
+                <rect x="2" y="7" width="2" height="4" rx="1" fill="#10b981" opacity=".8" />
+              </g>
+              <g class="fig-arm-r">
+                <rect x="12" y="7" width="2" height="4" rx="1" fill="#10b981" opacity=".8" />
+              </g>
+              <g class="fig-leg-l">
+                <rect x="5" y="13" width="2" height="5" rx="1" fill="#10b981" opacity=".7" />
+              </g>
+              <g class="fig-leg-r">
+                <rect x="9" y="13" width="2" height="5" rx="1" fill="#10b981" opacity=".7" />
+              </g>
+            </g>
+          </svg>
+        </div>
+      </div>
+
+      <div class="info-grid">
+        <div class="info-card">
+          <div class="info-card-lbl">Organisme</div>
+          <div class="info-card-val">Microsoft</div>
+        </div>
+        <div class="info-card">
+          <div class="info-card-lbl">Niveau</div>
+          <div class="info-card-val">Fundamentals</div>
+        </div>
+        <div class="info-card">
+          <div class="info-card-lbl">Durée examen</div>
+          <div class="info-card-val">60 min</div>
+        </div>
+        <div class="info-card">
+          <div class="info-card-lbl">Score minimum</div>
+          <div class="info-card-val">700 / 1000</div>
+        </div>
+      </div>
+
+      <div class="sec-lbl">Syllabus — Domaines couverts</div>
+      <div class="syllabus-block open">
+        <div class="syl-header" onclick="toggleSyl(this)"><span class="syl-num">01</span><span
+            class="syl-title">Concepts de l'IA</span><span class="syl-tag">✓ Maîtrisé</span><span
+            class="syl-chevron">▶</span></div>
+        <div class="syl-body">
+          <div class="syl-item">
+            <div class="syl-dot"></div><span>Machine learning, deep learning, principes fondamentaux</span>
+          </div>
+          <div class="syl-item">
+            <div class="syl-dot"></div><span>IA responsable : équité, fiabilité, transparence</span>
+          </div>
+          <div class="syl-item">
+            <div class="syl-dot"></div><span>Types de charges de travail IA courantes</span>
+          </div>
+        </div>
+      </div>
+      <div class="syllabus-block">
+        <div class="syl-header" onclick="toggleSyl(this)"><span class="syl-num">02</span><span class="syl-title">Machine
+            Learning sur Azure</span><span class="syl-tag">✓ Maîtrisé</span><span class="syl-chevron">▶</span></div>
+        <div class="syl-body">
+          <div class="syl-item">
+            <div class="syl-dot"></div><span>Azure Machine Learning Studio, AutoML</span>
+          </div>
+          <div class="syl-item">
+            <div class="syl-dot"></div><span>Régression, classification, évaluation de modèles</span>
+          </div>
+          <div class="syl-item">
+            <div class="syl-dot"></div><span>Déploiement et monitoring de modèles</span>
+          </div>
+        </div>
+      </div>
+      <div class="syllabus-block">
+        <div class="syl-header" onclick="toggleSyl(this)"><span class="syl-num">03</span><span class="syl-title">Vision
+            par ordinateur</span><span class="syl-tag">✓ Maîtrisé</span><span class="syl-chevron">▶</span></div>
+        <div class="syl-body">
+          <div class="syl-item">
+            <div class="syl-dot"></div><span>Azure Computer Vision : classification d'images</span>
+          </div>
+          <div class="syl-item">
+            <div class="syl-dot"></div><span>Détection d'objets et d'anomalies visuelles</span>
+          </div>
+          <div class="syl-item">
+            <div class="syl-dot"></div><span>Azure Face API, analyse spatiale</span>
+          </div>
+        </div>
+      </div>
+      <div class="syllabus-block">
+        <div class="syl-header" onclick="toggleSyl(this)"><span class="syl-num">04</span><span
+            class="syl-title">Traitement du langage naturel (NLP)</span><span class="syl-tag">✓ Maîtrisé</span><span
+            class="syl-chevron">▶</span></div>
+        <div class="syl-body">
+          <div class="syl-item">
+            <div class="syl-dot"></div><span>Azure Language Service : analyse de sentiment</span>
+          </div>
+          <div class="syl-item">
+            <div class="syl-dot"></div><span>Reconnaissance d'entités, traduction automatique</span>
+          </div>
+          <div class="syl-item">
+            <div class="syl-dot"></div><span>Azure Speech Service : synthèse et transcription</span>
+          </div>
+        </div>
+      </div>
+      <div class="syllabus-block">
+        <div class="syl-header" onclick="toggleSyl(this)"><span class="syl-num">05</span><span class="syl-title">IA
+            générative & Azure OpenAI</span><span class="syl-tag">✓ Maîtrisé</span><span class="syl-chevron">▶</span>
+        </div>
+        <div class="syl-body">
+          <div class="syl-item">
+            <div class="syl-dot"></div><span>LLM, ingénierie des prompts</span>
+          </div>
+          <div class="syl-item">
+            <div class="syl-dot"></div><span>Azure OpenAI Service : GPT, DALL-E, Codex</span>
+          </div>
+          <div class="syl-item">
+            <div class="syl-dot"></div><span>Génération augmentée par récupération (RAG)</span>
+          </div>
+          <div class="syl-item">
+            <div class="syl-dot"></div><span>Copilots Microsoft et utilisation responsable</span>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /wrap -->
+    <footer class="wrap"><span>// ai-900 · microsoft azure <span class="ft-acc">✓ certifié</span></span>
+  </div><!-- /page-ai900 -->
+
+
+  <script>
+    // ── GITHUB CONFIG ──
+    const GITHUB_USER = 'nihel-sliti';
+    const GITHUB_REPO = 'PowerBiCertificationSupport';
+    const GITHUB_TOKEN = '';
+    const GITHUB_PATH = '';
+    const GITHUB_ENABLED = true;
+
+    const CHAP_PROG = {
+      'chap01': 25, 'chapter01': 25, 'chapter-01': 25,
+      'chap02': 45, 'chapter02': 45, 'chapter-02': 45,
+      'chap03': 65, 'chapter03': 65, 'chapter-03': 65,
+      'chap04': 80, 'chapter04': 80, 'chapter-04': 80,
+      'chap05': 95, 'chapter05': 95, 'chapter-05': 95,
+    };
+    const CHAP_BY_PROG = [
+      { min: 0, max: 24, chap: 1 }, { min: 25, max: 44, chap: 2 },
+      { min: 45, max: 64, chap: 3 }, { min: 65, max: 79, chap: 4 }, { min: 80, max: 100, chap: 5 }
+    ];
+
+    function getActiveChap(p) { return (CHAP_BY_PROG.find(x => p >= x.min && p <= x.max) || { chap: 2 }).chap }
+
+    function applyProgress(prog) {
+      const pct = Math.min(100, Math.max(0, prog));
+      const ac = getActiveChap(pct);
+      ['pctLabel', 'pctLabel2'].forEach(id => { const el = document.getElementById(id); if (el) el.textContent = pct + '%' });
+      const inner = document.getElementById('progInner');
+      const walker = document.getElementById('walkerBar');
+      const badge = document.getElementById('chapBadge');
+      if (inner) inner.style.width = pct + '%';
+      if (walker) walker.style.left = Math.min(pct, 97) + '%';
+      if (badge) badge.textContent = 'En cours — Chapitre ' + ac + ' actif';
+      document.querySelectorAll('#page-pl300 .chapter').forEach((ch, i) => {
+        const n = i + 1;
+        ch.classList.remove('active', 'completed', 'locked');
+        if (n < ac) {
+          ch.classList.add('completed');
+          ch.querySelector('.chap-status').className = 'chap-status s-done';
+          ch.querySelector('.chap-status').textContent = 'Terminé';
+          ch.querySelectorAll('.mod-item').forEach(m => { m.classList.add('done-mod'); m.classList.remove('active-mod'); m.querySelector('.mod-check').textContent = '✓' });
+        } else if (n === ac) {
+          ch.classList.add('active');
+          if (!ch.classList.contains('open')) ch.classList.add('open');
+          ch.querySelector('.chap-status').className = 'chap-status s-active';
+          ch.querySelector('.chap-status').textContent = 'En cours';
+        } else {
+          ch.classList.add('locked');
+          ch.querySelector('.chap-status').className = 'chap-status s-lock';
+          ch.querySelector('.chap-status').textContent = 'À venir';
+        }
+      });
+    }
+
+    async function fetchGitHub() {
+      if (!GITHUB_ENABLED) return;
+      try {
+        const h = { 'Accept': 'application/vnd.github.v3+json' };
+        if (GITHUB_TOKEN) h['Authorization'] = 'token ' + GITHUB_TOKEN;
+        const url = GITHUB_PATH
+          ? `https://api.github.com/repos/${GITHUB_USER}/${GITHUB_REPO}/contents/${GITHUB_PATH}`
+          : `https://api.github.com/repos/${GITHUB_USER}/${GITHUB_REPO}/contents`;
+        const r = await fetch(url, { headers: h });
+        if (!r.ok) return;
+        const items = await r.json();
+        let max = 0;
+        items.filter(i => i.type === 'dir').forEach(f => {
+          const name = f.name.toLowerCase().replace(/[^a-z0-9]/g, '');
+          Object.keys(CHAP_PROG).forEach(k => {
+            const kn = k.replace(/[^a-z0-9]/g, '');
+            if (name === kn || name.includes(kn)) { if (CHAP_PROG[k] > max) max = CHAP_PROG[k] }
+          });
+        });
+        if (max > 0) applyProgress(max);
+        document.getElementById('lastUpdate').textContent = '// GitHub sync · ' + new Date().toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
+      } catch (e) { console.log('GitHub:', e) }
+    }
+
+    function toggleChap(h) { h.closest('.chapter').classList.toggle('open') }
+    function toggleSyl(h) { h.closest('.syllabus-block').classList.toggle('open') }
+
+    function goPage(name) {
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      document.getElementById('page-' + name).classList.add('active');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      document.querySelectorAll('.navlink').forEach(n => n.classList.remove('active'));
+      const nb = document.getElementById('nav-' + name);
+      if (nb) nb.classList.add('active');
+    }
+
+    function toggleTheme() {
+      const l = document.documentElement.classList.toggle('light');
+      document.getElementById('themeIcon').textContent = l ? '🌙' : '☀️';
+      document.getElementById('themeLbl').textContent = l ? 'Sombre' : 'Clair';
+      localStorage.setItem('theme', l ? 'light' : 'dark');
+    }
+
+    // Init
+    const sv = localStorage.getItem('theme');
+    if (sv === 'light') { document.documentElement.classList.add('light'); document.getElementById('themeIcon').textContent = '🌙'; document.getElementById('themeLbl').textContent = 'Sombre' }
+    document.getElementById('lastUpdate').textContent = '// nihel-sliti · ' + new Date().toLocaleDateString('fr-FR', { day: '2-digit', month: 'short', year: 'numeric' });
+    setTimeout(() => applyProgress(25), 400);
+    if (GITHUB_ENABLED) { fetchGitHub(); setInterval(fetchGitHub, 5 * 60 * 1000) }
+    // Set home nav active on load
+    document.getElementById('nav-home').classList.add('active');
+  </script>
+</body>
+
+</html>
