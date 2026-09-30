@@ -3,6 +3,13 @@
 
 <head>
   <meta charset="UTF-8">
+  <script>
+    // Langue et thème appliqués avant l'affichage (partagés avec les pages de révision)
+    try {
+      if (localStorage.getItem('site-lang') === 'en') document.documentElement.lang = 'en';
+      if (localStorage.getItem('theme') === 'light') document.documentElement.classList.add('light');
+    } catch (e) { }
+  </script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Nihel Sliti — Data Engineer</title>
   <link
@@ -180,6 +187,50 @@
       text-transform: uppercase;
       transition: all .2s;
       white-space: nowrap
+    }
+
+    /* ── LANGUE ── */
+    html[lang="en"] .fr {
+      display: none !important
+    }
+
+    html:not([lang="en"]) .en {
+      display: none !important
+    }
+
+    .nav-tools {
+      display: flex;
+      align-items: center;
+      gap: .45rem
+    }
+
+    .lang-sw {
+      display: inline-flex;
+      border: 1px solid var(--c-border);
+      border-radius: 20px;
+      overflow: hidden;
+      background: var(--bg1)
+    }
+
+    .lang-sw button {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 1px;
+      padding: 4px 9px;
+      border: none;
+      background: transparent;
+      color: var(--c-txt2);
+      cursor: pointer;
+      transition: all .2s
+    }
+
+    .lang-sw button:hover {
+      color: var(--c-pl)
+    }
+
+    .lang-sw button[aria-pressed="true"] {
+      background: var(--c-pl);
+      color: #06090f
     }
 
     .theme-btn:hover {
@@ -552,6 +603,43 @@
       margin: .2rem 0 .1rem
     }
 
+    .edu-list {
+      list-style: none;
+      margin-top: .6rem;
+      display: flex;
+      flex-direction: column;
+      gap: .3rem
+    }
+
+    .edu-list li {
+      position: relative;
+      padding-left: 1rem;
+      font-size: .82rem;
+      color: var(--c-txt2);
+      line-height: 1.6
+    }
+
+    .edu-list li::before {
+      content: '▹';
+      position: absolute;
+      left: 0;
+      color: var(--c-pl);
+      font-size: .75rem
+    }
+
+    .cv-dl {
+      color: #06090f;
+      background: var(--c-pl);
+      border-color: var(--c-pl);
+      font-weight: 400;
+      transition: filter .2s, transform .2s
+    }
+
+    .cv-dl:hover {
+      filter: brightness(1.12);
+      transform: translateY(-1px)
+    }
+
     .edu-dates {
       font-family: var(--mono);
       font-size: .65rem;
@@ -595,7 +683,7 @@
       line-height: 1.5
     }
 
-    /* ── PL-300 HERO ── */
+    /* ── HERO CERTIFICATION (page DP-600) ── */
     .pl-hero {
       background: var(--bg1);
       border: 1px solid var(--c-border);
@@ -1375,6 +1463,56 @@
       font-family: var(--mono)
     }
 
+    /* ── STUDY WITH ME ── */
+    a.study-row {
+      text-decoration: none;
+      color: inherit;
+      flex-wrap: nowrap
+    }
+
+    .study-num {
+      font-family: var(--mono);
+      font-size: .75rem;
+      color: var(--c-pl);
+      min-width: 22px;
+      text-align: center
+    }
+
+    .study-steps {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+      gap: .6rem;
+      margin-top: .8rem
+    }
+
+    .study-step {
+      background: var(--bg2);
+      border-radius: 6px;
+      padding: .75rem .9rem;
+      font-size: .78rem;
+      color: var(--c-txt2);
+      line-height: 1.5
+    }
+
+    .study-step span {
+      font-family: var(--mono);
+      font-size: .65rem;
+      color: var(--c-pl);
+      border: 1px solid rgba(245, 158, 11, .3);
+      border-radius: 2px;
+      padding: 0 5px;
+      margin-right: 6px
+    }
+
+    .study-step b {
+      display: block;
+      font-family: var(--head);
+      font-size: .95rem;
+      font-weight: 600;
+      color: var(--c-txt);
+      margin: .35rem 0 .15rem
+    }
+
     /* ── FOOTER ── */
     footer {
       margin-top: 3.5rem;
@@ -1408,6 +1546,31 @@
         margin-right: 0;
         padding-right: .8rem
       }
+
+      .chap-header {
+        gap: 8px
+      }
+
+      .chap-header>div {
+        min-width: 0
+      }
+
+      .chap-meta {
+        display: none
+      }
+
+      a.study-row {
+        gap: .7rem;
+        padding: .8rem .85rem
+      }
+
+      a.study-row .cv-arrow {
+        display: none
+      }
+
+      .study-steps {
+        grid-template-columns: 1fr 1fr
+      }
     }
   </style>
 </head>
@@ -1420,14 +1583,20 @@
       <span class="nav-brand" onclick="goPage('home')">// nihel.sliti</span>
       <div class="nav-links">
         <button class="navlink" id="nav-home" onclick="goPage('home')">CV</button>
-        <button class="navlink" id="nav-pl300" onclick="goPage('pl300')">PL-300</button>
+        <button class="navlink" id="nav-dp600" onclick="goPage('dp600')">DP-600</button>
         <button class="navlink nl-done" id="nav-pcap" onclick="goPage('pcap')">PCAP</button>
         <button class="navlink nl-done" id="nav-ai900" onclick="goPage('ai900')">AI-900</button>
-        <button class="navlink" id="nav-interests" onclick="goPage('interests')">Projets</button>
+        <button class="navlink" id="nav-interests" onclick="goPage('interests')"><span class="fr">Projets</span><span class="en">Projects</span></button>
+      </div>
+      <div class="nav-tools">
+      <div class="lang-sw" role="group" aria-label="Langue / Language">
+        <button type="button" data-lang="fr" aria-pressed="true">FR</button>
+        <button type="button" data-lang="en" aria-pressed="false">EN</button>
       </div>
       <button class="theme-btn" onclick="toggleTheme()">
         <span id="themeIcon">☀️</span><span id="themeLbl">Clair</span>
       </button>
+      </div>
     </div>
   </nav>
 
@@ -1440,16 +1609,16 @@
       <header style="padding:2.5rem 0 1.8rem;border-bottom:1px solid var(--c-border)">
         <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:2rem;flex-wrap:wrap">
           <div style="flex:1;min-width:260px">
-            <div class="eyebrow">// data engineer · alternante orange · nantes</div>
+            <div class="eyebrow"><span class="fr">// data engineer · alternante orange · nantes</span><span class="en">// data engineer · work-study at orange · nantes</span></div>
             <h1>Nihel <span class="accent">Sliti</span></h1>
             <div
               style="font-family:var(--head);font-size:1.25rem;font-weight:600;color:var(--c-txt2);letter-spacing:1px;margin-bottom:.7rem">
               Data Engineer · Master 2 DSP Paris</div>
-            <p class="subtitle" style="max-width:560px;line-height:1.75">Ingénieure en développement logiciel chez
-              Orange, je construis des pipelines CI/CD, des use cases IA/ML et des fonctions Python pour optimiser le
-              réseau mobile. Actuellement en Master 2 Data Engineering à la DSP Digital School of Paris, je certifie
-              activement mon expertise cloud et data avec Microsoft.</p>
+            <p class="subtitle" style="max-width:560px;line-height:1.75"><span class="fr">Ingénieure en développement logiciel chez Orange, je construis des pipelines CI/CD, des use cases IA/ML et des fonctions Python pour optimiser le réseau mobile. Actuellement en Master 2 Data Engineering à la DSP Digital School of Paris, je certifie activement mon expertise cloud et data avec Microsoft.</span><span class="en">Software development engineer at Orange, I build CI/CD pipelines, AI/ML use cases and Python functions to optimise the mobile network. Currently in the second year of a Master's in Data Engineering at DSP Digital School of Paris, I am actively certifying my cloud and data expertise with Microsoft.</span></p>
             <div style="display:flex;gap:.5rem;flex-wrap:wrap;margin-top:1.1rem">
+              <!-- CV PDF : dépose ton fichier à la racine du site sous ce nom exact -->
+              <a href="CV-Nihel-Sliti.pdf" download class="skill-tag cv-dl" style="text-decoration:none">⬇ <span
+                  class="fr">Télécharger mon CV</span><span class="en">Download my CV</span> · PDF</a>
               <a href="https://github.com/nihel-sliti" target="_blank" class="skill-tag sk-dev"
                 style="text-decoration:none">⎇ GitHub</a>
               <a href="https://www.linkedin.com/in/nihel-sliti" target="_blank" class="skill-tag sk-cloud"
@@ -1474,7 +1643,7 @@
 
       <!-- COMPÉTENCES -->
       <div class="sec">
-        <div class="sec-lbl">Compétences techniques</div>
+        <div class="sec-lbl"><span class="fr">Compétences techniques</span><span class="en">Technical skills</span></div>
         <div style="display:flex;flex-wrap:wrap;gap:.45rem">
           <span class="skill-tag sk-lang">Python</span>
           <span class="skill-tag sk-lang">SQL</span>
@@ -1496,7 +1665,7 @@
 
       <!-- EXPÉRIENCES -->
       <div class="sec">
-        <div class="sec-lbl">Expériences professionnelles</div>
+        <div class="sec-lbl"><span class="fr">Expériences professionnelles</span><span class="en">Professional experience</span></div>
 
         <div class="xp-item">
           <div class="xp-left">
@@ -1504,15 +1673,12 @@
             <div class="xp-line"></div>
           </div>
           <div>
-            <div class="xp-date">Sept 2025 – Présent · 10 mois</div>
-            <div class="xp-title">Ingénieure Développement & Automatisation Logiciel</div>
+            <div class="xp-date"><span class="fr">Sept 2025 – Présent</span><span class="en">Sept 2025 – Present</span></div>
+            <div class="xp-title"><span class="fr">Ingénieure Développement &amp; Automatisation Logiciel</span><span class="en">Software Development &amp; Automation Engineer</span></div>
             <div class="xp-company">Orange · Nantes, France</div>
-            <div class="xp-desc">Développement de la chaîne CI/CD d'un projet d'automatisation réseau. Conception et
-              mise en œuvre de use cases IA/ML innovants. Développement de fonctions d'orchestration et Python pour
-              optimiser le réseau mobile.</div>
+            <div class="xp-desc"><span class="fr">Développement de la chaîne CI/CD d'un projet d'automatisation réseau. Conception et mise en œuvre de use cases IA/ML innovants. Développement de fonctions d'orchestration et Python pour optimiser le réseau mobile.</span><span class="en">Building the CI/CD chain of a network automation project. Designing and delivering innovative AI/ML use cases. Developing orchestration and Python functions to optimise the mobile network.</span></div>
             <div class="xp-tags"><span class="xp-tag">Python</span><span class="xp-tag">CI/CD</span><span
-                class="xp-tag">ML</span><span class="xp-tag">Orchestration</span><span class="xp-tag">Réseau
-                mobile</span></div>
+                class="xp-tag">ML</span><span class="xp-tag">Orchestration</span><span class="xp-tag"><span class="fr">Réseau mobile</span><span class="en">Mobile network</span></span></div>
           </div>
         </div>
 
@@ -1522,12 +1688,10 @@
             <div class="xp-line"></div>
           </div>
           <div>
-            <div class="xp-date">Mars – Sept 2025 · 7 mois</div>
-            <div class="xp-title">Stagiaire — Développeur Mobile & Machine Learning</div>
+            <div class="xp-date"><span class="fr">Mars – Sept 2025 · 7 mois</span><span class="en">Mar – Sept 2025 · 7 months</span></div>
+            <div class="xp-title"><span class="fr">Stagiaire — Développeur Mobile &amp; Machine Learning</span><span class="en">Intern — Mobile &amp; Machine Learning Developer</span></div>
             <div class="xp-company">Orange Innovation · Nice, France</div>
-            <div class="xp-desc">Développement d'une application Flutter intégrant WhatsApp avec ML et NLP via les
-              services Azure, testée au Sénégal. Participation au CI/CD dans une équipe multiculturelle R&D. Avancement
-              projet à 75%.</div>
+            <div class="xp-desc"><span class="fr">Développement d'une application Flutter intégrant WhatsApp avec ML et NLP via les services Azure, testée au Sénégal. Participation au CI/CD dans une équipe multiculturelle R&amp;D. Avancement projet à 75%.</span><span class="en">Built a Flutter app integrating WhatsApp with ML and NLP through Azure services, field-tested in Senegal. Contributed to CI/CD in a multicultural R&amp;D team. Project 75% complete.</span></div>
             <div class="xp-tags"><span class="xp-tag">Flutter</span><span class="xp-tag">Azure</span><span
                 class="xp-tag">NLP</span><span class="xp-tag">Machine Learning</span><span class="xp-tag">CI/CD</span>
             </div>
@@ -1540,13 +1704,12 @@
             <div class="xp-line"></div>
           </div>
           <div>
-            <div class="xp-date">Déc 2024 – Mars 2025 · 4 mois</div>
-            <div class="xp-title">Instructrice Python</div>
-            <div class="xp-company g">TEK-UP University · Tunis, Tunisie</div>
-            <div class="xp-desc">Formation Python avec préparation à la certification PCAP. Animation de sessions
-              présentiel et en ligne, élaboration du contenu pédagogique, évaluation et mentorat d'apprenants.</div>
+            <div class="xp-date"><span class="fr">Déc 2024 – Mars 2025 · 4 mois</span><span class="en">Dec 2024 – Mar 2025 · 4 months</span></div>
+            <div class="xp-title"><span class="fr">Instructrice Python</span><span class="en">Python Instructor</span></div>
+            <div class="xp-company g"><span class="fr">TEK-UP University · Tunis, Tunisie</span><span class="en">TEK-UP University · Tunis, Tunisia</span></div>
+            <div class="xp-desc"><span class="fr">Formation Python avec préparation à la certification PCAP. Animation de sessions présentiel et en ligne, élaboration du contenu pédagogique, évaluation et mentorat d'apprenants.</span><span class="en">Python training with PCAP certification prep. Ran in-person and online sessions, built the course material, assessed and mentored learners.</span></div>
             <div class="xp-tags"><span class="xp-tag">Python</span><span class="xp-tag">PCAP</span><span
-                class="xp-tag">Pédagogie</span><span class="xp-tag">Mentorat</span></div>
+                class="xp-tag"><span class="fr">Pédagogie</span><span class="en">Teaching</span></span><span class="xp-tag"><span class="fr">Mentorat</span><span class="en">Mentoring</span></span></div>
           </div>
         </div>
 
@@ -1556,14 +1719,13 @@
             <div class="xp-line"></div>
           </div>
           <div>
-            <div class="xp-date">Sept 2023 – Oct 2024 · 1 an 2 mois</div>
-            <div class="xp-title">Instructrice Data Science</div>
-            <div class="xp-company g">GoMyCode · Tunisie</div>
-            <div class="xp-desc">Conception et animation d'ateliers data science, Python, ML et SQL. Encadrement de 2
-              promotions (6 mois chacune), projets concrets (ChatBots). Taux de progression apprenants supérieur à 80%.
+            <div class="xp-date"><span class="fr">Sept 2023 – Oct 2024 · 1 an 2 mois</span><span class="en">Sept 2023 – Oct 2024 · 1 yr 2 mos</span></div>
+            <div class="xp-title"><span class="fr">Instructrice Data Science</span><span class="en">Data Science Instructor</span></div>
+            <div class="xp-company g"><span class="fr">GoMyCode · Tunisie</span><span class="en">GoMyCode · Tunisia</span></div>
+            <div class="xp-desc"><span class="fr">Conception et animation d'ateliers data science, Python, ML et SQL. Encadrement de 2 promotions (6 mois chacune), projets concrets (ChatBots). Taux de progression apprenants supérieur à 80%.</span><span class="en">Designed and ran data science, Python, ML and SQL workshops. Supervised 2 cohorts (6 months each) on hands-on projects (chatbots). Learner progress rate above 80%.</span>
             </div>
             <div class="xp-tags"><span class="xp-tag">Data Science</span><span class="xp-tag">Python</span><span
-                class="xp-tag">SQL</span><span class="xp-tag">ML</span><span class="xp-tag">Visualisation</span></div>
+                class="xp-tag">SQL</span><span class="xp-tag">ML</span><span class="xp-tag"><span class="fr">Visualisation</span><span class="en">Visualisation</span></span></div>
           </div>
         </div>
 
@@ -1573,11 +1735,35 @@
             <div class="xp-line"></div>
           </div>
           <div>
-            <div class="xp-date">Mars – Juin 2022 · 4 mois</div>
-            <div class="xp-title">Stagiaire — Système IoT Détection d'Incendies</div>
-            <div class="xp-company">IRESA · Tunis, Tunisie</div>
-            <div class="xp-desc">Réseau LoRa en forêt via carte LoRaESP32 et capteurs. Gateway sur Raspberry Pi 3.
-              Application mobile Flutter pour consultation des données et alertes en temps réel.</div>
+            <div class="xp-date"><span class="fr">Janv 2022 – Déc 2023</span><span class="en">Jan 2022 – Dec 2023</span></div>
+            <div class="xp-title"><span class="fr">Développeuse Backend / Data</span><span class="en">Backend / Data Developer</span></div>
+            <div class="xp-company"><span class="fr">ISS-4U · Tunis, Tunisie</span><span class="en">ISS-4U · Tunis, Tunisia</span></div>
+            <div class="xp-desc">
+              <ul class="edu-list" style="margin-top:0">
+                <li><span class="fr">Modélisation conceptuelle et relationnelle de la base de données MySQL (schéma commandes /
+                    stock, gestion des contraintes d'intégrité, indexation).</span><span class="en">Conceptual and relational
+                    modelling of the MySQL database (orders / stock schema, integrity constraints, indexing).</span></li>
+                <li><span class="fr">Optimisation de requêtes SQL complexes (jointures, agrégations) et conception d'API REST
+                    pour l'exposition performante des données métiers.</span><span class="en">Optimised complex SQL queries
+                    (joins, aggregations) and designed REST APIs to serve business data efficiently.</span></li>
+              </ul>
+            </div>
+            <div class="xp-tags"><span class="xp-tag">MySQL</span><span class="xp-tag">SQL</span><span
+                class="xp-tag"><span class="fr">Modélisation de données</span><span class="en">Data modelling</span></span><span
+                class="xp-tag">API REST</span><span class="xp-tag">Backend</span></div>
+          </div>
+        </div>
+
+        <div class="xp-item">
+          <div class="xp-left">
+            <div class="xp-dot"></div>
+            <div class="xp-line"></div>
+          </div>
+          <div>
+            <div class="xp-date"><span class="fr">Mars – Juin 2022 · 4 mois</span><span class="en">Mar – June 2022 · 4 months</span></div>
+            <div class="xp-title"><span class="fr">Stagiaire — Système IoT Détection d'Incendies</span><span class="en">Intern — IoT Wildfire Detection System</span></div>
+            <div class="xp-company"><span class="fr">IRESA · Tunis, Tunisie</span><span class="en">IRESA · Tunis, Tunisia</span></div>
+            <div class="xp-desc"><span class="fr">Réseau LoRa en forêt via carte LoRaESP32 et capteurs. Gateway sur Raspberry Pi 3. Application mobile Flutter pour consultation des données et alertes en temps réel.</span><span class="en">LoRa network in a forest using a LoRaESP32 board and sensors. Gateway on a Raspberry Pi 3. Flutter mobile app to view the data and receive real-time alerts.</span></div>
             <div class="xp-tags"><span class="xp-tag">IoT</span><span class="xp-tag">LoRa</span><span
                 class="xp-tag">Flutter</span><span class="xp-tag">Raspberry Pi</span></div>
           </div>
@@ -1586,47 +1772,57 @@
 
       <!-- FORMATION -->
       <div class="sec">
-        <div class="sec-lbl">Formation</div>
+        <div class="sec-lbl"><span class="fr">Formation</span><span class="en">Education</span></div>
         <div class="edu-item">
-          <div class="edu-degree">Master 2 — Data Engineer</div>
-          <div class="edu-school">DSP Digital School of Paris</div>
-          <div class="edu-dates">Sept 2025 – Jan 2027</div>
+          <div class="edu-degree"><span class="fr">Master Data Engineer</span><span class="en">Master's in Data Engineering</span></div>
+          <div class="edu-school">DSP Digital School of Paris · Paris</div>
+          <div class="edu-dates"><span class="fr">Sept 2025 – Présent</span><span class="en">Sept 2025 – Present</span></div>
+          <ul class="edu-list">
+            <li><span class="fr">Master en alternance orienté Data Engineering : conception et automatisation de pipelines de données, modélisation et qualité des données.</span><span class="en">Work-study Master's focused on Data Engineering: designing and automating data pipelines, data modelling and data quality.</span></li>
+            <li><span class="fr">Mise en pratique sur des environnements cloud et outils de la Modern Data Stack (GCP/Azure, SQL, Python, orchestration, BI).</span><span class="en">Hands-on work with cloud environments and Modern Data Stack tools (GCP/Azure, SQL, Python, orchestration, BI).</span></li>
+            <li><span class="fr">Projets : construction de flux data de bout en bout (ingestion, transformation, exposition pour l'analyse et la BI).</span><span class="en">Projects: building end-to-end data flows (ingestion, transformation, serving for analytics and BI).</span></li>
+            <li><span class="fr">Diplôme en cours — obtention prévue : décembre 2026.</span><span class="en">Degree in progress — expected December 2026.</span></li>
+          </ul>
         </div>
         <div class="edu-item">
-          <div class="edu-degree">Diplôme d'ingénieur — Développement Mobile, Web & Multimédia</div>
-          <div class="edu-school">TEK-UP University</div>
+          <div class="edu-degree"><span class="fr">Cycle d'ingénieur en Informatique</span><span class="en">Engineering degree in Computer Science</span></div>
+          <div class="edu-school"><span class="fr">TEK-UP University · Tunisie</span><span class="en">TEK-UP University · Tunisia</span></div>
           <div class="edu-dates">Sept 2023 – Sept 2025</div>
+          <ul class="edu-list">
+            <li><span class="fr">Parcours d'ingénieur orienté informatique et data (algorithmes, structures de données, bases de données, développement logiciel).</span><span class="en">Computer science and data-oriented engineering track (algorithms, data structures, databases, software development).</span></li>
+            <li><span class="fr">Travaux pratiques sur des projets applicatifs et data : conception, développement et mise en production d'applications.</span><span class="en">Hands-on application and data projects: designing, building and deploying applications to production.</span></li>
+          </ul>
         </div>
         <div class="edu-item">
-          <div class="edu-degree">Master — Smart Systems</div>
-          <div class="edu-school">ENSI — École Nationale des Sciences de l'Informatique</div>
-          <div class="edu-dates">Oct 2022 – Sept 2025</div>
+          <div class="edu-degree"><span class="fr">Master de Recherche en Informatique</span><span class="en">Research Master's in Computer Science</span></div>
+          <div class="edu-school"><span class="fr">ENSI — École Nationale des Sciences de l'Informatique · Tunisie</span><span class="en">ENSI — National School of Computer Science · Tunisia</span></div>
+          <div class="edu-dates"><span class="fr">Sept 2022 – Juin 2023</span><span class="en">Sept 2022 – June 2023</span></div>
+          <ul class="edu-list">
+            <li><span class="fr">Master de recherche en informatique avec focus sur data science et intelligence artificielle.</span><span class="en">Research Master's in computer science with a focus on data science and artificial intelligence.</span></li>
+            <li><span class="fr">Travaux de recherche autour de l'apprentissage automatique, traitement de données et optimisation d'algorithmes.</span><span class="en">Research work on machine learning, data processing and algorithm optimisation.</span></li>
+          </ul>
         </div>
         <div class="edu-item">
-          <div class="edu-degree">Licence — Systèmes Embarqués & Mobile</div>
-          <div class="edu-school">ISET Rades</div>
-          <div class="edu-dates">2019 – 2022</div>
+          <div class="edu-degree"><span class="fr">Licence en Informatique</span><span class="en">Bachelor's in Computer Science</span></div>
+          <div class="edu-school"><span class="fr">ISET Radès · Tunisie</span><span class="en">ISET Radès · Tunisia</span></div>
+          <div class="edu-dates"><span class="fr">2019 – Juin 2022</span><span class="en">2019 – June 2022</span></div>
+          <ul class="edu-list">
+            <li><span class="fr">Licence en informatique avec bases solides en programmation, bases de données et génie logiciel.</span><span class="en">Bachelor's in computer science with solid foundations in programming, databases and software engineering.</span></li>
+            <li><span class="fr">Projets académiques : développement d'applications et manipulation de données (SQL, programmation orientée objet).</span><span class="en">Academic projects: application development and data handling (SQL, object-oriented programming).</span></li>
+          </ul>
         </div>
       </div>
       <!-- CERTIFICATIONS -->
       <div class="sec">
         <div class="sec-lbl">Certifications</div>
         <div style="display:flex;flex-direction:column;gap:.55rem">
-          <div class="cv-cert-row" onclick="goPage('pl300')">
-            <div class="cv-dot prog"></div>
-            <div style="flex:1">
-              <div class="cv-cert-name">PL-300 — Power BI Data Analyst</div>
-              <div class="cv-cert-sub">Microsoft · En cours — Chapitre 2 actif</div>
-            </div>
-            <span class="cv-badge prog">En cours</span><span class="cv-arrow">→</span>
-          </div>
           <div class="cv-cert-row" onclick="goPage('pcap')">
             <div class="cv-dot done"></div>
             <div style="flex:1">
               <div class="cv-cert-name">PCAP-31-03 — Python Associate Programmer</div>
               <div class="cv-cert-sub">Python Institute</div>
             </div>
-            <span class="cv-badge done">Certifié ✓</span><span class="cv-arrow">→</span>
+            <span class="cv-badge done"><span class="fr">Certifié ✓</span><span class="en">Certified ✓</span></span><span class="cv-arrow">→</span>
           </div>
           <div class="cv-cert-row" onclick="goPage('ai900')">
             <div class="cv-dot done"></div>
@@ -1634,39 +1830,39 @@
               <div class="cv-cert-name">AI-900 — Azure AI Fundamentals</div>
               <div class="cv-cert-sub">Microsoft Azure</div>
             </div>
-            <span class="cv-badge done">Certifié ✓</span><span class="cv-arrow">→</span>
+            <span class="cv-badge done"><span class="fr">Certifié ✓</span><span class="en">Certified ✓</span></span><span class="cv-arrow">→</span>
           </div>
-          <div class="cv-cert-row no-link">
-            <div class="cv-dot todo"></div>
+          <div class="cv-cert-row" onclick="goPage('dp600')">
+            <div class="cv-dot todo" id="dp600Dot"></div>
             <div style="flex:1">
               <div class="cv-cert-name">DP-600 — Fabric Analytics Engineer</div>
-              <div class="cv-cert-sub">Microsoft Fabric · Prochaine étape</div>
+              <div class="cv-cert-sub" id="dp600Sub"><span class="fr">Microsoft Fabric · Prochaine étape</span><span class="en">Microsoft Fabric · Next step</span></div>
             </div>
-            <span class="cv-badge todo">À venir</span>
+            <span class="cv-badge todo" id="dp600CvBadge"><span class="fr">À venir</span><span class="en">Upcoming</span></span><span class="cv-arrow">→</span>
           </div>
           <div class="cv-cert-row no-link">
             <div class="cv-dot todo"></div>
             <div style="flex:1">
               <div class="cv-cert-name">DP-203 — Azure Data Engineer Associate</div>
-              <div class="cv-cert-sub">Microsoft · Objectif final</div>
+              <div class="cv-cert-sub"><span class="fr">Microsoft · Objectif final</span><span class="en">Microsoft · Final goal</span></div>
             </div>
-            <span class="cv-badge todo">À venir</span>
+            <span class="cv-badge todo"><span class="fr">À venir</span><span class="en">Upcoming</span></span>
           </div>
         </div>
       </div>
 
       <!-- CENTRES D'INTÉRÊT -->
       <div class="sec">
-        <div class="sec-lbl">Centres d'intérêt & Projets</div>
+        <div class="sec-lbl"><span class="fr">Centres d'intérêt &amp; Projets</span><span class="en">Interests &amp; Projects</span></div>
         <div class="cv-cert-row" onclick="goPage('interests')" style="background:var(--bg1)">
           <div style="display:flex;gap:.7rem;flex-wrap:wrap;flex:1;align-items:center">
             <span style="font-size:1.3rem">🏆🤖📊🌍🩺☁️</span>
             <div>
-              <div class="cv-cert-name">Innovation · IA · Data Viz · Tech for Good · Bénévolat · MLOps</div>
-              <div class="cv-cert-sub">Projets, récompenses, bénévolat Croissant Rouge & détails complets</div>
+              <div class="cv-cert-name"><span class="fr">Innovation · IA · Data Viz · Tech for Good · Bénévolat · MLOps</span><span class="en">Innovation · AI · Data Viz · Tech for Good · Volunteering · MLOps</span></div>
+              <div class="cv-cert-sub"><span class="fr">Projets, récompenses, bénévolat Croissant Rouge &amp; détails complets</span><span class="en">Projects, awards, Red Crescent volunteering &amp; full details</span></div>
             </div>
           </div>
-          <span class="cv-badge prog">Voir tout</span>
+          <span class="cv-badge prog"><span class="fr">Voir tout</span><span class="en">See all</span></span>
           <span class="cv-arrow">→</span>
         </div>
       </div>
@@ -1684,46 +1880,45 @@
     <div class="wrap">
 
       <header style="padding:2rem 0 1.5rem;border-bottom:1px solid var(--c-border)">
-        <div class="eyebrow">// centres d'intérêt · projets · bénévolat</div>
-        <h1>Projets & <span class="accent">Intérêts</span></h1>
-        <p class="subtitle">Challenges remportés, projets techniques, bénévolat et veille active</p>
+        <div class="eyebrow"><span class="fr">// centres d'intérêt · projets · bénévolat</span><span class="en">// interests · projects · volunteering</span></div>
+        <h1><span class="fr">Projets &amp;</span><span class="en">Projects &amp;</span> <span class="accent"><span class="fr">Intérêts</span><span class="en">Interests</span></span></h1>
+        <p class="subtitle"><span class="fr">Challenges remportés, projets techniques, bénévolat et veille active</span><span class="en">Challenges won, technical projects, volunteering and tech watch</span></p>
       </header>
 
       <!-- BÉNÉVOLAT -->
       <div class="sec">
-        <div class="sec-lbl">🩺 Bénévolat</div>
+        <div class="sec-lbl"><span class="fr">🩺 Bénévolat</span><span class="en">🩺 Volunteering</span></div>
         <div class="benev-card">
           <div class="benev-icon">🩺</div>
-          <div class="benev-title">Bénévole — Secourisme & Aide humanitaire</div>
-          <div class="benev-org">Croissant Rouge Tunisien</div>
-          <div class="benev-desc">Participation active aux actions de secourisme, sensibilisation aux premiers secours
-            et aide aux populations vulnérables. Engagement dans des missions humanitaires locales en Tunisie,
-            renforçant les compétences de travail en équipe sous pression, leadership et gestion de crise.</div>
+          <div class="benev-title"><span class="fr">Bénévole — Secourisme &amp; Aide humanitaire</span><span class="en">Volunteer — First Aid &amp; Humanitarian Relief</span></div>
+          <div class="benev-org"><span class="fr">Croissant Rouge Tunisien</span><span class="en">Tunisian Red Crescent</span></div>
+          <div class="benev-desc"><span class="fr">Participation active aux actions de secourisme, sensibilisation aux premiers secours et aide aux populations vulnérables. Engagement dans des missions humanitaires locales en Tunisie, renforçant les compétences de travail en équipe sous pression, leadership et gestion de crise.</span><span class="en">Active in first-aid operations, first-aid awareness and support for vulnerable people. Involved in local humanitarian missions in Tunisia, building teamwork under pressure, leadership and crisis management skills.</span></div>
           <div style="display:flex;flex-wrap:wrap;gap:.35rem;margin-top:.8rem">
-            <span class="proj-tag">Secourisme</span>
-            <span class="proj-tag">Aide humanitaire</span>
-            <span class="proj-tag">Travail en équipe</span>
+            <span class="proj-tag"><span class="fr">Secourisme</span><span class="en">First aid</span></span>
+            <span class="proj-tag"><span class="fr">Aide humanitaire</span><span class="en">Humanitarian aid</span></span>
+            <span class="proj-tag"><span class="fr">Travail en équipe</span><span class="en">Teamwork</span></span>
             <span class="proj-tag">Leadership</span>
-            <span class="proj-tag">Tunisie</span>
+            <span class="proj-tag"><span class="fr">Tunisie</span><span class="en">Tunisia</span></span>
           </div>
         </div>
       </div>
 
       <!-- CHALLENGES & RÉCOMPENSES -->
       <div class="sec">
-        <div class="sec-lbl">🏆 Challenges & Récompenses</div>
+        <div class="sec-lbl"><span class="fr">🏆 Challenges &amp; Récompenses</span><span class="en">🏆 Challenges &amp; Awards</span></div>
         <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1rem">
 
           <div class="proj-card">
             <div class="proj-img-placeholder">🏆</div>
             <div class="proj-body">
-              <div class="proj-cat">Mai 2023 · Paris, France</div>
-              <div class="proj-title">1er Prix Orange Foundation — ChangeNOW</div>
-              <div class="proj-desc">Grand gagnant du prix #OrangeFoundation au summit ChangeNOW Paris. Solution
-                innovante récompensée parmi des équipes internationales pour son impact environnemental.</div>
+              <div class="proj-cat"><span class="fr">Mai 2023 · Paris, France</span><span class="en">May 2023 · Paris, France</span></div>
+              <div class="proj-title"><span class="fr">1er Prix Orange Foundation — ChangeNOW</span><span class="en">1st Prize Orange Foundation — ChangeNOW</span></div>
+              <div class="proj-desc"><span class="fr">Grand gagnant du prix #OrangeFoundation au summit ChangeNOW Paris. Solution innovante récompensée parmi des équipes internationales pour son impact environnemental.</span><span class="en">Grand winner of the #OrangeFoundation prize at the ChangeNOW summit in Paris. An innovative solution recognised among international teams for its environmental impact.</span></div>
               <div class="proj-tags"><span class="proj-tag">Innovation</span><span class="proj-tag">Orange
                   Foundation</span><span class="proj-tag">Paris</span></div>
               <div class="proj-links">
+                <a href="https://www.linkedin.com/feed/update/urn:li:activity:7069356527517609985/" target="_blank"
+                  rel="noopener" class="proj-link gh">in <span class="fr">Voir le post</span><span class="en">View post</span> ↗</a>
                 <a href="https://www.changenow.world/" target="_blank" class="proj-link live">🌐 ChangeNOW ↗</a>
               </div>
             </div>
@@ -1732,13 +1927,15 @@
           <div class="proj-card">
             <div class="proj-img-placeholder">💧</div>
             <div class="proj-body">
-              <div class="proj-cat">Mars – Mai 2023 · Tunisie / France</div>
-              <div class="proj-title">1er Prix Fablab — ECOWATRE</div>
-              <div class="proj-desc">Solution innovante de recyclage et filtration d'eau pour prolonger sa durée de vie.
-                1er prix du challenge international Orange Tunisie au El Fab Space Lac. Participation au challenge
-                France le 24 mai.</div>
-              <div class="proj-tags"><span class="proj-tag">IoT</span><span class="proj-tag">Environnement</span><span
+              <div class="proj-cat"><span class="fr">Mars – Mai 2023 · Tunisie / France</span><span class="en">Mar – May 2023 · Tunisia / France</span></div>
+              <div class="proj-title"><span class="fr">1er Prix Fablab — ECOWATRE</span><span class="en">1st Prize Fablab — ECOWATRE</span></div>
+              <div class="proj-desc"><span class="fr">Solution innovante de recyclage et filtration d'eau pour prolonger sa durée de vie. 1er prix du challenge international Orange Tunisie au El Fab Space Lac. Participation au challenge France le 24 mai.</span><span class="en">An innovative water recycling and filtration solution that extends water's useful life. 1st prize in the Orange Tunisia international challenge at El Fab Space Lac. Took part in the France challenge on 24 May.</span></div>
+              <div class="proj-tags"><span class="proj-tag">IoT</span><span class="proj-tag"><span class="fr">Environnement</span><span class="en">Environment</span></span><span
                   class="proj-tag">Fablab</span><span class="proj-tag">Orange Tunisie</span></div>
+              <div class="proj-links">
+                <a href="https://www.linkedin.com/feed/update/urn:li:activity:7057662640751288325/" target="_blank"
+                  rel="noopener" class="proj-link gh">in <span class="fr">Voir le post</span><span class="en">View post</span> ↗</a>
+              </div>
             </div>
           </div>
 
@@ -1747,23 +1944,20 @@
 
       <!-- PROJETS TECHNIQUES -->
       <div class="sec">
-        <div class="sec-lbl">💻 Projets techniques</div>
+        <div class="sec-lbl"><span class="fr">💻 Projets techniques</span><span class="en">💻 Technical projects</span></div>
         <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1rem">
 
           <div class="proj-card">
             <div class="proj-img-placeholder">📱</div>
             <div class="proj-body">
-              <div class="proj-cat">Orange Innovation · Mars – Août 2025</div>
-              <div class="proj-title">App Flutter + ML + NLP sur Azure</div>
-              <div class="proj-desc">Application mobile Flutter intégrant WhatsApp avec Machine Learning et NLP via les
-                services Azure. Testée à Thiès, Sénégal. Développée dans une équipe multiculturelle R&D, avancement à
-                75%.</div>
+              <div class="proj-cat"><span class="fr">Orange Innovation · Mars – Août 2025</span><span class="en">Orange Innovation · Mar – Aug 2025</span></div>
+              <div class="proj-title"><span class="fr">App Flutter + ML + NLP sur Azure</span><span class="en">Flutter + ML + NLP app on Azure</span></div>
+              <div class="proj-desc"><span class="fr">Application mobile Flutter intégrant WhatsApp avec Machine Learning et NLP via les services Azure. Testée à Thiès, Sénégal. Développée dans une équipe multiculturelle R&amp;D, avancement à 75%.</span><span class="en">Flutter mobile app integrating WhatsApp with Machine Learning and NLP through Azure services. Tested in Thiès, Senegal. Built in a multicultural R&amp;D team, 75% complete.</span></div>
               <div class="proj-tags"><span class="proj-tag">Flutter</span><span class="proj-tag">Azure</span><span
                   class="proj-tag">NLP</span><span class="proj-tag">ML</span><span class="proj-tag">WhatsApp API</span>
               </div>
               <div class="proj-links">
-                <span style="font-family:var(--mono);font-size:.65rem;color:var(--c-muted)">// projet confidentiel
-                  Orange</span>
+                <span style="font-family:var(--mono);font-size:.65rem;color:var(--c-muted)"><span class="fr">// projet confidentiel Orange</span><span class="en">// confidential Orange project</span></span>
               </div>
             </div>
           </div>
@@ -1771,43 +1965,23 @@
           <div class="proj-card">
             <div class="proj-img-placeholder">🔥</div>
             <div class="proj-body">
-              <div class="proj-cat">IRESA · Mars – Juin 2022</div>
-              <div class="proj-title">Système IoT — Détection d'incendies</div>
-              <div class="proj-desc">Réseau LoRa déployé en forêt avec carte LoRaESP32 et capteurs environnementaux.
-                Gateway Raspberry Pi 3. Application Flutter pour visualiser les données et recevoir des alertes en temps
-                réel.</div>
+              <div class="proj-cat"><span class="fr">IRESA · Mars – Juin 2022</span><span class="en">IRESA · Mar – June 2022</span></div>
+              <div class="proj-title"><span class="fr">Système IoT — Détection d'incendies</span><span class="en">IoT System — Wildfire Detection</span></div>
+              <div class="proj-desc"><span class="fr">Réseau LoRa déployé en forêt avec carte LoRaESP32 et capteurs environnementaux. Gateway Raspberry Pi 3. Application Flutter pour visualiser les données et recevoir des alertes en temps réel.</span><span class="en">LoRa network deployed in a forest with a LoRaESP32 board and environmental sensors. Raspberry Pi 3 gateway. Flutter app to visualise the data and receive real-time alerts.</span></div>
               <div class="proj-tags"><span class="proj-tag">IoT</span><span class="proj-tag">LoRa</span><span
                   class="proj-tag">Raspberry Pi</span><span class="proj-tag">Flutter</span><span
-                  class="proj-tag">Capteurs</span></div>
+                  class="proj-tag"><span class="fr">Capteurs</span><span class="en">Sensors</span></span></div>
             </div>
           </div>
 
           <div class="proj-card">
             <div class="proj-img-placeholder">⚡</div>
             <div class="proj-body">
-              <div class="proj-cat">STEG · Août – Sept 2021</div>
-              <div class="proj-title">Smart Mètre — Mesure de consommation</div>
-              <div class="proj-desc">Smart meter basé sur mesure indirecte du courant via champ magnétique. Calcul de la
-                consommation en puissance apparente. Affichage sur écran OLED et application Android via Firebase.</div>
+              <div class="proj-cat"><span class="fr">STEG · Août – Sept 2021</span><span class="en">STEG · Aug – Sept 2021</span></div>
+              <div class="proj-title"><span class="fr">Smart Mètre — Mesure de consommation</span><span class="en">Smart Meter — Consumption Monitoring</span></div>
+              <div class="proj-desc"><span class="fr">Smart meter basé sur mesure indirecte du courant via champ magnétique. Calcul de la consommation en puissance apparente. Affichage sur écran OLED et application Android via Firebase.</span><span class="en">Smart meter based on indirect current measurement through the magnetic field. Computes consumption as apparent power. Shown on an OLED screen and in an Android app via Firebase.</span></div>
               <div class="proj-tags"><span class="proj-tag">Arduino</span><span class="proj-tag">Firebase</span><span
-                  class="proj-tag">Android</span><span class="proj-tag">Électronique</span></div>
-            </div>
-          </div>
-
-          <div class="proj-card">
-            <div class="proj-img-placeholder">📊</div>
-            <div class="proj-body">
-              <div class="proj-cat">Certification en cours · 2025</div>
-              <div class="proj-title">PL-300 — Notes & Résumés Power BI</div>
-              <div class="proj-desc">Repo GitHub dédié à la préparation de la certification Power BI Data Analyst.
-                Résumés des chapitres, exercices pratiques et ressources organisés par parcours d'apprentissage
-                Microsoft.</div>
-              <div class="proj-tags"><span class="proj-tag">Power BI</span><span class="proj-tag">Microsoft
-                  Learn</span><span class="proj-tag">PL-300</span></div>
-              <div class="proj-links">
-                <a href="https://github.com/nihel-sliti/PowerBiCertificationSupport" target="_blank"
-                  class="proj-link gh">⎇ GitHub ↗</a>
-              </div>
+                  class="proj-tag">Android</span><span class="proj-tag"><span class="fr">Électronique</span><span class="en">Electronics</span></span></div>
             </div>
           </div>
 
@@ -1815,10 +1989,9 @@
           <div class="proj-card" style="border-style:dashed;opacity:.6">
             <div class="proj-img-placeholder" style="height:80px;font-size:1.5rem">＋</div>
             <div class="proj-body">
-              <div class="proj-cat">Ton prochain projet</div>
-              <div class="proj-title" style="color:var(--c-muted)">Ajouter un projet</div>
-              <div class="proj-desc" style="color:var(--c-muted)">Remplace cette carte avec ton projet — ajoute une
-                image, un lien GitHub ou une URL de démo.</div>
+              <div class="proj-cat"><span class="fr">Ton prochain projet</span><span class="en">Your next project</span></div>
+              <div class="proj-title" style="color:var(--c-muted)"><span class="fr">Ajouter un projet</span><span class="en">Add a project</span></div>
+              <div class="proj-desc" style="color:var(--c-muted)"><span class="fr">Remplace cette carte avec ton projet — ajoute une image, un lien GitHub ou une URL de démo.</span><span class="en">Replace this card with your project — add an image, a GitHub link or a demo URL.</span></div>
             </div>
           </div>
 
@@ -1827,84 +2000,87 @@
 
       <!-- CENTRES D'INTÉRÊT DÉTAIL -->
       <div class="sec">
-        <div class="sec-lbl">✨ Centres d'intérêt</div>
+        <div class="sec-lbl"><span class="fr">✨ Centres d'intérêt</span><span class="en">✨ Interests</span></div>
         <div class="interest-grid">
           <div class="interest-card">
             <div class="int-icon">🤖</div>
-            <div class="int-title">IA Générative & LLM</div>
-            <div class="int-desc">Veille active sur GPT, Claude, Azure OpenAI. Expérimentation RAG, fine-tuning et
-              déploiement de modèles NLP en production via Azure ML.</div>
+            <div class="int-title"><span class="fr">IA Générative &amp; LLM</span><span class="en">Generative AI &amp; LLMs</span></div>
+            <div class="int-desc"><span class="fr">Veille active sur GPT, Claude, Azure OpenAI. Expérimentation RAG, fine-tuning et déploiement de modèles NLP en production via Azure ML.</span><span class="en">Keeping up with GPT, Claude and Azure OpenAI. Experimenting with RAG, fine-tuning and deploying NLP models to production with Azure ML.</span></div>
           </div>
           <div class="interest-card">
             <div class="int-icon">📊</div>
             <div class="int-title">Data Visualisation</div>
-            <div class="int-desc">Storytelling avec les données, tableaux de bord Power BI décisionnels, rapports
-              interactifs et DAX avancé.</div>
+            <div class="int-desc"><span class="fr">Storytelling avec les données, tableaux de bord Power BI décisionnels, rapports interactifs et DAX avancé.</span><span class="en">Data storytelling, decision-making Power BI dashboards, interactive reports and advanced DAX.</span></div>
           </div>
           <div class="interest-card">
             <div class="int-icon">🌍</div>
             <div class="int-title">Tech for Good</div>
-            <div class="int-desc">Solutions mobiles pour marchés émergents (Sénégal), projets IoT environnementaux,
-              innovation à impact social et durable.</div>
+            <div class="int-desc"><span class="fr">Solutions mobiles pour marchés émergents (Sénégal), projets IoT environnementaux, innovation à impact social et durable.</span><span class="en">Mobile solutions for emerging markets (Senegal), environmental IoT projects, innovation with social and sustainable impact.</span></div>
           </div>
           <div class="interest-card">
             <div class="int-icon">📚</div>
-            <div class="int-title">Mentorat & Pédagogie</div>
-            <div class="int-desc">Formatrice Python et Data Science chez GoMyCode (1 an 2 mois) et TEK-UP. Taux de
-              progression apprenants &gt;80%.</div>
+            <div class="int-title"><span class="fr">Mentorat &amp; Pédagogie</span><span class="en">Mentoring &amp; Teaching</span></div>
+            <div class="int-desc"><span class="fr">Formatrice Python et Data Science chez GoMyCode (1 an 2 mois) et TEK-UP. Taux de progression apprenants &gt;80%.</span><span class="en">Python and Data Science trainer at GoMyCode (1 yr 2 mos) and TEK-UP. Learner progress rate &gt;80%.</span></div>
           </div>
           <div class="interest-card">
             <div class="int-icon">☁️</div>
             <div class="int-title">Cloud & MLOps</div>
-            <div class="int-desc">Pipelines CI/CD, MLflow, déploiement ML sur Azure. Objectif certifications DP-600
-              Fabric et DP-203 Data Engineer.</div>
+            <div class="int-desc"><span class="fr">Pipelines CI/CD, MLflow, déploiement ML sur Azure. Objectif certifications DP-600 Fabric et DP-203 Data Engineer.</span><span class="en">CI/CD pipelines, MLflow, ML deployment on Azure. Aiming for the DP-600 Fabric and DP-203 Data Engineer certifications.</span></div>
           </div>
           <div class="interest-card">
             <div class="int-icon">🎵</div>
-            <div class="int-title">Musique & Créativité</div>
-            <div class="int-desc">Équilibre entre rigueur technique et expression créative. La musique comme source
-              d'inspiration et de concentration.</div>
+            <div class="int-title"><span class="fr">Musique &amp; Créativité</span><span class="en">Music &amp; Creativity</span></div>
+            <div class="int-desc"><span class="fr">Équilibre entre rigueur technique et expression créative. La musique comme source d'inspiration et de concentration.</span><span class="en">A balance between technical rigour and creative expression. Music as a source of inspiration and focus.</span></div>
           </div>
         </div>
       </div>
 
     </div><!-- /wrap -->
-    <footer class="wrap"><span>// nihel-sliti · projets &amp; intérêts <span class="ft-acc">2025</span></span>
+    <footer class="wrap"><span><span class="fr">// nihel-sliti · projets &amp; intérêts</span><span class="en">// nihel-sliti · projects &amp; interests</span> <span class="ft-acc">2025</span></span>
   </div><!-- /page-interests -->
 
 
+
+
   <!-- ══════════════════════════════════════════
-     PAGE PL-300
+     PAGE DP-600
+     → Pour mettre à jour : changer DP600_PROGRESS dans le script en bas du fichier (0 à 100)
 ══════════════════════════════════════════ -->
-  <div class="page" id="page-pl300">
+  <div class="page" id="page-dp600">
     <div class="wrap">
 
       <header style="padding:2rem 0 1.5rem;border-bottom:1px solid var(--c-border)">
-        <div class="eyebrow">// microsoft · power bi · en cours</div>
-        <h1>PL-300 — <span class="accent">Power BI</span><br>Data Analyst</h1>
-        <p class="subtitle">Parcours Data Engineer · Analyste de données · Intermédiaire</p>
+        <div class="eyebrow" id="dp600Eyebrow">// microsoft · fabric · prochaine étape</div>
+        <h1>DP-600 — <span class="accent">Fabric</span><br>Analytics Engineer</h1>
+        <p class="subtitle"><span class="fr">Parcours Data Engineer · Implémenter des solutions d'analytique avec Microsoft Fabric · Intermédiaire</span><span class="en">Data Engineer path · Implementing analytics solutions using Microsoft Fabric · Intermediate</span></p>
+        <div style="display:flex;gap:.5rem;flex-wrap:wrap;margin-top:1rem">
+          <a href="#dp600Study" class="skill-tag sk-viz" style="text-decoration:none"
+            onclick="event.preventDefault();document.getElementById('dp600Study').scrollIntoView({behavior:'smooth'})">📚
+            Study with me ↓</a>
+          <a href="dp600-revision/index.html" target="_blank" class="skill-tag sk-data" style="text-decoration:none">125
+            questions ↗</a>
+        </div>
       </header>
 
       <div class="stats-row">
-        <div class="stat-b"><span class="sval">5</span><span class="slbl">Chapitres</span></div>
-        <div class="stat-b"><span class="sval g">1</span><span class="slbl">Terminé</span></div>
-        <div class="stat-b"><span class="sval">1</span><span class="slbl">En cours</span></div>
-        <div class="stat-b"><span class="sval" id="pctLabel">25%</span><span class="slbl">Progression</span></div>
+        <div class="stat-b"><span class="sval" id="dp600Total">7</span><span class="slbl"><span class="fr">Chapitres</span><span class="en">Chapters</span></span></div>
+        <div class="stat-b"><span class="sval g" id="dp600Done">0</span><span class="slbl"><span class="fr">Terminé</span><span class="en">Done</span></span></div>
+        <div class="stat-b"><span class="sval" id="dp600Active">0</span><span class="slbl"><span class="fr">En cours</span><span class="en">In progress</span></span></div>
+        <div class="stat-b"><span class="sval" id="dp600Pct">0%</span><span class="slbl"><span class="fr">Progression</span><span class="en">Progress</span></span></div>
       </div>
 
       <div class="sec">
         <div class="pl-hero">
-          <div class="badge-prog"><span class="pulse"></span><span id="chapBadge">En cours — Chapitre 2 actif</span>
-          </div>
+          <div class="badge-prog"><span class="pulse"></span><span id="dp600Badge"><span class="fr">À venir — Démarrage prochainement</span><span class="en">Upcoming — Starting soon</span></span></div>
 
           <div class="prog-section">
             <div class="prog-top">
-              <span class="prog-label">Avancement PL-300</span>
-              <span class="prog-pct" id="pctLabel2">25%</span>
+              <span class="prog-label"><span class="fr">Avancement DP-600</span><span class="en">DP-600 progress</span></span>
+              <span class="prog-pct" id="dp600Pct2">0%</span>
             </div>
             <div class="prog-outer">
-              <div class="prog-inner" id="progInner" style="width:25%"></div>
-              <div class="walker-on-bar" id="walkerBar" style="left:25%">
+              <div class="prog-inner" id="dp600ProgInner" style="width:0%"></div>
+              <div class="walker-on-bar" id="dp600Walker" style="left:2%">
                 <svg width="18" height="22" viewBox="0 0 16 20">
                   <g class="fig-body">
                     <rect x="5" y="0" width="6" height="5" rx="2" fill="#f59e0b" />
@@ -1927,115 +2103,102 @@
             </div>
             <div
               style="display:flex;justify-content:space-between;font-family:var(--mono);font-size:.6rem;color:var(--c-muted);margin-top:4px">
-              <span>Départ</span><span>Chap 1</span><span>Chap 2</span><span>Chap 3</span><span>Chap 4</span><span>Chap
-                5</span><span>✓ Certif</span>
+              <span><span class="fr">Départ</span><span class="en">Start</span></span><span>01</span><span>02</span><span>03</span><span>04</span><span>05</span><span>06</span><span>07</span><span><span class="fr">✓ Certif</span><span class="en">✓ Cert</span></span>
             </div>
           </div>
 
-          <div class="chapters" id="chapters">
-            <div class="chapter completed open" data-chap="1">
+          <div class="chapters" id="dp600Chapters">
+
+            <!-- DOMAINE 1 — Maintenir une solution d'analytique (25–30 %) -->
+            <div class="chapter locked" data-chap="1">
               <div class="chap-header" onclick="toggleChap(this)">
                 <span class="chap-num">01</span>
                 <div style="flex:1">
-                  <div class="chap-title">Prise en main de l'Analytique données Microsoft</div>
+                  <div class="chap-title"><span class="fr">Sécurité et gouvernance</span><span class="en">Security and governance</span></div>
+                  <div style="font-family:var(--mono);font-size:.62rem;color:var(--c-muted);margin-top:3px"><span class="fr">Domaine 1 · Maintenir une solution d'analytique · 25–30 %</span><span class="en">Domain 1 · Maintain a data analytics solution · 25–30%</span></div>
                 </div>
-                <span class="chap-meta">4 modules</span>
-                <span class="chap-status s-done">Terminé</span>
+                <span class="chap-meta"><span class="fr">4 notions</span><span class="en">4 topics</span></span>
+                <span class="chap-status s-lock"><span class="fr">À venir</span><span class="en">Upcoming</span></span>
               </div>
               <div class="chap-body">
                 <div class="module-list">
-                  <div class="mod-item done-mod">
-                    <div class="mod-check">✓</div>
-                    <div style="flex:1"><span>Découvrir l'analyse de données</span>
-                      <div style="font-size:.75rem;color:var(--c-txt2);margin-top:2px">Rôles de l'analyste données,
-                        storytelling avec les données</div>
-                    </div>
+                  <div class="mod-item">
+                    <div class="mod-check"></div><span><span class="fr">Contrôles d'accès au niveau de l'espace de travail et des éléments</span><span class="en">Workspace-level and item-level access controls</span></span>
                   </div>
-                  <div class="mod-item done-mod">
-                    <div class="mod-check">✓</div>
-                    <div style="flex:1"><span>Prise en main de la création avec Power BI</span>
-                      <div style="font-size:.75rem;color:var(--c-txt2);margin-top:2px">Blocs élémentaires, flux Power
-                        BI, états interactifs</div>
-                    </div>
+                  <div class="mod-item">
+                    <div class="mod-check"></div><span><span class="fr">Sécurité au niveau des lignes, colonnes, objets et fichiers (RLS, CLS, OLS)</span><span class="en">Row-, column-, object- and file-level security (RLS, CLS, OLS)</span></span>
                   </div>
-                  <div class="mod-item done-mod">
-                    <div class="mod-check">✓</div>
-                    <div style="flex:1"><span>Analytique de bout en bout avec Microsoft Fabric</span>
-                      <div style="font-size:.75rem;color:var(--c-txt2);margin-top:2px">Plateforme Fabric, besoins
-                        d'analyse unifiés</div>
-                    </div>
+                  <div class="mod-item">
+                    <div class="mod-check"></div><span><span class="fr">Étiquettes de confidentialité (sensitivity labels)</span><span class="en">Sensitivity labels</span></span>
                   </div>
-                  <div class="mod-item done-mod">
-                    <div class="mod-check">✓</div>
-                    <div style="flex:1"><span>Prise en main de Copilot dans Power BI</span>
-                      <div style="font-size:.75rem;color:var(--c-txt2);margin-top:2px">Modèles sémantiques, insights en
-                        langage naturel</div>
-                    </div>
-                  </div>
-                </div>
-                <div class="git-box" style="margin-top:1rem">
-                  <span class="git-icon">⎇</span>
-                  <div class="git-txt"><strong>Résumé sur GitHub</strong> — Notions de base, concepts théoriques.<br>
-                    <a href="https://github.com/nihel-sliti/PowerBiCertificationSupport/blob/main/chap01/README.md"
-                      target="_blank">→ nihel-sliti / PowerBiCertificationSupport / chap01 ↗</a>
+                  <div class="mod-item">
+                    <div class="mod-check"></div><span><span class="fr">Approbation des éléments (endorsement)</span><span class="en">Item endorsement</span></span>
                   </div>
                 </div>
               </div>
             </div>
 
-            <div class="chapter active open" data-chap="2">
+            <div class="chapter locked" data-chap="2">
               <div class="chap-header" onclick="toggleChap(this)">
                 <span class="chap-num">02</span>
                 <div style="flex:1">
-                  <div class="chap-title">Préparer des données pour l'analyse Power BI</div>
+                  <div class="chap-title"><span class="fr">Cycle de vie du développement analytique</span><span class="en">Analytics development lifecycle</span></div>
+                  <div style="font-family:var(--mono);font-size:.62rem;color:var(--c-muted);margin-top:3px"><span class="fr">Domaine 1 · Maintenir une solution d'analytique · 25–30 %</span><span class="en">Domain 1 · Maintain a data analytics solution · 25–30%</span></div>
                 </div>
-                <span class="chap-meta">3 modules</span><span class="chap-status s-active">En cours</span>
+                <span class="chap-meta"><span class="fr">6 notions</span><span class="en">6 topics</span></span>
+                <span class="chap-status s-lock"><span class="fr">À venir</span><span class="en">Upcoming</span></span>
               </div>
               <div class="chap-body">
                 <div class="module-list">
-                  <div class="mod-item active-mod">
-                    <div class="mod-check">▶</div><span>Obtenir des données dans Power BI</span>
+                  <div class="mod-item">
+                    <div class="mod-check"></div><span><span class="fr">Contrôle de version (Git) d'un espace de travail</span><span class="en">Version control (Git) for a workspace</span></span>
                   </div>
                   <div class="mod-item">
-                    <div class="mod-check"></div><span>Nettoyer, transformer et charger des données</span>
+                    <div class="mod-check"></div><span><span class="fr">Projets Power BI Desktop (.pbip)</span><span class="en">Power BI Desktop projects (.pbip)</span></span>
                   </div>
                   <div class="mod-item">
-                    <div class="mod-check"></div><span>Profiler les données</span>
+                    <div class="mod-check"></div><span><span class="fr">Pipelines de déploiement</span><span class="en">Deployment pipelines</span></span>
+                  </div>
+                  <div class="mod-item">
+                    <div class="mod-check"></div><span><span class="fr">Analyse d'impact des dépendances en aval (lakehouses, warehouses, dataflows, modèles)</span><span class="en">Impact analysis of downstream dependencies (lakehouses, warehouses, dataflows, models)</span></span>
+                  </div>
+                  <div class="mod-item">
+                    <div class="mod-check"></div><span><span class="fr">Déploiement de modèles sémantiques via le point de terminaison XMLA</span><span class="en">Deploy semantic models through the XMLA endpoint</span></span>
+                  </div>
+                  <div class="mod-item">
+                    <div class="mod-check"></div><span><span class="fr">Ressources réutilisables : .pbit, .pbids, modèles sémantiques partagés</span><span class="en">Reusable assets: .pbit, .pbids, shared semantic models</span></span>
                   </div>
                 </div>
               </div>
             </div>
 
+            <!-- DOMAINE 2 — Préparer les données (45–50 %) -->
             <div class="chapter locked" data-chap="3">
               <div class="chap-header" onclick="toggleChap(this)">
                 <span class="chap-num">03</span>
                 <div style="flex:1">
-                  <div class="chap-title">Modéliser des données avec Power BI</div>
+                  <div class="chap-title"><span class="fr">Obtenir des données</span><span class="en">Get data</span></div>
+                  <div style="font-family:var(--mono);font-size:.62rem;color:var(--c-muted);margin-top:3px"><span class="fr">Domaine 2 · Préparer les données · 45–50 %</span><span class="en">Domain 2 · Prepare data · 45–50%</span></div>
                 </div>
-                <span class="chap-meta">7 modules</span><span class="chap-status s-lock">À venir</span>
+                <span class="chap-meta"><span class="fr">5 notions</span><span class="en">5 topics</span></span>
+                <span class="chap-status s-lock"><span class="fr">À venir</span><span class="en">Upcoming</span></span>
               </div>
               <div class="chap-body">
                 <div class="module-list">
                   <div class="mod-item">
-                    <div class="mod-check"></div><span>Concevoir un modèle de données</span>
+                    <div class="mod-check"></div><span><span class="fr">Créer une connexion de données</span><span class="en">Create a data connection</span></span>
                   </div>
                   <div class="mod-item">
-                    <div class="mod-check"></div><span>Travailler avec des tables de dates</span>
+                    <div class="mod-check"></div><span><span class="fr">Découvrir les données avec le catalogue OneLake et le Real-Time hub</span><span class="en">Discover data with the OneLake catalog and Real-Time hub</span></span>
                   </div>
                   <div class="mod-item">
-                    <div class="mod-check"></div><span>Créer des mesures DAX</span>
+                    <div class="mod-check"></div><span><span class="fr">Ingérer ou accéder aux données selon le besoin</span><span class="en">Ingest or access data as needed</span></span>
                   </div>
                   <div class="mod-item">
-                    <div class="mod-check"></div><span>Optimiser un modèle</span>
+                    <div class="mod-check"></div><span><span class="fr">Choisir le bon magasin : lakehouse, warehouse, eventhouse</span><span class="en">Choose the right store: lakehouse, warehouse, eventhouse</span></span>
                   </div>
                   <div class="mod-item">
-                    <div class="mod-check"></div><span>Relations et cardinalité</span>
-                  </div>
-                  <div class="mod-item">
-                    <div class="mod-check"></div><span>Contexte de filtre</span>
-                  </div>
-                  <div class="mod-item">
-                    <div class="mod-check"></div><span>Time intelligence en DAX</span>
+                    <div class="mod-check"></div><span><span class="fr">Intégration OneLake pour Eventhouse et modèles sémantiques</span><span class="en">OneLake integration for Eventhouse and semantic models</span></span>
                   </div>
                 </div>
               </div>
@@ -2045,23 +2208,28 @@
               <div class="chap-header" onclick="toggleChap(this)">
                 <span class="chap-num">04</span>
                 <div style="flex:1">
-                  <div class="chap-title">Concevoir des états efficaces dans Power BI</div>
+                  <div class="chap-title"><span class="fr">Transformer les données</span><span class="en">Transform data</span></div>
+                  <div style="font-family:var(--mono);font-size:.62rem;color:var(--c-muted);margin-top:3px"><span class="fr">Domaine 2 · Préparer les données · 45–50 %</span><span class="en">Domain 2 · Prepare data · 45–50%</span></div>
                 </div>
-                <span class="chap-meta">4 modules</span><span class="chap-status s-lock">À venir</span>
+                <span class="chap-meta"><span class="fr">5 notions</span><span class="en">5 topics</span></span>
+                <span class="chap-status s-lock"><span class="fr">À venir</span><span class="en">Upcoming</span></span>
               </div>
               <div class="chap-body">
                 <div class="module-list">
                   <div class="mod-item">
-                    <div class="mod-check"></div><span>Concevoir des rapports Power BI</span>
+                    <div class="mod-check"></div><span><span class="fr">Vues, fonctions et procédures stockées</span><span class="en">Views, functions and stored procedures</span></span>
                   </div>
                   <div class="mod-item">
-                    <div class="mod-check"></div><span>Améliorer les rapports avec interactions</span>
+                    <div class="mod-check"></div><span><span class="fr">Schéma en étoile pour un lakehouse ou un warehouse</span><span class="en">Star schema for a lakehouse or warehouse</span></span>
                   </div>
                   <div class="mod-item">
-                    <div class="mod-check"></div><span>Identifier les outliers et les tendances</span>
+                    <div class="mod-check"></div><span><span class="fr">Enrichir, dénormaliser, agréger, fusionner et joindre</span><span class="en">Enrich, denormalise, aggregate, merge and join</span></span>
                   </div>
                   <div class="mod-item">
-                    <div class="mod-check"></div><span>Améliorer les performances des rapports</span>
+                    <div class="mod-check"></div><span><span class="fr">Doublons, données manquantes et valeurs nulles</span><span class="en">Duplicates, missing data and null values</span></span>
+                  </div>
+                  <div class="mod-item">
+                    <div class="mod-check"></div><span><span class="fr">Conversion de types et filtrage</span><span class="en">Type conversion and filtering</span></span>
                   </div>
                 </div>
               </div>
@@ -2071,46 +2239,222 @@
               <div class="chap-header" onclick="toggleChap(this)">
                 <span class="chap-num">05</span>
                 <div style="flex:1">
-                  <div class="chap-title">Gérer et sécuriser Power BI</div>
+                  <div class="chap-title"><span class="fr">Interroger et analyser — SQL · KQL · DAX</span><span class="en">Query and analyse — SQL · KQL · DAX</span></div>
+                  <div style="font-family:var(--mono);font-size:.62rem;color:var(--c-muted);margin-top:3px"><span class="fr">Domaine 2 · Préparer les données · 45–50 %</span><span class="en">Domain 2 · Prepare data · 45–50%</span></div>
                 </div>
-                <span class="chap-meta">5 modules</span><span class="chap-status s-lock">À venir</span>
+                <span class="chap-meta"><span class="fr">4 notions</span><span class="en">4 topics</span></span>
+                <span class="chap-status s-lock"><span class="fr">À venir</span><span class="en">Upcoming</span></span>
               </div>
               <div class="chap-body">
                 <div class="module-list">
                   <div class="mod-item">
-                    <div class="mod-check"></div><span>Créer et gérer des workspaces</span>
+                    <div class="mod-check"></div><span><span class="fr">Sélectionner, filtrer et agréger avec l'éditeur de requêtes visuel</span><span class="en">Select, filter and aggregate with the Visual query editor</span></span>
                   </div>
                   <div class="mod-item">
-                    <div class="mod-check"></div><span>Gérer les datasets</span>
+                    <div class="mod-check"></div><span><span class="fr">… avec SQL</span><span class="en">… with SQL</span></span>
                   </div>
                   <div class="mod-item">
-                    <div class="mod-check"></div><span>Implémentation de la sécurité</span>
+                    <div class="mod-check"></div><span><span class="fr">… avec KQL</span><span class="en">… with KQL</span></span>
                   </div>
                   <div class="mod-item">
-                    <div class="mod-check"></div><span>Déploiement de pipelines</span>
-                  </div>
-                  <div class="mod-item">
-                    <div class="mod-check"></div><span>Collaboration et partage</span>
+                    <div class="mod-check"></div><span><span class="fr">… avec DAX</span><span class="en">… with DAX</span></span>
                   </div>
                 </div>
               </div>
             </div>
+
+            <!-- DOMAINE 3 — Implémenter et gérer des modèles sémantiques (25–30 %) -->
+            <div class="chapter locked" data-chap="6">
+              <div class="chap-header" onclick="toggleChap(this)">
+                <span class="chap-num">06</span>
+                <div style="flex:1">
+                  <div class="chap-title"><span class="fr">Concevoir et construire des modèles sémantiques</span><span class="en">Design and build semantic models</span></div>
+                  <div style="font-family:var(--mono);font-size:.62rem;color:var(--c-muted);margin-top:3px"><span class="fr">Domaine 3 · Modèles sémantiques · 25–30 %</span><span class="en">Domain 3 · Semantic models · 25–30%</span></div>
+                </div>
+                <span class="chap-meta"><span class="fr">6 notions</span><span class="en">6 topics</span></span>
+                <span class="chap-status s-lock"><span class="fr">À venir</span><span class="en">Upcoming</span></span>
+              </div>
+              <div class="chap-body">
+                <div class="module-list">
+                  <div class="mod-item">
+                    <div class="mod-check"></div><span><span class="fr">Choisir un mode de stockage</span><span class="en">Choose a storage mode</span></span>
+                  </div>
+                  <div class="mod-item">
+                    <div class="mod-check"></div><span><span class="fr">Schéma en étoile, tables pont et relations plusieurs-à-plusieurs</span><span class="en">Star schema, bridge tables and many-to-many relationships</span></span>
+                  </div>
+                  <div class="mod-item">
+                    <div class="mod-check"></div><span><span class="fr">DAX avancé : variables, itérateurs, fonctions de fenêtre et d'information</span><span class="en">Advanced DAX: variables, iterators, window and information functions</span></span>
+                  </div>
+                  <div class="mod-item">
+                    <div class="mod-check"></div><span><span class="fr">Groupes de calcul, chaînes de format dynamiques, paramètres de champ</span><span class="en">Calculation groups, dynamic format strings, field parameters</span></span>
+                  </div>
+                  <div class="mod-item">
+                    <div class="mod-check"></div><span><span class="fr">Format de stockage des grands modèles sémantiques</span><span class="en">Large semantic model storage format</span></span>
+                  </div>
+                  <div class="mod-item">
+                    <div class="mod-check"></div><span><span class="fr">Modèles composites</span><span class="en">Composite models</span></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="chapter locked" data-chap="7">
+              <div class="chap-header" onclick="toggleChap(this)">
+                <span class="chap-num">07</span>
+                <div style="flex:1">
+                  <div class="chap-title"><span class="fr">Optimiser les modèles à l'échelle de l'entreprise</span><span class="en">Optimise enterprise-scale semantic models</span></div>
+                  <div style="font-family:var(--mono);font-size:.62rem;color:var(--c-muted);margin-top:3px"><span class="fr">Domaine 3 · Modèles sémantiques · 25–30 %</span><span class="en">Domain 3 · Semantic models · 25–30%</span></div>
+                </div>
+                <span class="chap-meta"><span class="fr">5 notions</span><span class="en">5 topics</span></span>
+                <span class="chap-status s-lock"><span class="fr">À venir</span><span class="en">Upcoming</span></span>
+              </div>
+              <div class="chap-body">
+                <div class="module-list">
+                  <div class="mod-item">
+                    <div class="mod-check"></div><span><span class="fr">Performances des requêtes et des visuels de rapport</span><span class="en">Query and report visual performance</span></span>
+                  </div>
+                  <div class="mod-item">
+                    <div class="mod-check"></div><span><span class="fr">Optimisation des performances DAX</span><span class="en">DAX performance tuning</span></span>
+                  </div>
+                  <div class="mod-item">
+                    <div class="mod-check"></div><span><span class="fr">Direct Lake : repli (fallback) et comportement d'actualisation</span><span class="en">Direct Lake: fallback and refresh behaviour</span></span>
+                  </div>
+                  <div class="mod-item">
+                    <div class="mod-check"></div><span><span class="fr">Direct Lake sur OneLake vs sur le point de terminaison SQL</span><span class="en">Direct Lake on OneLake vs on the SQL analytics endpoint</span></span>
+                  </div>
+                  <div class="mod-item">
+                    <div class="mod-check"></div><span><span class="fr">Actualisation incrémentielle</span><span class="en">Incremental refresh</span></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
           </div>
 
           <div class="git-box" style="margin-top:1.5rem">
             <span class="git-icon">⎇</span>
-            <div class="git-txt"><strong>Sync GitHub automatique</strong> — dossiers détectés → marcheur avance
-              automatiquement.<br>
-              <a href="https://github.com/nihel-sliti/PowerBiCertificationSupport" target="_blank">→ nihel-sliti /
-                PowerBiCertificationSupport ↗</a>
+            <div class="git-txt"><strong><span class="fr">Résumés sur GitHub</span><span class="en">Summaries on GitHub</span></strong> <span class="fr">— publiés au fil des chapitres.</span><span class="en">— published chapter by chapter.</span><br>
+              <a href="https://github.com/nihel-sliti" target="_blank">→ github.com/nihel-sliti ↗</a><br>
+              <a href="https://learn.microsoft.com/fr-fr/credentials/certifications/fabric-analytics-engineer-associate/"
+                target="_blank"><span class="fr">→ Page officielle Microsoft Learn ↗</span><span class="en">→ Official Microsoft Learn page ↗</span></a>
             </div>
           </div>
         </div>
       </div>
 
+      <!-- ══ STUDY WITH ME ══ -->
+      <div class="sec" id="dp600Study">
+        <div class="sec-lbl">📚 Study with me</div>
+        <div class="pl-hero">
+          <div class="badge-prog"><span class="pulse"></span><span class="fr">Mon support de révision · FR / EN</span><span class="en">My revision material · FR / EN</span></div>
+          <div class="cert-page-name" style="font-size:1.7rem"><span class="fr">Révise la DP-600</span><span class="en">Study for the DP-600</span> <span
+              style="color:var(--c-pl)"><span class="fr">avec moi</span><span class="en">with me</span></span></div>
+          <p class="subtitle" style="max-width:640px;line-height:1.75;margin-top:.4rem"><span class="fr">Je partage le support que j'utilise pour préparer l'examen : des questions d'entraînement classées par domaine, chaque option corrigée et expliquée, et ma fiche de réflexes à relire la veille. Réponds, vérifie, lis la correction — ta progression est gardée dans ton navigateur.</span><span class="en">I'm sharing the material I use to prepare for the exam: practice questions sorted by domain, every option corrected and explained, and my trigger sheet to re-read the night before. Answer, check, read the explanation — your progress is kept in your browser.</span></p>
+
+          <div class="stats-row" style="border-bottom:none;padding-bottom:.4rem">
+            <div class="stat-b"><span class="sval">125</span><span class="slbl">Questions</span></div>
+            <div class="stat-b"><span class="sval">4</span><span class="slbl"><span class="fr">Tests</span><span class="en">Tests</span></span></div>
+            <div class="stat-b"><span class="sval g">12</span><span class="slbl"><span class="fr">Études de cas</span><span class="en">Case studies</span></span></div>
+            <div class="stat-b"><span class="sval">13</span><span class="slbl"><span class="fr">Contestées</span><span class="en">Disputed</span></span></div>
+          </div>
+
+          <div class="sec-lbl" style="margin-top:1.4rem"><span class="fr">Tests d'entraînement</span><span class="en">Practice tests</span></div>
+          <div style="display:flex;flex-direction:column;gap:.55rem">
+            <a class="cv-cert-row study-row" href="dp600-revision/index.html#d1" target="_blank">
+              <span class="study-num">01</span>
+              <div style="flex:1;min-width:0">
+                <div class="cv-cert-name"><span class="fr">Planifier, implémenter et gérer une solution d'analyse</span><span class="en">Plan, implement and manage an analytics solution</span></div>
+                <div class="cv-cert-sub"><span class="fr">Test 1 · gouvernance, sécurité, cycle de vie</span><span class="en">Test 1 · governance, security, lifecycle</span></div>
+              </div>
+              <span class="cv-badge prog">34 q</span><span class="cv-arrow">↗</span>
+            </a>
+            <a class="cv-cert-row study-row" href="dp600-revision/index.html#d2" target="_blank">
+              <span class="study-num">02</span>
+              <div style="flex:1;min-width:0">
+                <div class="cv-cert-name"><span class="fr">Préparer et servir les données</span><span class="en">Prepare and serve data</span></div>
+                <div class="cv-cert-sub"><span class="fr">Test 2 · lakehouse, warehouse, ingestion, transformation</span><span class="en">Test 2 · lakehouse, warehouse, ingestion, transformation</span></div>
+              </div>
+              <span class="cv-badge prog">57 q</span><span class="cv-arrow">↗</span>
+            </a>
+            <a class="cv-cert-row study-row" href="dp600-revision/index.html#d3" target="_blank">
+              <span class="study-num">03</span>
+              <div style="flex:1;min-width:0">
+                <div class="cv-cert-name"><span class="fr">Implémenter et gérer des modèles sémantiques</span><span class="en">Implement and manage semantic models</span></div>
+                <div class="cv-cert-sub"><span class="fr">Test 3 · modélisation, DAX, Direct Lake, performances</span><span class="en">Test 3 · modelling, DAX, Direct Lake, performance</span></div>
+              </div>
+              <span class="cv-badge prog">23 q</span><span class="cv-arrow">↗</span>
+            </a>
+            <a class="cv-cert-row study-row" href="dp600-revision/index.html#d4" target="_blank">
+              <span class="study-num">04</span>
+              <div style="flex:1;min-width:0">
+                <div class="cv-cert-name"><span class="fr">Explorer et analyser les données</span><span class="en">Explore and analyse data</span></div>
+                <div class="cv-cert-sub"><span class="fr">Test 4 · SQL, KQL, requêtes visuelles</span><span class="en">Test 4 · SQL, KQL, visual queries</span></div>
+              </div>
+              <span class="cv-badge prog">11 q</span><span class="cv-arrow">↗</span>
+            </a>
+            <a class="cv-cert-row study-row" href="dp600-revision/index.html#cas" target="_blank">
+              <span class="study-num">★</span>
+              <div style="flex:1;min-width:0">
+                <div class="cv-cert-name"><span class="fr">Études de cas — Contoso &amp; Litware</span><span class="en">Case studies — Contoso &amp; Litware</span></div>
+                <div class="cv-cert-sub"><span class="fr">Les questions regroupées par dossier, comme le jour de l'examen</span><span class="en">Questions grouped by dossier, just like on exam day</span></div>
+              </div>
+              <span class="cv-badge done">12 q</span><span class="cv-arrow">↗</span>
+            </a>
+          </div>
+
+          <div class="sec-lbl" style="margin-top:1.6rem"><span class="fr">Fiche réflexes — à relire la veille</span><span class="en">Trigger sheet — re-read the night before</span></div>
+          <a class="cv-cert-row study-row" href="dp600-revision/reflexes.html" target="_blank">
+            <span class="study-num">⚡</span>
+            <div style="flex:1;min-width:0">
+              <div class="cv-cert-name"><span class="fr">Réflexes DP-600</span><span class="en">DP-600 Triggers</span></div>
+              <div class="cv-cert-sub"><span class="fr">Méthode en 4 temps · mots-clés · couples de notions · pièges fréquents</span><span class="en">4-step method · key words · look-alike pairs · common traps</span></div>
+            </div>
+            <span class="cv-badge done"><span class="fr">Fiche</span><span class="en">Sheet</span></span><span class="cv-arrow">↗</span>
+          </a>
+          <div class="study-steps">
+            <div class="study-step"><span>1</span><b><span class="fr">Le verbe</span><span class="en">The verb</span></b><span class="fr">Isoler le verbe de la question : c'est le mot d'ancrage.</span><span class="en">Isolate the question's verb: that's your anchor word.</span></div>
+            <div class="study-step"><span>2</span><b>Ctrl+F mental</b><span class="fr">Le chercher dans Requirements et Planned Changes.</span><span class="en">Look for it in Requirements and Planned Changes.</span></div>
+            <div class="study-step"><span>3</span><b><span class="fr">Faits techniques</span><span class="en">Technical facts</span></b><span class="fr">Format, type d'objet, outil cité : l'option qui les consomme gagne.</span><span class="en">Format, object type, named tool: the option that uses them wins.</span></div>
+            <div class="study-step"><span>4</span><b><span class="fr">Faisabilité</span><span class="en">Feasibility</span></b><span class="fr">Vérifier que l'option est possible dans Fabric.</span><span class="en">Check the option is actually possible in Fabric.</span>
+            </div>
+          </div>
+
+          <div class="git-box" style="margin-top:1.4rem">
+            <span class="git-icon">ℹ</span>
+            <div class="git-txt"><strong><span class="fr">Bon à savoir</span><span class="en">Good to know</span></strong> <span class="fr">— les questions « contestées » ont des corrigés qui divergent selon les sources : les deux raisonnements sont exposés. Vérifie toujours sur</span><span class="en">— “disputed” questions have answer keys that differ between sources: both lines of reasoning are shown. Always double-check on</span>
+              <a href="https://learn.microsoft.com/fr-fr/credentials/certifications/fabric-analytics-engineer-associate/"
+                target="_blank">Microsoft Learn ↗</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sec">
+        <div class="sec-lbl"><span class="fr">Infos examen</span><span class="en">Exam info</span></div>
+        <div class="info-grid">
+          <div class="info-card">
+            <div class="info-card-lbl"><span class="fr">Organisme</span><span class="en">Provider</span></div>
+            <div class="info-card-val">Microsoft</div>
+          </div>
+          <div class="info-card">
+            <div class="info-card-lbl"><span class="fr">Niveau</span><span class="en">Level</span></div>
+            <div class="info-card-val">Associate</div>
+          </div>
+          <div class="info-card">
+            <div class="info-card-lbl"><span class="fr">Durée examen</span><span class="en">Exam length</span></div>
+            <div class="info-card-val">100 min</div>
+          </div>
+          <div class="info-card">
+            <div class="info-card-lbl"><span class="fr">Score minimum</span><span class="en">Passing score</span></div>
+            <div class="info-card-val">700 / 1000</div>
+          </div>
+        </div>
+      </div>
+
     </div><!-- /wrap -->
-    <footer class="wrap"><span>// pl-300 · power bi data analyst <span class="ft-acc">en cours</span></span>
-  </div><!-- /page-pl300 -->
+    <footer class="wrap"><span>// dp-600 · fabric analytics engineer <span class="ft-acc" id="dp600Foot"><span class="fr">à venir</span><span class="en">upcoming</span></span></span>
+    </footer>
+  </div><!-- /page-dp600 -->
 
 
   <!-- ══════════════════════════════════════════
@@ -2123,10 +2467,10 @@
       <div class="cert-page-hero">
         <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:1.5rem;flex-wrap:wrap">
           <div>
-            <div class="cert-page-stamp">✓ Certifié</div>
+            <div class="cert-page-stamp"><span class="fr">✓ Certifié</span><span class="en">✓ Certified</span></div>
             <div class="cert-page-code">PCAP-31-03 · PYTHON INSTITUTE</div>
             <div class="cert-page-name">Python Certified<br>Associate Programmer</div>
-            <div class="cert-page-issuer">Python Institute · Fondations de la programmation Python</div>
+            <div class="cert-page-issuer"><span class="fr">Python Institute · Fondations de la programmation Python</span><span class="en">Python Institute · Python programming fundamentals</span></div>
           </div>
           <a href="https://www.credly.com/badges/754fc925-d3ff-460c-82ab-cbd9ecd06b20/public_url" target="_blank"
             title="Voir le badge Credly"
@@ -2136,8 +2480,7 @@
               onmouseover="this.style.transform='scale(1.06)';this.style.boxShadow='0 0 24px rgba(16,185,129,.4)'"
               onmouseout="this.style.transform='scale(1)';this.style.boxShadow='0 0 16px rgba(16,185,129,.2)'">
             <span
-              style="font-family:var(--mono);font-size:.65rem;color:var(--c-done);letter-spacing:1px;text-transform:uppercase">Voir
-              le badge ↗</span>
+              style="font-family:var(--mono);font-size:.65rem;color:var(--c-done);letter-spacing:1px;text-transform:uppercase"><span class="fr">Voir le badge ↗</span><span class="en">View badge ↗</span></span>
           </a>
         </div>
 
@@ -2145,72 +2488,71 @@
 
       <div class="info-grid">
         <div class="info-card">
-          <div class="info-card-lbl">Organisme</div>
+          <div class="info-card-lbl"><span class="fr">Organisme</span><span class="en">Provider</span></div>
           <div class="info-card-val">Python Institute</div>
         </div>
         <div class="info-card">
-          <div class="info-card-lbl">Niveau</div>
+          <div class="info-card-lbl"><span class="fr">Niveau</span><span class="en">Level</span></div>
           <div class="info-card-val">Associate</div>
         </div>
         <div class="info-card">
-          <div class="info-card-lbl">Durée examen</div>
+          <div class="info-card-lbl"><span class="fr">Durée examen</span><span class="en">Exam length</span></div>
           <div class="info-card-val">65 min</div>
         </div>
         <div class="info-card">
-          <div class="info-card-lbl">Score minimum</div>
+          <div class="info-card-lbl"><span class="fr">Score minimum</span><span class="en">Passing score</span></div>
           <div class="info-card-val">70 %</div>
         </div>
       </div>
 
-      <div class="sec-lbl">Syllabus — Domaines couverts</div>
+      <div class="sec-lbl"><span class="fr">Syllabus — Domaines couverts</span><span class="en">Syllabus — Domains covered</span></div>
       <div class="syllabus-block open">
-        <div class="syl-header" onclick="toggleSyl(this)"><span class="syl-num">01</span><span class="syl-title">Les
-            bases du langage Python</span><span class="syl-tag">✓ Maîtrisé</span><span class="syl-chevron">▶</span>
+        <div class="syl-header" onclick="toggleSyl(this)"><span class="syl-num">01</span><span class="syl-title"><span class="fr">Les bases du langage Python</span><span class="en">Python language basics</span></span><span class="syl-tag"><span class="fr">✓ Maîtrisé</span><span class="en">✓ Mastered</span></span><span class="syl-chevron">▶</span>
         </div>
         <div class="syl-body">
           <div class="syl-item">
-            <div class="syl-dot"></div><span>Syntaxe de base, types de données, variables</span>
+            <div class="syl-dot"></div><span><span class="fr">Syntaxe de base, types de données, variables</span><span class="en">Basic syntax, data types, variables</span></span>
           </div>
           <div class="syl-item">
-            <div class="syl-dot"></div><span>Opérateurs arithmétiques, logiques et de comparaison</span>
+            <div class="syl-dot"></div><span><span class="fr">Opérateurs arithmétiques, logiques et de comparaison</span><span class="en">Arithmetic, logical and comparison operators</span></span>
           </div>
           <div class="syl-item">
-            <div class="syl-dot"></div><span>Entrées / sorties, formatage de chaînes</span>
+            <div class="syl-dot"></div><span><span class="fr">Entrées / sorties, formatage de chaînes</span><span class="en">Input / output, string formatting</span></span>
           </div>
           <div class="syl-item">
-            <div class="syl-dot"></div><span>Structures de contrôle : if, elif, else</span>
+            <div class="syl-dot"></div><span><span class="fr">Structures de contrôle : if, elif, else</span><span class="en">Control flow: if, elif, else</span></span>
           </div>
         </div>
       </div>
       <div class="syllabus-block">
         <div class="syl-header" onclick="toggleSyl(this)"><span class="syl-num">02</span><span
-            class="syl-title">Structures de données</span><span class="syl-tag">✓ Maîtrisé</span><span
+            class="syl-title"><span class="fr">Structures de données</span><span class="en">Data structures</span></span><span class="syl-tag"><span class="fr">✓ Maîtrisé</span><span class="en">✓ Mastered</span></span><span
             class="syl-chevron">▶</span></div>
         <div class="syl-body">
           <div class="syl-item">
-            <div class="syl-dot"></div><span>Listes, tuples, sets et opérations associées</span>
+            <div class="syl-dot"></div><span><span class="fr">Listes, tuples, sets et opérations associées</span><span class="en">Lists, tuples, sets and their operations</span></span>
           </div>
           <div class="syl-item">
-            <div class="syl-dot"></div><span>Dictionnaires : création, accès, méthodes</span>
+            <div class="syl-dot"></div><span><span class="fr">Dictionnaires : création, accès, méthodes</span><span class="en">Dictionaries: creation, access, methods</span></span>
           </div>
           <div class="syl-item">
-            <div class="syl-dot"></div><span>Compréhensions de listes et d'expressions</span>
+            <div class="syl-dot"></div><span><span class="fr">Compréhensions de listes et d'expressions</span><span class="en">List comprehensions and generator expressions</span></span>
           </div>
         </div>
       </div>
       <div class="syllabus-block">
         <div class="syl-header" onclick="toggleSyl(this)"><span class="syl-num">03</span><span
-            class="syl-title">Fonctions et modules</span><span class="syl-tag">✓ Maîtrisé</span><span
+            class="syl-title"><span class="fr">Fonctions et modules</span><span class="en">Functions and modules</span></span><span class="syl-tag"><span class="fr">✓ Maîtrisé</span><span class="en">✓ Mastered</span></span><span
             class="syl-chevron">▶</span></div>
         <div class="syl-body">
           <div class="syl-item">
-            <div class="syl-dot"></div><span>Définition, paramètres, valeurs de retour</span>
+            <div class="syl-dot"></div><span><span class="fr">Définition, paramètres, valeurs de retour</span><span class="en">Definition, parameters, return values</span></span>
           </div>
           <div class="syl-item">
-            <div class="syl-dot"></div><span>Portée des variables (scope), closures</span>
+            <div class="syl-dot"></div><span><span class="fr">Portée des variables (scope), closures</span><span class="en">Variable scope, closures</span></span>
           </div>
           <div class="syl-item">
-            <div class="syl-dot"></div><span>Modules standard : math, random, os, datetime</span>
+            <div class="syl-dot"></div><span><span class="fr">Modules standard : math, random, os, datetime</span><span class="en">Standard modules: math, random, os, datetime</span></span>
           </div>
           <div class="syl-item">
             <div class="syl-dot"></div><span>Import, packages, namespaces</span>
@@ -2219,39 +2561,38 @@
       </div>
       <div class="syllabus-block">
         <div class="syl-header" onclick="toggleSyl(this)"><span class="syl-num">04</span><span
-            class="syl-title">Programmation orientée objet</span><span class="syl-tag">✓ Maîtrisé</span><span
+            class="syl-title"><span class="fr">Programmation orientée objet</span><span class="en">Object-oriented programming</span></span><span class="syl-tag"><span class="fr">✓ Maîtrisé</span><span class="en">✓ Mastered</span></span><span
             class="syl-chevron">▶</span></div>
         <div class="syl-body">
           <div class="syl-item">
-            <div class="syl-dot"></div><span>Classes, instances, attributs et méthodes</span>
+            <div class="syl-dot"></div><span><span class="fr">Classes, instances, attributs et méthodes</span><span class="en">Classes, instances, attributes and methods</span></span>
           </div>
           <div class="syl-item">
-            <div class="syl-dot"></div><span>Héritage, polymorphisme, encapsulation</span>
+            <div class="syl-dot"></div><span><span class="fr">Héritage, polymorphisme, encapsulation</span><span class="en">Inheritance, polymorphism, encapsulation</span></span>
           </div>
           <div class="syl-item">
-            <div class="syl-dot"></div><span>Méthodes spéciales (__init__, __str__, etc.)</span>
+            <div class="syl-dot"></div><span><span class="fr">Méthodes spéciales (__init__, __str__, etc.)</span><span class="en">Special methods (__init__, __str__, etc.)</span></span>
           </div>
         </div>
       </div>
       <div class="syllabus-block">
-        <div class="syl-header" onclick="toggleSyl(this)"><span class="syl-num">05</span><span class="syl-title">Gestion
-            des exceptions et fichiers</span><span class="syl-tag">✓ Maîtrisé</span><span class="syl-chevron">▶</span>
+        <div class="syl-header" onclick="toggleSyl(this)"><span class="syl-num">05</span><span class="syl-title"><span class="fr">Gestion des exceptions et fichiers</span><span class="en">Exceptions and file handling</span></span><span class="syl-tag"><span class="fr">✓ Maîtrisé</span><span class="en">✓ Mastered</span></span><span class="syl-chevron">▶</span>
         </div>
         <div class="syl-body">
           <div class="syl-item">
             <div class="syl-dot"></div><span>Try, except, finally, raise</span>
           </div>
           <div class="syl-item">
-            <div class="syl-dot"></div><span>Lecture et écriture de fichiers texte</span>
+            <div class="syl-dot"></div><span><span class="fr">Lecture et écriture de fichiers texte</span><span class="en">Reading and writing text files</span></span>
           </div>
           <div class="syl-item">
-            <div class="syl-dot"></div><span>Gestionnaires de contexte (with)</span>
+            <div class="syl-dot"></div><span><span class="fr">Gestionnaires de contexte (with)</span><span class="en">Context managers (with)</span></span>
           </div>
         </div>
       </div>
 
     </div><!-- /wrap -->
-    <footer class="wrap"><span>// pcap · python institute <span class="ft-acc">✓ certifié</span></span>
+    <footer class="wrap"><span>// pcap · python institute <span class="ft-acc"><span class="fr">✓ certifié</span><span class="en">✓ certified</span></span></span>
   </div><!-- /page-pcap -->
 
 
@@ -2264,10 +2605,10 @@
       <div class="cert-page-hero" style="border-color:rgba(0,168,232,0.25)">
         <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:1.5rem;flex-wrap:wrap">
           <div>
-            <div class="cert-page-stamp">✓ Certifié</div>
+            <div class="cert-page-stamp"><span class="fr">✓ Certifié</span><span class="en">✓ Certified</span></div>
             <div class="cert-page-code">AI-900 · MICROSOFT AZURE</div>
             <div class="cert-page-name">Azure AI<br>Fundamentals</div>
-            <div class="cert-page-issuer">Microsoft · Fondamentaux de l'intelligence artificielle sur Azure</div>
+            <div class="cert-page-issuer"><span class="fr">Microsoft · Fondamentaux de l'intelligence artificielle sur Azure</span><span class="en">Microsoft · Artificial intelligence fundamentals on Azure</span></div>
           </div>
           <a href="https://learn.microsoft.com/api/credentials/share/fr-fr/NihelSliti-7728/443E1E34686289A8?sharingId=65DBE0EEBE00B4B0"
             target="_blank" title="Voir le badge Microsoft Learn"
@@ -2279,8 +2620,7 @@
               onmouseover="this.style.transform='scale(1.06)';this.style.boxShadow='0 0 24px rgba(0,168,232,.45)'"
               onmouseout="this.style.transform='scale(1)';this.style.boxShadow='0 0 16px rgba(0,168,232,.2)'">
             <span
-              style="font-family:var(--mono);font-size:.65rem;color:#00a8e8;letter-spacing:1px;text-transform:uppercase">Voir
-              le badge ↗</span>
+              style="font-family:var(--mono);font-size:.65rem;color:#00a8e8;letter-spacing:1px;text-transform:uppercase"><span class="fr">Voir le badge ↗</span><span class="en">View badge ↗</span></span>
           </a>
         </div>
         <div class="cert-walker-lg">
@@ -2307,186 +2647,193 @@
 
       <div class="info-grid">
         <div class="info-card">
-          <div class="info-card-lbl">Organisme</div>
+          <div class="info-card-lbl"><span class="fr">Organisme</span><span class="en">Provider</span></div>
           <div class="info-card-val">Microsoft</div>
         </div>
         <div class="info-card">
-          <div class="info-card-lbl">Niveau</div>
+          <div class="info-card-lbl"><span class="fr">Niveau</span><span class="en">Level</span></div>
           <div class="info-card-val">Fundamentals</div>
         </div>
         <div class="info-card">
-          <div class="info-card-lbl">Durée examen</div>
+          <div class="info-card-lbl"><span class="fr">Durée examen</span><span class="en">Exam length</span></div>
           <div class="info-card-val">60 min</div>
         </div>
         <div class="info-card">
-          <div class="info-card-lbl">Score minimum</div>
+          <div class="info-card-lbl"><span class="fr">Score minimum</span><span class="en">Passing score</span></div>
           <div class="info-card-val">700 / 1000</div>
         </div>
       </div>
 
-      <div class="sec-lbl">Syllabus — Domaines couverts</div>
+      <div class="sec-lbl"><span class="fr">Syllabus — Domaines couverts</span><span class="en">Syllabus — Domains covered</span></div>
       <div class="syllabus-block open">
         <div class="syl-header" onclick="toggleSyl(this)"><span class="syl-num">01</span><span
-            class="syl-title">Concepts de l'IA</span><span class="syl-tag">✓ Maîtrisé</span><span
+            class="syl-title"><span class="fr">Concepts de l'IA</span><span class="en">AI concepts</span></span><span class="syl-tag"><span class="fr">✓ Maîtrisé</span><span class="en">✓ Mastered</span></span><span
             class="syl-chevron">▶</span></div>
         <div class="syl-body">
           <div class="syl-item">
-            <div class="syl-dot"></div><span>Machine learning, deep learning, principes fondamentaux</span>
+            <div class="syl-dot"></div><span><span class="fr">Machine learning, deep learning, principes fondamentaux</span><span class="en">Machine learning, deep learning, core principles</span></span>
           </div>
           <div class="syl-item">
-            <div class="syl-dot"></div><span>IA responsable : équité, fiabilité, transparence</span>
+            <div class="syl-dot"></div><span><span class="fr">IA responsable : équité, fiabilité, transparence</span><span class="en">Responsible AI: fairness, reliability, transparency</span></span>
           </div>
           <div class="syl-item">
-            <div class="syl-dot"></div><span>Types de charges de travail IA courantes</span>
+            <div class="syl-dot"></div><span><span class="fr">Types de charges de travail IA courantes</span><span class="en">Common AI workload types</span></span>
           </div>
         </div>
       </div>
       <div class="syllabus-block">
-        <div class="syl-header" onclick="toggleSyl(this)"><span class="syl-num">02</span><span class="syl-title">Machine
-            Learning sur Azure</span><span class="syl-tag">✓ Maîtrisé</span><span class="syl-chevron">▶</span></div>
+        <div class="syl-header" onclick="toggleSyl(this)"><span class="syl-num">02</span><span class="syl-title"><span class="fr">Machine Learning sur Azure</span><span class="en">Machine Learning on Azure</span></span><span class="syl-tag"><span class="fr">✓ Maîtrisé</span><span class="en">✓ Mastered</span></span><span class="syl-chevron">▶</span></div>
         <div class="syl-body">
           <div class="syl-item">
             <div class="syl-dot"></div><span>Azure Machine Learning Studio, AutoML</span>
           </div>
           <div class="syl-item">
-            <div class="syl-dot"></div><span>Régression, classification, évaluation de modèles</span>
+            <div class="syl-dot"></div><span><span class="fr">Régression, classification, évaluation de modèles</span><span class="en">Regression, classification, model evaluation</span></span>
           </div>
           <div class="syl-item">
-            <div class="syl-dot"></div><span>Déploiement et monitoring de modèles</span>
+            <div class="syl-dot"></div><span><span class="fr">Déploiement et monitoring de modèles</span><span class="en">Model deployment and monitoring</span></span>
           </div>
         </div>
       </div>
       <div class="syllabus-block">
-        <div class="syl-header" onclick="toggleSyl(this)"><span class="syl-num">03</span><span class="syl-title">Vision
-            par ordinateur</span><span class="syl-tag">✓ Maîtrisé</span><span class="syl-chevron">▶</span></div>
+        <div class="syl-header" onclick="toggleSyl(this)"><span class="syl-num">03</span><span class="syl-title"><span class="fr">Vision par ordinateur</span><span class="en">Computer vision</span></span><span class="syl-tag"><span class="fr">✓ Maîtrisé</span><span class="en">✓ Mastered</span></span><span class="syl-chevron">▶</span></div>
         <div class="syl-body">
           <div class="syl-item">
-            <div class="syl-dot"></div><span>Azure Computer Vision : classification d'images</span>
+            <div class="syl-dot"></div><span><span class="fr">Azure Computer Vision : classification d'images</span><span class="en">Azure Computer Vision: image classification</span></span>
           </div>
           <div class="syl-item">
-            <div class="syl-dot"></div><span>Détection d'objets et d'anomalies visuelles</span>
+            <div class="syl-dot"></div><span><span class="fr">Détection d'objets et d'anomalies visuelles</span><span class="en">Object and visual anomaly detection</span></span>
           </div>
           <div class="syl-item">
-            <div class="syl-dot"></div><span>Azure Face API, analyse spatiale</span>
+            <div class="syl-dot"></div><span><span class="fr">Azure Face API, analyse spatiale</span><span class="en">Azure Face API, spatial analysis</span></span>
           </div>
         </div>
       </div>
       <div class="syllabus-block">
         <div class="syl-header" onclick="toggleSyl(this)"><span class="syl-num">04</span><span
-            class="syl-title">Traitement du langage naturel (NLP)</span><span class="syl-tag">✓ Maîtrisé</span><span
+            class="syl-title"><span class="fr">Traitement du langage naturel (NLP)</span><span class="en">Natural language processing (NLP)</span></span><span class="syl-tag"><span class="fr">✓ Maîtrisé</span><span class="en">✓ Mastered</span></span><span
             class="syl-chevron">▶</span></div>
         <div class="syl-body">
           <div class="syl-item">
-            <div class="syl-dot"></div><span>Azure Language Service : analyse de sentiment</span>
+            <div class="syl-dot"></div><span><span class="fr">Azure Language Service : analyse de sentiment</span><span class="en">Azure Language Service: sentiment analysis</span></span>
           </div>
           <div class="syl-item">
-            <div class="syl-dot"></div><span>Reconnaissance d'entités, traduction automatique</span>
+            <div class="syl-dot"></div><span><span class="fr">Reconnaissance d'entités, traduction automatique</span><span class="en">Entity recognition, machine translation</span></span>
           </div>
           <div class="syl-item">
-            <div class="syl-dot"></div><span>Azure Speech Service : synthèse et transcription</span>
+            <div class="syl-dot"></div><span><span class="fr">Azure Speech Service : synthèse et transcription</span><span class="en">Azure Speech Service: synthesis and transcription</span></span>
           </div>
         </div>
       </div>
       <div class="syllabus-block">
-        <div class="syl-header" onclick="toggleSyl(this)"><span class="syl-num">05</span><span class="syl-title">IA
-            générative & Azure OpenAI</span><span class="syl-tag">✓ Maîtrisé</span><span class="syl-chevron">▶</span>
+        <div class="syl-header" onclick="toggleSyl(this)"><span class="syl-num">05</span><span class="syl-title"><span class="fr">IA générative &amp; Azure OpenAI</span><span class="en">Generative AI &amp; Azure OpenAI</span></span><span class="syl-tag"><span class="fr">✓ Maîtrisé</span><span class="en">✓ Mastered</span></span><span class="syl-chevron">▶</span>
         </div>
         <div class="syl-body">
           <div class="syl-item">
-            <div class="syl-dot"></div><span>LLM, ingénierie des prompts</span>
+            <div class="syl-dot"></div><span><span class="fr">LLM, ingénierie des prompts</span><span class="en">LLMs, prompt engineering</span></span>
           </div>
           <div class="syl-item">
-            <div class="syl-dot"></div><span>Azure OpenAI Service : GPT, DALL-E, Codex</span>
+            <div class="syl-dot"></div><span><span class="fr">Azure OpenAI Service : GPT, DALL-E, Codex</span><span class="en">Azure OpenAI Service: GPT, DALL-E, Codex</span></span>
           </div>
           <div class="syl-item">
-            <div class="syl-dot"></div><span>Génération augmentée par récupération (RAG)</span>
+            <div class="syl-dot"></div><span><span class="fr">Génération augmentée par récupération (RAG)</span><span class="en">Retrieval-augmented generation (RAG)</span></span>
           </div>
           <div class="syl-item">
-            <div class="syl-dot"></div><span>Copilots Microsoft et utilisation responsable</span>
+            <div class="syl-dot"></div><span><span class="fr">Copilots Microsoft et utilisation responsable</span><span class="en">Microsoft Copilots and responsible use</span></span>
           </div>
         </div>
       </div>
 
     </div><!-- /wrap -->
-    <footer class="wrap"><span>// ai-900 · microsoft azure <span class="ft-acc">✓ certifié</span></span>
+    <footer class="wrap"><span>// ai-900 · microsoft azure <span class="ft-acc"><span class="fr">✓ certifié</span><span class="en">✓ certified</span></span></span>
   </div><!-- /page-ai900 -->
 
 
   <script>
-    // ── GITHUB CONFIG ──
-    const GITHUB_USER = 'nihel-sliti';
-    const GITHUB_REPO = 'PowerBiCertificationSupport';
-    const GITHUB_TOKEN = '';
-    const GITHUB_PATH = '';
-    const GITHUB_ENABLED = true;
-
-    const CHAP_PROG = {
-      'chap01': 25, 'chapter01': 25, 'chapter-01': 25,
-      'chap02': 45, 'chapter02': 45, 'chapter-02': 45,
-      'chap03': 65, 'chapter03': 65, 'chapter-03': 65,
-      'chap04': 80, 'chapter04': 80, 'chapter-04': 80,
-      'chap05': 95, 'chapter05': 95, 'chapter-05': 95,
+    // ── LANGUE (FR / EN) ──
+    // Les textes fixes sont doublés dans le HTML : <span class="fr">…</span><span class="en">…</span>.
+    // Ci-dessous : uniquement les textes écrits par le script.
+    const I18N = {
+      fr: {
+        done: 'Terminé', active: 'En cours', upcoming: 'À venir', next: 'Prochain',
+        chapActive: n => 'En cours — Chapitre ' + n + ' actif',
+        dpEyebrow: s => '// microsoft · fabric · ' + s,
+        dpState: { cert: 'certifiée', active: 'en cours', next: 'prochaine étape' },
+        dpFoot: { cert: '✓ certifiée', active: 'en cours', next: 'à venir' },
+        dpBadgeCert: 'Certifiée ✓', dpBadgeNext: 'À venir — Démarrage prochainement',
+        cvCert: 'Certifié ✓', cvSubActive: n => 'Microsoft Fabric · En cours — Chapitre ' + n + ' actif',
+        light: 'Clair', dark: 'Sombre', locale: 'fr-FR'
+      },
+      en: {
+        done: 'Done', active: 'In progress', upcoming: 'Upcoming', next: 'Next',
+        chapActive: n => 'In progress — Chapter ' + n + ' active',
+        dpEyebrow: s => '// microsoft · fabric · ' + s,
+        dpState: { cert: 'certified', active: 'in progress', next: 'next step' },
+        dpFoot: { cert: '✓ certified', active: 'in progress', next: 'upcoming' },
+        dpBadgeCert: 'Certified ✓', dpBadgeNext: 'Upcoming — Starting soon',
+        cvCert: 'Certified ✓', cvSubActive: n => 'Microsoft Fabric · In progress — Chapter ' + n + ' active',
+        light: 'Light', dark: 'Dark', locale: 'en-GB'
+      }
     };
-    const CHAP_BY_PROG = [
-      { min: 0, max: 24, chap: 1 }, { min: 25, max: 44, chap: 2 },
-      { min: 45, max: 64, chap: 3 }, { min: 65, max: 79, chap: 4 }, { min: 80, max: 100, chap: 5 }
-    ];
+    let LANG = document.documentElement.lang === 'en' ? 'en' : 'fr';
+    const t = () => I18N[LANG];
 
-    function getActiveChap(p) { return (CHAP_BY_PROG.find(x => p >= x.min && p <= x.max) || { chap: 2 }).chap }
-
-    function applyProgress(prog) {
-      const pct = Math.min(100, Math.max(0, prog));
-      const ac = getActiveChap(pct);
-      ['pctLabel', 'pctLabel2'].forEach(id => { const el = document.getElementById(id); if (el) el.textContent = pct + '%' });
-      const inner = document.getElementById('progInner');
-      const walker = document.getElementById('walkerBar');
-      const badge = document.getElementById('chapBadge');
-      if (inner) inner.style.width = pct + '%';
-      if (walker) walker.style.left = Math.min(pct, 97) + '%';
-      if (badge) badge.textContent = 'En cours — Chapitre ' + ac + ' actif';
-      document.querySelectorAll('#page-pl300 .chapter').forEach((ch, i) => {
-        const n = i + 1;
-        ch.classList.remove('active', 'completed', 'locked');
-        if (n < ac) {
-          ch.classList.add('completed');
-          ch.querySelector('.chap-status').className = 'chap-status s-done';
-          ch.querySelector('.chap-status').textContent = 'Terminé';
-          ch.querySelectorAll('.mod-item').forEach(m => { m.classList.add('done-mod'); m.classList.remove('active-mod'); m.querySelector('.mod-check').textContent = '✓' });
-        } else if (n === ac) {
-          ch.classList.add('active');
-          if (!ch.classList.contains('open')) ch.classList.add('open');
-          ch.querySelector('.chap-status').className = 'chap-status s-active';
-          ch.querySelector('.chap-status').textContent = 'En cours';
-        } else {
-          ch.classList.add('locked');
-          ch.querySelector('.chap-status').className = 'chap-status s-lock';
-          ch.querySelector('.chap-status').textContent = 'À venir';
-        }
-      });
+    function setLang(l) {
+      LANG = l === 'en' ? 'en' : 'fr';
+      document.documentElement.lang = LANG;
+      try { localStorage.setItem('site-lang', LANG) } catch (e) { }
+      document.querySelectorAll('.lang-sw button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.lang === LANG)));
+      applyDp600(DP600_PROGRESS);
+      updateThemeBtn();
+      updateFooterDate();
     }
 
-    async function fetchGitHub() {
-      if (!GITHUB_ENABLED) return;
-      try {
-        const h = { 'Accept': 'application/vnd.github.v3+json' };
-        if (GITHUB_TOKEN) h['Authorization'] = 'token ' + GITHUB_TOKEN;
-        const url = GITHUB_PATH
-          ? `https://api.github.com/repos/${GITHUB_USER}/${GITHUB_REPO}/contents/${GITHUB_PATH}`
-          : `https://api.github.com/repos/${GITHUB_USER}/${GITHUB_REPO}/contents`;
-        const r = await fetch(url, { headers: h });
-        if (!r.ok) return;
-        const items = await r.json();
-        let max = 0;
-        items.filter(i => i.type === 'dir').forEach(f => {
-          const name = f.name.toLowerCase().replace(/[^a-z0-9]/g, '');
-          Object.keys(CHAP_PROG).forEach(k => {
-            const kn = k.replace(/[^a-z0-9]/g, '');
-            if (name === kn || name.includes(kn)) { if (CHAP_PROG[k] > max) max = CHAP_PROG[k] }
-          });
-        });
-        if (max > 0) applyProgress(max);
-        document.getElementById('lastUpdate').textContent = '// GitHub sync · ' + new Date().toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
-      } catch (e) { console.log('GitHub:', e) }
+    function updateFooterDate() {
+      const el = document.getElementById('lastUpdate'); if (!el) return;
+      el.textContent = '// nihel-sliti · ' + new Date().toLocaleDateString(t().locale, { day: '2-digit', month: 'short', year: 'numeric' });
+    }
+
+    // ── DP-600 ──
+    // Mets à jour ce chiffre (0 → 100) au fil de ta préparation.
+    // 7 chapitres ≈ 14 % chacun : 0 = pas commencé, 15 = chap 2 actif, 29 = chap 3 actif, … 100 = certifiée.
+    const DP600_PROGRESS = 90;
+
+    function applyDp600(prog) {
+      const pct = Math.min(100, Math.max(0, prog));
+      const chaps = [...document.querySelectorAll('#dp600Chapters .chapter')];
+      const n = chaps.length;
+      const done = pct >= 100 ? n : Math.floor(pct / (100 / n));
+      const active = pct > 0 && pct < 100 ? done + 1 : 0;
+      const set = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = v };
+      const state = pct >= 100 ? 'cert' : active ? 'active' : 'next';
+
+      set('dp600Pct', pct + '%'); set('dp600Pct2', pct + '%');
+      set('dp600Done', done); set('dp600Active', active ? 1 : 0); set('dp600Total', n);
+      document.getElementById('dp600ProgInner').style.width = pct + '%';
+      document.getElementById('dp600Walker').style.left = Math.min(Math.max(pct, 2), 97) + '%';
+      set('dp600Eyebrow', t().dpEyebrow(t().dpState[state]));
+      set('dp600Foot', t().dpFoot[state]);
+      set('dp600Badge', state === 'cert' ? t().dpBadgeCert : active ? t().chapActive(active) : t().dpBadgeNext);
+
+      chaps.forEach((ch, i) => {
+        const k = i + 1, st = ch.querySelector('.chap-status');
+        ch.classList.remove('active', 'completed', 'locked', 'open');
+        if (k <= done) {
+          ch.classList.add('completed'); st.className = 'chap-status s-done'; st.textContent = t().done;
+          ch.querySelectorAll('.mod-item').forEach(m => { m.classList.add('done-mod'); m.querySelector('.mod-check').textContent = '✓' });
+        } else if (k === active) {
+          ch.classList.add('active', 'open'); st.className = 'chap-status s-active'; st.textContent = t().active;
+        } else if (!active && k === done + 1) {
+          ch.classList.add('open'); st.className = 'chap-status s-lock'; st.textContent = t().next;
+        } else {
+          ch.classList.add('locked'); st.className = 'chap-status s-lock'; st.textContent = t().upcoming;
+        }
+      });
+
+      // Ligne DP-600 sur la page CV
+      const dot = document.getElementById('dp600Dot'), cvb = document.getElementById('dp600CvBadge');
+      if (state === 'cert') { dot.className = 'cv-dot done'; cvb.className = 'cv-badge done'; cvb.textContent = t().cvCert; set('dp600Sub', 'Microsoft Fabric') }
+      else if (active) { dot.className = 'cv-dot prog'; cvb.className = 'cv-badge prog'; cvb.textContent = t().active; set('dp600Sub', t().cvSubActive(active)) }
     }
 
     function toggleChap(h) { h.closest('.chapter').classList.toggle('open') }
@@ -2499,23 +2846,34 @@
       document.querySelectorAll('.navlink').forEach(n => n.classList.remove('active'));
       const nb = document.getElementById('nav-' + name);
       if (nb) nb.classList.add('active');
+      history.replaceState(null, '', name === 'home' ? location.pathname : '#' + name);
     }
 
+    function updateThemeBtn() {
+      const l = document.documentElement.classList.contains('light');
+      document.getElementById('themeIcon').textContent = l ? '🌙' : '☀️';
+      document.getElementById('themeLbl').textContent = l ? t().dark : t().light;
+    }
     function toggleTheme() {
       const l = document.documentElement.classList.toggle('light');
-      document.getElementById('themeIcon').textContent = l ? '🌙' : '☀️';
-      document.getElementById('themeLbl').textContent = l ? 'Sombre' : 'Clair';
-      localStorage.setItem('theme', l ? 'light' : 'dark');
+      try { localStorage.setItem('theme', l ? 'light' : 'dark') } catch (e) { }
+      updateThemeBtn();
     }
 
     // Init
-    const sv = localStorage.getItem('theme');
-    if (sv === 'light') { document.documentElement.classList.add('light'); document.getElementById('themeIcon').textContent = '🌙'; document.getElementById('themeLbl').textContent = 'Sombre' }
-    document.getElementById('lastUpdate').textContent = '// nihel-sliti · ' + new Date().toLocaleDateString('fr-FR', { day: '2-digit', month: 'short', year: 'numeric' });
-    setTimeout(() => applyProgress(25), 400);
-    if (GITHUB_ENABLED) { fetchGitHub(); setInterval(fetchGitHub, 5 * 60 * 1000) }
+    document.querySelectorAll('.lang-sw button').forEach(b => b.addEventListener('click', () => setLang(b.dataset.lang)));
+    document.querySelectorAll('.lang-sw button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.lang === LANG)));
+    updateThemeBtn();
+    updateFooterDate();
+    setTimeout(() => applyDp600(DP600_PROGRESS), 400);
     // Set home nav active on load
     document.getElementById('nav-home').classList.add('active');
+    // Ouvrir directement une page via l'URL (ex. …/MonCv/#dp600 ou #study)
+    (function () {
+      const h = location.hash.slice(1);
+      if (h === 'study') { goPage('dp600'); setTimeout(() => document.getElementById('dp600Study').scrollIntoView(), 50); history.replaceState(null, '', '#study') }
+      else if (h && document.getElementById('page-' + h)) goPage(h);
+    })();
   </script>
 </body>
 
