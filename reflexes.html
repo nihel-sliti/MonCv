@@ -1,0 +1,554 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<script>
+try {
+  if (localStorage.getItem("site-lang") === "en") document.documentElement.lang = "en";
+  if (localStorage.getItem("theme") === "light") document.documentElement.classList.add("light");
+} catch(e){}
+</script>
+
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Fiche bilingue des formulations d'énoncé DP-600 et du réflexe à déclencher.">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+body{margin:0;font:14px system-ui,-apple-system,"Segoe UI",sans-serif;background:#E9ECEE}
+img{max-width:100%}
+[hidden]{display:none!important}
+</style>
+<title>Réflexes DP-600</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Barlow+Condensed:wght@400;600;700;800&family=Barlow:wght@300;400;500;600&display=swap">
+
+<style>
+:root{
+  color-scheme: dark;
+  --bg:#06090f; --surface:#0b1018; --surface-2:#0f1520;
+  --line:rgba(245,158,11,.16); --line-soft:rgba(255,255,255,.06);
+  --ink:#f1f5f9; --muted:#8aa0b8;
+  --accent:#f59e0b; --accent-ink:#fbbf24; --accent-soft:rgba(245,158,11,.09);
+  --ochre:#38bdf8; --ochre-soft:rgba(56,189,248,.09);
+  --plum:#f472b6; --plum-soft:rgba(244,114,182,.09);
+  --ok:#10b981; --ok-soft:rgba(16,185,129,.1);
+  --no:#ef4444; --no-soft:rgba(239,68,68,.1);
+  --shadow:none;
+  --f-display:"Barlow Condensed", "Arial Narrow", sans-serif;
+  --f-body:"Barlow", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --f-mono:"Share Tech Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+}
+html.light{
+  color-scheme: light;
+  --bg:#f4f6f9; --surface:#ffffff; --surface-2:#eef1f6;
+  --line:rgba(217,119,6,.2); --line-soft:rgba(0,0,0,.07);
+  --ink:#1e293b; --muted:#64748b;
+  --accent:#d97706; --accent-ink:#b45309; --accent-soft:rgba(217,119,6,.08);
+  --ochre:#0284c7; --ochre-soft:rgba(2,132,199,.08);
+  --plum:#db2777; --plum-soft:rgba(219,39,119,.08);
+  --ok:#059669; --ok-soft:rgba(5,150,105,.1);
+  --no:#dc2626; --no-soft:rgba(220,38,38,.08);
+  --shadow:0 1px 2px rgba(15,23,42,.04);
+}
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);
+  font-size:16.5px;line-height:1.6;-webkit-font-smoothing:antialiased}
+.wrap{max-width:860px;margin:0 auto;padding-inline:20px;padding-block:0}
+
+.masthead{padding-block:40px 20px;border-bottom:1px solid var(--line)}
+.topline{display:flex;flex-wrap:wrap;align-items:center;gap:12px;margin-bottom:12px}
+.kicker{font-family:var(--f-mono);font-size:11px;font-weight:700;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--accent);margin:0}
+.backcv{font-family:var(--f-mono);font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);text-decoration:none;border:1px solid var(--line);border-radius:999px;padding:3px 10px;transition:color .2s,border-color .2s}.backcv:hover{color:var(--accent);border-color:var(--accent)}
+.spacer{flex:1 1 auto}
+.langsw{display:inline-flex;border:1px solid var(--line);border-radius:999px;
+  overflow:hidden;background:var(--surface)}
+.langsw button{font-family:var(--f-mono);font-size:11px;font-weight:700;letter-spacing:.08em;
+  padding:5px 12px;border:none;background:transparent;color:var(--muted);cursor:pointer}
+.langsw button[aria-pressed="true"]{background:var(--accent);color:#fff}
+:root[data-theme="dark"] .langsw button[aria-pressed="true"]{color:#08201D}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]) .langsw button[aria-pressed="true"]{color:#08201D}}
+.langsw button:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
+
+h1{font-family:var(--f-display);font-weight:500;font-size:clamp(32px,6.5vw,46px);
+  line-height:1.07;letter-spacing:-.015em;margin:0;text-wrap:balance}
+.dek{color:var(--muted);margin:12px 0 0;max-width:62ch;font-size:16px}
+.backlink{display:inline-flex;align-items:center;gap:7px;margin-top:16px;
+  font-size:14px;font-weight:600;color:var(--accent);text-decoration:none;
+  border:1px solid var(--line);border-radius:8px;padding:7px 13px;background:var(--surface)}
+.backlink:hover{border-color:var(--accent);background:var(--accent-soft)}
+.backlink .arw{font-family:var(--f-mono);opacity:.7}
+
+nav.jump{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;
+  background:color-mix(in srgb, var(--bg) 92%, transparent);
+  backdrop-filter:blur(10px);border-bottom:1px solid var(--line);
+  margin-inline:-20px;padding-inline:20px}
+.jumps{display:flex;gap:4px;overflow-x:auto;scrollbar-width:thin;padding-block:9px;padding-right:24px}
+.jumps a{flex:0 0 auto;font-size:13.5px;font-weight:600;color:var(--muted);
+  text-decoration:none;padding:6px 12px;border-radius:999px;white-space:nowrap}
+.jumps a:hover{color:var(--ink);background:var(--surface-2)}
+
+main{padding-block:32px 60px}
+section{margin-bottom:38px;scroll-margin-top:72px}
+h2{font-family:var(--f-display);font-weight:500;font-size:clamp(23px,4.2vw,29px);
+  line-height:1.2;margin:0 0 6px;letter-spacing:-.01em;text-wrap:balance}
+.sub{color:var(--muted);margin:0 0 16px;font-size:15px;max-width:62ch}
+
+.rtbl{background:var(--surface);border:1px solid var(--line);border-radius:10px;
+  overflow:hidden;box-shadow:var(--shadow)}
+.rtbl .scroll{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:14.5px;min-width:440px}
+th{background:var(--surface-2);font-family:var(--f-mono);font-size:10.5px;
+  letter-spacing:.09em;text-transform:uppercase;font-weight:700;color:var(--muted);
+  padding:9px 15px;text-align:left;border-bottom:1px solid var(--line)}
+td{padding:9px 15px;border-bottom:1px solid var(--line-soft);vertical-align:top}
+tr:last-child td{border-bottom:none}
+td:first-child{font-family:var(--f-mono);font-size:12.4px;color:var(--ink);width:45%;line-height:1.5}
+td:last-child{color:var(--muted)}
+td:last-child b{color:var(--ink);font-weight:600}
+code{font-family:var(--f-mono);font-size:.88em;background:var(--surface-2);
+  border:1px solid var(--line-soft);border-radius:4px;padding:1px 4.5px}
+td:first-child code{background:transparent;border:none;padding:0;font-size:1em}
+#couples td:first-child{width:21%}
+#couples td.m{font-family:var(--f-mono);font-size:12.4px;color:var(--ink);width:21%;line-height:1.5}
+#couples td.m code{background:transparent;border:none;padding:0;font-size:1em}
+#couples td:last-child{width:58%}
+
+.errbox{background:var(--surface);border:1px solid var(--line);border-left:3px solid var(--no);
+  border-radius:8px;padding:14px 18px;margin-bottom:11px}
+.errbox b{display:block;margin-bottom:3px}
+.errbox p{margin:0;color:var(--muted);font-size:15px}
+
+.pair{background:var(--surface);border:1px solid var(--line);border-left:3px solid var(--ochre);
+  border-radius:8px;padding:14px 18px;margin-bottom:11px}
+.pair b{display:block;margin-bottom:3px}
+.pair p{margin:0;color:var(--muted);font-size:15px}
+
+footer{border-top:1px solid var(--line);padding-block:24px 46px;color:var(--muted);font-size:14px}
+footer b{color:var(--ink)}
+
+[data-lang="fr"] .en{display:none}
+[data-lang="en"] .fr{display:none}
+
+@media (max-width:520px){
+  body{font-size:16px}
+  td:first-child{width:auto}
+  table{font-size:14px}
+}
+@media (prefers-reduced-motion: reduce){*{transition:none!important}}
+
+/* ════════════════════════════════════════════
+   Design aligné sur le CV Nihel Sliti
+   ════════════════════════════════════════════ */
+html{scroll-behavior:smooth}
+html[lang="en"] .fr{display:none!important}
+html:not([lang="en"]) .en{display:none!important}
+body{transition:background .3s,color .3s}
+html:not(.light) body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
+  background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,.08) 2px,rgba(0,0,0,.08) 4px)}
+body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
+  background-image:linear-gradient(rgba(245,158,11,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(245,158,11,.025) 1px,transparent 1px);
+  background-size:50px 50px}
+html.light body::after{background-image:linear-gradient(rgba(217,119,6,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(217,119,6,.06) 1px,transparent 1px)}
+.wrap,.cvnav{position:relative;z-index:1}
+
+/* Barre de navigation du CV */
+.cvnav{background:var(--bg);border-bottom:1px solid var(--line)}
+.cvnav-inner{max-width:880px;margin:0 auto;padding:.55rem 20px;display:flex;align-items:center;
+  justify-content:space-between;gap:.8rem;flex-wrap:wrap}
+.cv-brand{font-family:var(--f-mono);font-size:11px;color:var(--accent);letter-spacing:2px;
+  text-transform:uppercase;text-decoration:none;white-space:nowrap}
+.cv-links{display:flex;gap:.25rem;flex-wrap:wrap}
+.cv-link{font-family:var(--f-mono);font-size:10px;letter-spacing:1.2px;text-transform:uppercase;
+  padding:4px 9px;border-radius:2px;border:1px solid transparent;color:var(--ink);text-decoration:none;transition:all .2s}
+.cv-link:hover,.cv-link.active{border-color:var(--accent);color:var(--accent);background:var(--accent-soft)}
+.cv-tools{display:flex;align-items:center;gap:.45rem}
+.theme-btn{background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:4px 10px 4px 8px;
+  display:inline-flex;align-items:center;gap:6px;cursor:pointer;font-family:var(--f-mono);font-size:10px;
+  color:var(--ink);letter-spacing:1px;text-transform:uppercase;transition:all .2s;white-space:nowrap}
+.theme-btn:hover{border-color:var(--accent);color:var(--accent)}
+html.light .th-d, html:not(.light) .th-l{display:none}
+.langsw{border-color:var(--line);border-radius:20px;background:var(--surface)}
+.langsw button{font-size:10px;font-weight:400;letter-spacing:1px;padding:4px 9px;color:var(--ink)}
+.langsw button:hover{color:var(--accent)}
+.langsw button[aria-pressed="true"]{background:var(--accent);color:#06090f!important}
+
+/* Typographie */
+h1{font-family:var(--f-display);font-weight:800;letter-spacing:1px;line-height:1;font-size:clamp(2.3rem,6vw,3.6rem)}
+h2{font-family:var(--f-display);font-weight:700;letter-spacing:.5px}
+.grp h3{font-family:var(--f-display);font-weight:700;letter-spacing:.5px;border-bottom-width:1px}
+.explain .sol{font-family:var(--f-display);font-weight:700;letter-spacing:.3px}
+.kicker,.eyebrow{letter-spacing:3px;font-weight:400;color:var(--accent)}
+.kicker::before{content:"// "}
+.meta,.chip,.qnum,.tab .n,.score-txt,.grp-count,.explain h5,.explain .why,.verdict-line,.opt .key,.opt .mark,
+.fld .verdict,.fld .fl .hint,th,.case-body h4,table.schema th{font-weight:400}
+.meta b,.score-txt b{font-weight:400;color:var(--accent)}
+.dek,.domain-note,.grp-lead,.sub{font-weight:300}
+html.light .dek,html.light .domain-note,html.light .grp-lead,html.light .sub{font-weight:400}
+.masthead{padding-block:34px 22px}
+
+/* Onglets = liens de navigation du CV */
+.tabbar{background:var(--bg);backdrop-filter:none}
+.tab{font-family:var(--f-mono);font-size:11px;font-weight:400;letter-spacing:1.2px;text-transform:uppercase;
+  border-radius:3px;padding:6px 11px;color:var(--ink)}
+.tab:hover{color:var(--accent);background:var(--accent-soft);border-color:var(--accent)}
+.tab[aria-selected="true"]{background:var(--accent-soft);color:var(--accent)!important;border-color:var(--accent)}
+.tab.tab-cases[aria-selected="true"]{background:var(--ochre-soft);color:var(--ochre)!important;border-color:var(--ochre)}
+.jumps a{font-family:var(--f-mono);font-size:10.5px;font-weight:400;letter-spacing:1.2px;text-transform:uppercase;
+  border-radius:3px;border:1px solid transparent;color:var(--ink)}
+.jumps a:hover{color:var(--accent);background:var(--accent-soft);border-color:var(--accent)}
+nav.jump{background:var(--bg);backdrop-filter:none}
+
+/* Cartes */
+.q,.rtbl{border-radius:10px;border-color:var(--line-soft);position:relative}
+.q{transition:border-color .2s}
+.q:hover{border-color:var(--line)}
+.q::before,.rtbl::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,transparent,var(--accent),transparent);opacity:.55;z-index:1}
+.q.done::before{background:linear-gradient(90deg,transparent,var(--ok),transparent)}
+.chip{border-radius:2px;letter-spacing:1.5px}
+.opt,.fld{border-radius:6px;border-color:var(--line-soft)}
+.q.done .opt:hover{border-color:var(--line-soft)}
+details.case,.scorebar,.errbox,.pair{border-radius:7px;border-color:var(--line-soft)}
+details.case{border-left-color:var(--ochre)}
+.errbox{border-left-color:var(--no)}
+.pair{border-left-color:var(--ochre)}
+pre.code,code.inl,code{border-radius:3px}
+.explain{background:var(--surface-2)}
+
+/* Boutons */
+button.check,button.act,.sidelink,.backlink{font-family:var(--f-mono);font-size:10.5px;font-weight:400;
+  letter-spacing:1.5px;text-transform:uppercase;border-radius:3px}
+button.check{color:#06090f!important;padding:8px 16px}
+button.act{background:transparent}
+button.act:hover{color:var(--accent)}
+.sidelink,.backlink{background:var(--accent-soft);border-color:var(--accent);padding:7px 13px}
+.sidelink:hover,.backlink:hover{background:var(--accent);color:#06090f}
+
+footer.end,footer{position:relative}
+
+@media (max-width:580px){
+  .cv-link{font-size:9px;padding:3px 6px}
+}
+</style>
+</head>
+<body>
+<nav class="cvnav" aria-label="Site">
+  <div class="cvnav-inner">
+    <a class="cv-brand" href="index.html">// nihel.sliti</a>
+    <div class="cv-links">
+      <a class="cv-link" href="index.html">CV</a>
+      <a class="cv-link" href="index.html#dp600">DP-600</a>
+      <a class="cv-link" href="index-revise.html">Questions</a>
+      <a class="cv-link active" href="reflexes.html"><span class="fr">Réflexes</span><span class="en">Triggers</span></a>
+    </div>
+    <div class="cv-tools">
+      <div class="langsw" role="group" aria-label="Langue / Language">
+        <button type="button" data-lang="fr" aria-pressed="true">FR</button>
+        <button type="button" data-lang="en" aria-pressed="false">EN</button>
+      </div>
+      <button class="theme-btn" type="button" id="themeBtn">
+        <span class="th-d">☀️ <span class="fr">Clair</span><span class="en">Light</span></span>
+        <span class="th-l">🌙 <span class="fr">Sombre</span><span class="en">Dark</span></span>
+      </button>
+    </div>
+  </div>
+</nav>
+<div class="wrap" id="root" data-lang="fr">
+
+  <header class="masthead">
+    <div class="topline">
+      <p class="kicker">Microsoft Fabric &middot; Analytics Engineer</p>
+    </div>
+    <h1><span class="fr">Réflexes DP-600</span><span class="en">DP-600 Triggers</span></h1>
+    <p class="dek">
+      <span class="fr">Dans un case study, la question finale ne s'appuie en général que sur une à trois phrases de tout le dossier. Le reste sert aux autres questions. Cette fiche liste les formulations anglaises qui déclenchent une réponse, classées par thème — c'est la page à relire la veille.</span>
+      <span class="en">In a case study, the final question usually rests on just one to three sentences of the whole dossier. The rest serves the other questions. This sheet lists the English wordings that trigger an answer, grouped by theme — the page to re-read the night before.</span>
+    </p>
+    <a class="backlink" href="index-revise.html">
+      <span class="arw">←</span>
+      <span class="fr">Les 125 questions d'entraînement</span><span class="en">The 125 practice questions</span>
+    </a>
+  </header>
+
+  <nav class="jump" aria-label="Sections">
+    <div class="jumps">
+      <a href="#methode"><span class="fr">Méthode</span><span class="en">Method</span></a>
+      <a href="#mots"><span class="fr">Mots-clés</span><span class="en">Key words</span></a>
+      <a href="#couples"><span class="fr">Couples</span><span class="en">Look-alikes</span></a>
+      <a href="#gouv"><span class="fr">Gouvernance</span><span class="en">Governance</span></a>
+      <a href="#stores"><span class="fr">Lakehouse / Warehouse</span><span class="en">Lakehouse / Warehouse</span></a>
+      <a href="#ingest"><span class="fr">Ingestion</span><span class="en">Ingestion</span></a>
+      <a href="#sql"><span class="fr">T-SQL &amp; DAX</span><span class="en">T-SQL &amp; DAX</span></a>
+      <a href="#modeles"><span class="fr">Modèles</span><span class="en">Models</span></a>
+      <a href="#notebooks"><span class="fr">Notebooks</span><span class="en">Notebooks</span></a>
+      <a href="#formes"><span class="fr">Formulations</span><span class="en">Phrasings</span></a>
+      <a href="#erreurs"><span class="fr">Erreurs</span><span class="en">Mistakes</span></a>
+      <a href="#paires"><span class="fr">Paires</span><span class="en">Pairs</span></a>
+    </div>
+  </nav>
+
+  <main>
+
+  <section id="methode">
+    <h2><span class="fr">La méthode en quatre temps</span><span class="en">The four-step method</span></h2>
+    <p class="sub"><span class="fr">Ne lisez jamais tout un case study : ciblez.</span><span class="en">Never read a whole case study: target it.</span></p>
+    <div class="rtbl"><div class="scroll"><table>
+      <tr><th><span class="fr">Étape</span><span class="en">Step</span></th><th><span class="fr">Ce que vous faites</span><span class="en">What you do</span></th></tr>
+      <tr><td><span class="fr">1. Le verbe</span><span class="en">1. The verb</span></td><td><span class="fr">Isolez le verbe de la question : <b>group</b>, <b>refresh</b>, <b>access</b>, <b>assign permissions</b>. C'est votre mot d'ancrage.</span><span class="en">Isolate the question's verb: <b>group</b>, <b>refresh</b>, <b>access</b>, <b>assign permissions</b>. That is your anchor word.</span></td></tr>
+      <tr><td><span class="fr">2. Ctrl+F mental</span><span class="en">2. Mental Ctrl+F</span></td><td><span class="fr">Cherchez ce verbe ou son synonyme dans <b>Requirements</b> et <b>Planned Changes</b>. Overview et Existing Environment posent le contexte, ils tranchent rarement.</span><span class="en">Look for that verb or a synonym in <b>Requirements</b> and <b>Planned Changes</b>. Overview and Existing Environment set the context; they rarely decide.</span></td></tr>
+      <tr><td><span class="fr">3. Faits techniques</span><span class="en">3. Technical facts</span></td><td><span class="fr">Repérez les faits précis : format des données, type d'objet, outil cité. <b>L'option qui consomme un de ces faits est souvent la bonne.</b></span><span class="en">Spot the hard facts: data format, object type, named tool. <b>The option that consumes one of those facts is usually the right one.</b></span></td></tr>
+      <tr><td><span class="fr">4. Faisabilité</span><span class="en">4. Feasibility</span></td><td><span class="fr">Vérifiez que l'option est techniquement possible sur l'objet cité. Piège préféré de Microsoft : un pattern vrai ailleurs, invalide dans Fabric.</span><span class="en">Check the option is technically possible on the object named. Microsoft's favourite trap: a pattern that is true elsewhere but invalid in Fabric.</span></td></tr>
+    </table></div></div>
+  </section>
+
+  <section id="mots">
+    <h2><span class="fr">Les quatre mots qui changent tout</span><span class="en">The four words that change everything</span></h2>
+    <div class="rtbl"><div class="scroll"><table>
+      <tr><th><span class="fr">Mot</span><span class="en">Word</span></th><th><span class="fr">Réflexe immédiat</span><span class="en">Immediate reflex</span></th></tr>
+      <tr><td>only</td><td><span class="fr">Méfiez-vous des options contenant <b>All</b> : elles violent le moindre privilège.</span><span class="en">Beware options containing <b>All</b>: they breach least privilege.</span></td></tr>
+      <tr><td>minimize</td><td><span class="fr">Chargement incrémentiel, watermark, ou effort d'implémentation réduit.</span><span class="en">Incremental load, watermark, or reduced implementation effort.</span></td></tr>
+      <tr><td>logically</td><td><span class="fr">Regroupement logique = <b>Domain</b>. Pas Capacity, qui regroupe du calcul.</span><span class="en">Logical grouping = <b>Domain</b>. Not Capacity, which groups compute.</span></td></tr>
+      <tr><td>first</td><td><span class="fr">Cherchez le <b>prérequis</b>, pas l'action finale. Qu'est-ce qui est grisé tant que X n'est pas fait ?</span><span class="en">Look for the <b>prerequisite</b>, not the end action. What stays greyed out until X is done?</span></td></tr>
+    </table></div></div>
+  </section>
+
+  <section id="couples">
+    <h2><span class="fr">Les couples qui se ressemblent</span><span class="en">The look-alike pairs</span></h2>
+    <p class="sub"><span class="fr">Chaque ligne oppose deux notions que l'examen place volontairement dans le même jeu d'options. La troisième colonne est le discriminant — c'est elle qu'il faut savoir réciter.</span><span class="en">Each row pits two notions the exam deliberately places in the same option set. The third column is the discriminator — that is what you must be able to recite.</span></p>
+    <div class="rtbl"><div class="scroll"><table>
+      <tr><th><span class="fr">Concept</span><span class="en">Concept</span></th><th><span class="fr">Sa moitié</span><span class="en">Its other half</span></th><th><span class="fr">Le discriminant</span><span class="en">The discriminator</span></th></tr>
+      <tr><td class="m">RLS</td><td class="m">CLS</td><td><span class="fr">Lignes contre colonnes. RLS = <code>CREATE SECURITY POLICY</code> + fonction de prédicat ; CLS = <code>GRANT SELECT</code> colonne par colonne.</span><span class="en">Rows versus columns. RLS = <code>CREATE SECURITY POLICY</code> + predicate function; CLS = column-by-column <code>GRANT SELECT</code>.</span></td></tr>
+      <tr><td class="m">Shortcut</td><td class="m">Copy job</td><td><span class="fr">« sans copier » contre « ajouter les données ». Le verbe de l'énoncé tranche à lui seul.</span><span class="en">"without copying" versus "add the data". The stem's verb decides on its own.</span></td></tr>
+      <tr><td class="m">Lookup</td><td class="m">Stored procedure</td><td><span class="fr">Retourne des valeurs au pipeline contre fire-and-forget. Si Lookup est absent des options, c'est <b>Script</b>.</span><span class="en">Returns values to the pipeline versus fire-and-forget. If Lookup is absent from the options, it is <b>Script</b>.</span></td></tr>
+      <tr><td class="m">ROLLUP</td><td class="m">GROUPING SETS</td><td><span class="fr">Total général inclus ou non. <code>CUBE</code> ajoute toutes les combinaisons, y compris celles qu'on ne demande pas.</span><span class="en">Grand total included or not. <code>CUBE</code> adds every combination, including ones nobody asked for.</span></td></tr>
+      <tr><td class="m">LEAST / GREATEST</td><td class="m">MIN / MAX</td><td><span class="fr">Horizontal (comparer des colonnes sur une ligne) contre vertical (agréger des lignes).</span><span class="en">Horizontal (comparing columns within a row) versus vertical (aggregating rows).</span></td></tr>
+      <tr><td class="m">CROSS APPLY</td><td class="m">OUTER APPLY</td><td><span class="fr">INNER contre LEFT. Avec OUTER, la ligne de gauche survit même si la fonction table ne renvoie rien.</span><span class="en">INNER versus LEFT. With OUTER, the left row survives even when the table function returns nothing.</span></td></tr>
+      <tr><td class="m">Endorsement</td><td class="m">Sensitivity label</td><td><span class="fr">Qualité (certifié, promu) contre sécurité (confidentiel, chiffrement). Deux mécanismes indépendants.</span><span class="en">Quality (certified, promoted) versus security (confidential, encryption). Two independent mechanisms.</span></td></tr>
+      <tr><td class="m">PBIT</td><td class="m">PBIP</td><td><span class="fr">Gabarit binaire à dupliquer contre projet en fichiers texte versionnable dans Git. Et PBIP seul permet TMDL.</span><span class="en">A binary template to duplicate versus a text-file project versionable in Git. And only PBIP allows TMDL.</span></td></tr>
+      <tr><td class="m">Hidden</td><td class="m">OLS None</td><td><span class="fr">Confort d'affichage contre sécurité réelle. <i>Hidden</i> se contourne ; l'Object Level Security non.</span><span class="en">Display convenience versus real security. <i>Hidden</i> can be bypassed; Object Level Security cannot.</span></td></tr>
+      <tr><td class="m">Data source rule</td><td class="m">Parameter rule</td><td><span class="fr">Connexion structurée (serveur, base) contre paramètre Power Query, dans un deployment pipeline.</span><span class="en">A structured connection (server, database) versus a Power Query parameter, in a deployment pipeline.</span></td></tr>
+      <tr><td class="m">TRY_CAST</td><td class="m">CONVERT</td><td><span class="fr">NULL en cas d'échec contre erreur ou troncature. <code>TRY_CAST</code> ne lève jamais d'exception.</span><span class="en">NULL on failure versus an error or truncation. <code>TRY_CAST</code> never raises an exception.</span></td></tr>
+      <tr><td class="m">Type 1</td><td class="m">Type 2</td><td><span class="fr"><i>overwrite</i> contre <i>new version / keep history</i> ; le Type 3 ne garde qu'<b>une</b> valeur précédente, dans une colonne</span><span class="en"><i>overwrite</i> versus <i>new version / keep history</i>; Type 3 keeps only <b>one</b> previous value, in a column</span></td></tr>
+      <tr><td class="m">RLS</td><td class="m">OLS</td><td><span class="fr">Lignes contre <b>tables ou colonnes entières</b>. RLS se règle dans Desktop, <b>OLS uniquement dans Tabular Editor</b></span><span class="en">Rows versus <b>whole tables or columns</b>. RLS is set in Desktop, <b>OLS only in Tabular Editor</b></span></td></tr>
+      <tr><td class="m">USERPRINCIPALNAME()</td><td class="m">USERNAME()</td><td><span class="fr">Le UPN <b>partout</b> contre <code>DOMAINE\utilisateur</code> dans Desktop et le UPN dans le service. <code>USEROBJECTID()</code> retourne un GUID</span><span class="en">The UPN <b>everywhere</b> versus <code>DOMAIN\user</code> in Desktop and the UPN in the service. <code>USEROBJECTID()</code> returns a GUID</span></td></tr>
+      <tr><td class="m">Import</td><td class="m">Direct Lake</td><td><span class="fr">Direct Lake ne sait faire <b>ni colonne calculée, ni table calculée, ni hiérarchie MDX</b> — ces trois mots imposent Import</span><span class="en">Direct Lake supports <b>no calculated column, no calculated table, no MDX hierarchy</b> — those three words force Import</span></td></tr>
+      <tr><td class="m">DATETRUNC</td><td class="m">DATEPART</td><td><span class="fr">Retourne une <b>date</b> tronquée contre un <b>entier</b>. Et <code>DATENAME</code> retourne un libellé, pas un chiffre.</span><span class="en">Returns a truncated <b>date</b> versus an <b>integer</b>. And <code>DATENAME</code> returns a label, not a number.</span></td></tr>
+    </table></div></div>
+  </section>
+
+  <section id="gouv">
+    <h2><span class="fr">Gouvernance, capacités et accès</span><span class="en">Governance, capacity and access</span></h2>
+    <div class="rtbl"><div class="scroll"><table>
+      <tr><th><span class="fr">Si vous lisez dans l'énoncé…</span><span class="en">If the question says…</span></th><th><span class="fr">…pensez immédiatement à</span><span class="en">…think immediately of</span></th></tr>
+      <tr><td>grouped logically / OneLake data hub filtering</td><td><span class="fr"><b>Domain</b>, créé dans l'Admin portal</span><span class="en"><b>Domain</b>, created in the Admin portal</span></td></tr>
+      <tr><td>dedicated, on-demand, per-minute billing</td><td><span class="fr">Capacité Fabric <b>SKU F</b> (pas EM, P ni A)</span><span class="en">Fabric <b>F SKU</b> (not EM, P or A)</span></td></tr>
+      <tr><td>version control that supports branching</td><td><span class="fr">Git integration du workspace → <b>Azure Repos</b></span><span class="en">Workspace Git integration → <b>Azure Repos</b></span></td></tr>
+      <tr><td>TMDL, VS Code, bulk changes, Git on a model</td><td><span class="fr"><b>PBIP</b> — seul format texte</span><span class="en"><b>PBIP</b> — the only text format</span></td></tr>
+      <tr><td>XMLA endpoint read-write</td><td><span class="fr">Paramètres de la <b>capacité</b>, pas du tenant</span><span class="en"><b>Capacity</b> settings, not tenant</span></td></tr>
+      <tr><td><span class="fr">Un réglage de calcul (mémoire, workload, Spark)</span><span class="en">A compute setting (memory, workload, Spark)</span></td><td><span class="fr">Niveau <b>capacité</b></span><span class="en"><b>Capacity</b> level</span></td></tr>
+      <tr><td>by using external tools</td><td><span class="fr">Passe par XMLA : tenant <b>+</b> capacité</span><span class="en">Goes through XMLA: tenant <b>+</b> capacity</span></td></tr>
+      <tr><td>Publish to Web</td><td><span class="fr">Accès public anonyme — jamais avec <i>least privilege</i></span><span class="en">Anonymous public access — never under <i>least privilege</i></span></td></tr>
+      <tr><td>truncate tables in schemaX only</td><td><code>GRANT ALTER ON SCHEMA::schemaX</code></td></tr>
+      <tr><td><span class="fr">Une portée à choisir avec le mot <i>only</i></span><span class="en">A scope to choose, with the word <i>only</i></span></td><td><span class="fr">Le niveau qui épouse <b>exactement</b> le périmètre</span><span class="en">The level that matches the perimeter <b>exactly</b></span></td></tr>
+      <tr><td><span class="fr">Déployer vers un workspace</span><span class="en">Deploy to a workspace</span></td><td><span class="fr"><b>Contributor</b> minimum ; Viewer = observer seulement</span><span class="en"><b>Contributor</b> minimum; Viewer = observe only</span></td></tr>
+      <tr><td><span class="fr">Bloquer une étape de pipeline</span><span class="en">Block a pipeline stage</span></td><td><span class="fr"><b>Viewer</b> sur ce workspace, pas « aucun accès »</span><span class="en"><b>Viewer</b> on that workspace, not "no access"</span></td></tr>
+      <tr><td>access the data by using a Spark notebook</td><td>Read All <b>Apache Spark</b></td></tr>
+      <tr><td>table-level security / RLS / T-SQL queries</td><td>Read All <b>SQL analytics endpoint</b> data</td></tr>
+      <tr><td><span class="fr">Créer un <b>domaine</b> (pas un sous-domaine)</span><span class="en">Create a <b>domain</b> (not a subdomain)</span></td><td><span class="fr"><b>Fabric admin</b> — aucun rôle délégué ne le permet</span><span class="en"><b>Fabric admin</b> — no delegated role allows it</span></td></tr>
+      <tr><td>Pro license mode + XMLA</td><td><span class="fr">Changer le <b>License mode</b> — XMLA n'existe pas en Pro</span><span class="en">Change the <b>License mode</b> — XMLA does not exist on Pro</span></td></tr>
+      <tr><td>PPU + OneLake integration</td><td><span class="fr">Passer en <b>capacité Fabric</b> — PPU ne suffit pas</span><span class="en">Move to a <b>Fabric capacity</b> — PPU is not enough</span></td></tr>
+      <tr><td>commit to an Azure DevOps repository</td><td><span class="fr"><i>Create Fabric items</i> <b>+</b> <i>Synchronize workspace items with Git</i></span><span class="en"><i>Create Fabric items</i> <b>+</b> <i>Synchronize workspace items with Git</i></span></td></tr>
+      <tr><td><span class="fr">Écrire, sans ajouter de membres</span><span class="en">Write, without adding members</span></td><td><b>Contributor</b></td></tr>
+      <tr><td><span class="fr">Ajouter des membres, sans supprimer l'espace de travail</span><span class="en">Add members, without deleting the workspace</span></td><td><b>Member</b></td></tr>
+      <tr><td>securely access an Azure storage account</td><td><span class="fr"><b>Workspace identity</b> — pas de clé ni de SAS à gérer</span><span class="en"><b>Workspace identity</b> — no key or SAS to manage</span></td></tr>
+      <tr><td>throttling, CU, smoothing, bursting</td><td><b>Capacity Metrics app</b></td></tr>
+      <tr><td><span class="fr">Toutes les requêtes se dégradent</span><span class="en">All queries degrade</span></td><td><span class="fr">Cause au niveau <b>capacité</b>, pas warehouse</span><span class="en">Cause at <b>capacity</b> level, not warehouse</span></td></tr>
+      <tr><td>what is preventing a query from completing</td><td><code>sys.dm_exec_requests</code></td></tr>
+      <tr><td><span class="fr">Un préfixe</span><span class="en">A</span> <code>dm_pdw_</code> <span class="fr">prefix</span></td><td><span class="fr">Azure Synapse — <b>n'existe pas dans Fabric</b></span><span class="en">Azure Synapse — <b>does not exist in Fabric</b></span></td></tr>
+    </table></div></div>
+  </section>
+
+  <section id="stores">
+    <h2><span class="fr">Lakehouse, warehouse et emplacements</span><span class="en">Lakehouse, warehouse and locations</span></h2>
+    <p class="sub"><span class="fr">C'est le discriminant le plus fréquent quand deux options portent la même logique métier.</span><span class="en">This is the most frequent discriminator when two options carry the same business logic.</span></p>
+    <div class="rtbl"><div class="scroll"><table>
+      <tr><th><span class="fr">Si vous lisez dans l'énoncé…</span><span class="en">If the question says…</span></th><th><span class="fr">…pensez immédiatement à</span><span class="en">…think immediately of</span></th></tr>
+      <tr><td>destination lakehouse</td><td><span class="fr">Pas de stored proc, pas d'écriture T-SQL</span><span class="en">No stored proc, no T-SQL write</span></td></tr>
+      <tr><td><span class="fr">SQL endpoint + une écriture (update, insert)</span><span class="en">SQL endpoint + a write (update, insert)</span></td><td><span class="fr"><b>Impossible</b> — lecture seule</span><span class="en"><b>Impossible</b> — read-only</span></td></tr>
+      <tr><td><span class="fr">External table créée par Spark</span><span class="en">External table created with Spark</span></td><td><span class="fr"><b>Invisible</b> depuis le SQL endpoint</span><span class="en"><b>Invisible</b> to the SQL endpoint</span></td></tr>
+      <tr><td>semi-structured / unstructured + T-SQL and Python</td><td><span class="fr"><b>Lakehouse</b>, jamais un warehouse</span><span class="en"><b>Lakehouse</b>, never a warehouse</span></td></tr>
+      <tr><td><span class="fr">T-SQL en écriture, stored procedures, transactions</span><span class="en">T-SQL writes, stored procedures, transactions</span></td><td><b>Warehouse</b></td></tr>
+      <tr><td>V-Order and compaction <i>automatically</i></td><td><span class="fr"><b>Warehouse</b> — garanti sans configuration</span><span class="en"><b>Warehouse</b> — guaranteed with no configuration</span></td></tr>
+      <tr><td>automatically / without configuration / ensure that</td><td><span class="fr">Cherchez la <b>garantie</b>, pas la possibilité</span><span class="en">Look for the <b>guarantee</b>, not the possibility</span></td></tr>
+      <tr><td>the data is in the delta format</td><td><code>spark.read.format("delta").load("Tables/...")</code></td></tr>
+      <tr><td>managed tables in Lakehouse explorer</td><td><span class="fr">Shortcut delta placé dans la section <b>Tables</b></span><span class="en">Delta shortcut placed in the <b>Tables</b> section</span></td></tr>
+      <tr><td><span class="fr">Requêter un shortcut via le SQL endpoint</span><span class="en">Query a shortcut through the SQL endpoint</span></td><td><span class="fr">Section <b>Tables</b> + format <b>delta</b></span><span class="en"><b>Tables</b> section + <b>delta</b> format</span></td></tr>
+      <tr><td><span class="fr">Parquet proposé face à delta</span><span class="en">Parquet offered against delta</span></td><td><span class="fr">Delta = Parquet + <code>_delta_log</code> ; seul delta fait table</span><span class="en">Delta = Parquet + <code>_delta_log</code>; only delta makes a table</span></td></tr>
+      <tr><td>convert / load <span class="fr">des fichiers en table</span><span class="en">files into a table</span></td><td><span class="fr"><b>Load to Tables</b> — V-Order par défaut</span><span class="en"><b>Load to Tables</b> — V-Order by default</span></td></tr>
+      <tr><td><span class="fr">Optimize proposé face à Load to Tables</span><span class="en">Optimize offered against Load to Tables</span></td><td><span class="fr">Optimize agit sur une table <b>déjà existante</b></span><span class="en">Optimize acts on an <b>already existing</b> table</span></td></tr>
+      <tr><td>without making additional copies</td><td><span class="fr"><b>Shortcut</b> — élimine dataflow et table</span><span class="en"><b>Shortcut</b> — rules out dataflow and table</span></td></tr>
+      <tr><td><span class="fr">Deux workspaces dans une même requête SQL</span><span class="en">Two workspaces in one SQL query</span></td><td><span class="fr">Shortcut, jamais une vue (endpoints séparés)</span><span class="en">Shortcut, never a view (separate endpoints)</span></td></tr>
+      <tr><td><code>CREATE TABLE ... AS CLONE OF</code></td><td><span class="fr">Métadonnées seules, <b>figé</b> après création</span><span class="en">Metadata only, <b>frozen</b> after creation</span></td></tr>
+      <tr><td><span class="fr">Clone contre shortcut</span><span class="en">Clone versus shortcut</span></td><td><span class="fr">Clone = indépendant ; shortcut = suit la source</span><span class="en">Clone = independent; shortcut = follows the source</span></td></tr>
+      <tr><td>remove files no longer used</td><td><b>VACUUM</b> <span class="fr">on a schedule</span><span class="en">on a schedule</span></td></tr>
+      <tr><td>combine small files / target size 1 GB</td><td><span class="fr"><b>OPTIMIZE</b> — autoCompact plafonne à 128 Mo</span><span class="en"><b>OPTIMIZE</b> — autoCompact caps around 128 MB</span></td></tr>
+    </table></div></div>
+  </section>
+
+  <section id="ingest">
+    <h2><span class="fr">Ingestion, copie et transformation</span><span class="en">Ingestion, copy and transformation</span></h2>
+    <div class="rtbl"><div class="scroll"><table>
+      <tr><th><span class="fr">Si vous lisez dans l'énoncé…</span><span class="en">If the question says…</span></th><th><span class="fr">…pensez immédiatement à</span><span class="en">…think immediately of</span></th></tr>
+      <tr><td>low-code tools for data ingestion</td><td><span class="fr"><b>Dataflow Gen2</b>, jamais un notebook Spark</span><span class="en"><b>Dataflow Gen2</b>, never a Spark notebook</span></td></tr>
+      <tr><td>executed in the appropriate sequence</td><td><span class="fr"><b>Pipeline</b> avec dépendances entre activités</span><span class="en"><b>Pipeline</b> with dependencies between activities</span></td></tr>
+      <tr><td>updated completely before …</td><td><span class="fr">Dépendance <b>On Success</b> dans un pipeline</span><span class="en"><b>On Success</b> dependency in a pipeline</span></td></tr>
+      <tr><td>KQL, Eventhouse, streaming</td><td><span class="fr">Real-Time Intelligence — hors sujet si données batch</span><span class="en">Real-Time Intelligence — off-topic for batch data</span></td></tr>
+      <tr><td>replace schema and data / full load</td><td><span class="fr">Table action = <b>Overwrite</b> (onglet Destination)</span><span class="en">Table action = <b>Overwrite</b> (Destination tab)</span></td></tr>
+      <tr><td><span class="fr">Le schéma de la source change régulièrement</span><span class="en">The source schema changes regularly</span></td><td><span class="fr"><b>Overwrite</b>, jamais Append</span><span class="en"><b>Overwrite</b>, never Append</span></td></tr>
+      <tr><td><span class="fr">Définir un partitionnement</span><span class="en">Set a partition column</span></td><td><span class="fr">Mode <b>Overwrite</b> obligatoire</span><span class="en"><b>Overwrite</b> mode required</span></td></tr>
+      <tr><td><span class="fr">Un jour nommé dans une planification</span><span class="en">A named day in a schedule</span></td><td><span class="fr"><b>Weekly</b>, même si l'intervalle est horaire</span><span class="en"><b>Weekly</b>, even when the interval is hourly</span></td></tr>
+      <tr><td>attribute-value pairs / columns become rows</td><td><span class="fr"><b>Unpivot</b> (<i>other columns</i> si l'ID est sélectionné)</span><span class="en"><b>Unpivot</b> (<i>other columns</i> when the ID is selected)</span></td></tr>
+      <tr><td><span class="fr">View data source query grisée</span><span class="en">View data source query greyed out</span></td><td><span class="fr">L'étape <b>ne se replie pas</b></span><span class="en">That step <b>does not fold</b></span></td></tr>
+      <tr><td><span class="fr">Combiner deux sources dans un dataflow</span><span class="en">Combining two sources in a dataflow</span></td><td><span class="fr">Rompt le folding <b>pour toute la suite</b></span><span class="en">Breaks folding <b>for everything after it</b></span></td></tr>
+      <tr><td><span class="fr">Requête SQL native dans un dataflow</span><span class="en">Native SQL query in a dataflow</span></td><td><code>Value.NativeQuery(...)</code></td></tr>
+      <tr><td><span class="fr">Forcer le folding à travers une requête native</span><span class="en">Force folding through a native query</span></td><td><code>[EnableFolding = true]</code></td></tr>
+      <tr><td><code>partitionBy(...)</code></td><td><span class="fr">Hiérarchie <code>colonne=valeur</code> + lecture parallèle, <b>pas de shuffle</b></span><span class="en"><code>column=value</code> folder tree + parallel reads, <b>no shuffle</b></span></td></tr>
+      <tr><td><code>inferSchema = true</code></td><td><span class="fr">Une <b>passe de lecture supplémentaire</b></span><span class="en">One <b>extra read pass</b></span></td></tr>
+      <tr><td><code>select()</code> <span class="fr">sur un CSV</span><span class="en">on a CSV</span></td><td><span class="fr">Column pruning actif : seules les colonnes utiles sont parsées</span><span class="en">Column pruning applies: only the needed columns are parsed</span></td></tr>
+    </table></div></div>
+  </section>
+
+  <section id="sql">
+    <h2><span class="fr">T-SQL et DAX</span><span class="en">T-SQL and DAX</span></h2>
+    <div class="rtbl"><div class="scroll"><table>
+      <tr><th><span class="fr">Si vous lisez dans l'énoncé…</span><span class="en">If the question says…</span></th><th><span class="fr">…pensez immédiatement à</span><span class="en">…think immediately of</span></th></tr>
+      <tr><td><span class="fr">Un filtre portant sur un agrégat (SUM, COUNT)</span><span class="en">A filter on an aggregate (SUM, COUNT)</span></td><td><span class="fr"><b>HAVING</b>, jamais WHERE</span><span class="en"><b>HAVING</b>, never WHERE</span></td></tr>
+      <tr><td><span class="fr">Un alias du SELECT réutilisé dans HAVING</span><span class="en">A SELECT alias reused in HAVING</span></td><td><span class="fr"><b>Option morte</b> — seul ORDER BY l'accepte</span><span class="en"><b>Dead option</b> — only ORDER BY accepts it</span></td></tr>
+      <tr><td>multiple rows per X / the most recent row</td><td><code>ROW_NUMBER()</code> + PARTITION BY + WHERE = 1</td></tr>
+      <tr><td><span class="fr">Une fonction de fenêtrage à filtrer</span><span class="en">A window function to filter on</span></td><td><span class="fr">Obligatoirement dans une <b>CTE</b> ou sous-requête</span><span class="en">Must sit in a <b>CTE</b> or subquery</span></td></tr>
+      <tr><td>logic maintained in a single location</td><td><span class="fr">Une <b>VIEW</b>, jamais une table (qui duplique)</span><span class="en">A <b>VIEW</b>, never a table (which duplicates)</span></td></tr>
+      <tr><td>available in the default semantic model</td><td><span class="fr">Uniquement des <b>tables ou des vues</b></span><span class="en">Only <b>tables or views</b></span></td></tr>
+      <tr><td><span class="fr">Une classification par seuils</span><span class="en">A threshold classification</span></td><td><span class="fr">Testez les <b>valeurs limites</b> dans chaque option</span><span class="en">Test the <b>boundary values</b> in every option</span></td></tr>
+      <tr><td><code>WHEN ... THEN ... END</code></td><td><span class="fr">C'est du <b>CASE</b>, pas IIF ni COALESCE</span><span class="en">That is <b>CASE</b>, not IIF or COALESCE</span></td></tr>
+      <tr><td><span class="fr">Clé composite + dimensional model / warehouse</span><span class="en">Composite key + dimensional model / warehouse</span></td><td><span class="fr">Jointure sur les <b>deux colonnes</b></span><span class="en">Join on <b>both columns</b></span></td></tr>
+      <tr><td><span class="fr">Clé composite + semantic model Power BI</span><span class="en">Composite key + Power BI semantic model</span></td><td><span class="fr"><b>Clé de substitution</b> combinée</span><span class="en">Combined <b>surrogate key</b></span></td></tr>
+      <tr><td><span class="fr">Une table reliée uniquement à des dimensions</span><span class="en">A table related only to dimensions</span></td><td><span class="fr">Dénormaliser dans <b>toutes</b> celles-ci</span><span class="en">Denormalize into <b>all</b> of them</span></td></tr>
+      <tr><td>DAX query, XMLA endpoint, return a table</td><td><span class="fr"><b>DEFINE / EVALUATE</b>, jamais RETURN</span><span class="en"><b>DEFINE / EVALUATE</b>, never RETURN</span></td></tr>
+      <tr><td><code>(table, column, column)</code> <span class="fr">en DAX</span><span class="en">in DAX</span></td><td><span class="fr"><b>SUMMARIZE</b> — FILTER veut une condition</span><span class="en"><b>SUMMARIZE</b> — FILTER wants a condition</span></td></tr>
+      <tr><td><span class="fr">Un menu en position de filtre dans CALCULATE</span><span class="en">A blank in filter position inside CALCULATE</span></td><td><span class="fr">Seule une <b>table</b> ou un booléen convient</span><span class="en">Only a <b>table</b> or a boolean fits</span></td></tr>
+      <tr><td>last 12 months up to a selected date</td><td><span class="fr"><code>DATESINPERIOD</code>, passé en filtre à CALCULATE</span><span class="en"><code>DATESINPERIOD</code>, passed as a CALCULATE filter</span></td></tr>
+      <tr><td><span class="fr">Une option qui se termine par une virgule</span><span class="en">An option ending in a comma</span></td><td><span class="fr">C'est un <b>fragment</b> : la suite est imprimée ailleurs</span><span class="en">It is a <b>fragment</b>: the rest is printed elsewhere</span></td></tr>
+    </table></div></div>
+  </section>
+
+  <section id="modeles">
+    <h2><span class="fr">Modèles sémantiques et Direct Lake</span><span class="en">Semantic models and Direct Lake</span></h2>
+    <div class="rtbl"><div class="scroll"><table>
+      <tr><th><span class="fr">Si vous lisez dans l'énoncé…</span><span class="en">If the question says…</span></th><th><span class="fr">…pensez immédiatement à</span><span class="en">…think immediately of</span></th></tr>
+      <tr><td>minimize rows added during refreshes</td><td><span class="fr">Chargement incrémentiel + watermark <b>MAX</b></span><span class="en">Incremental load + <b>MAX</b> watermark</span></td></tr>
+      <tr><td>OrderID represents the sequence</td><td><span class="fr">C'est le <b>watermark</b></span><span class="en">That is the <b>watermark</b></span></td></tr>
+      <tr><td>reduce the memory / refresh time (Import)</td><td><span class="fr">Séparer DateTime + <b>colonne calculée → mesure</b></span><span class="en">Split DateTime + <b>calculated column → measure</b></span></td></tr>
+      <tr><td><span class="fr">Colonne DateTime à haute précision</span><span class="en">High-precision DateTime column</span></td><td><span class="fr">Cardinalité maximale : la séparer</span><span class="en">Maximum cardinality: split it</span></td></tr>
+      <tr><td><span class="fr">DirectQuery lent sur gros volumes</span><span class="en">Slow DirectQuery on large volumes</span></td><td><span class="fr"><b>Agrégations</b> (user-defined ou automatic)</span><span class="en"><b>Aggregations</b> (user-defined or automatic)</span></td></tr>
+      <tr><td><span class="fr">query caching proposé face aux agrégations</span><span class="en">query caching offered against aggregations</span></td><td><span class="fr">Le cache <b>ne marche pas</b> en DirectQuery</span><span class="en">Caching <b>does not work</b> in DirectQuery</span></td></tr>
+      <tr><td>Direct Lake mode</td><td><span class="fr">Lakehouse ou Warehouse, <b>jamais Import</b></span><span class="en">Lakehouse or Warehouse, <b>never Import</b></span></td></tr>
+      <tr><td><span class="fr">Direct Lake + RLS ou vues SQL</span><span class="en">Direct Lake + RLS or SQL views</span></td><td><span class="fr"><b>Fallback DirectQuery</b></span><span class="en"><b>DirectQuery fallback</b></span></td></tr>
+      <tr><td>which mode will be used (Direct Lake)</td><td><span class="fr">Le mode <b>effectif</b>, pas le mode configuré</span><span class="en">The <b>effective</b> mode, not the configured one</span></td></tr>
+      <tr><td>always use Direct Lake / must not fall back</td><td><code>DirectLakeBehavior = DirectLakeOnly</code></td></tr>
+      <tr><td><span class="fr">Colonnes chargées en mémoire (Direct Lake)</span><span class="en">Columns loaded into memory (Direct Lake)</span></td><td><span class="fr">Vertipaq Analyzer ou <b>COLUMN_SEGMENTS</b></span><span class="en">Vertipaq Analyzer or <b>COLUMN_SEGMENTS</b></span></td></tr>
+      <tr><td><code>DISCOVER_MEMORYGRANT</code></td><td><span class="fr">Niveau <b>requête</b>, pas niveau colonne</span><span class="en"><b>Query</b> level, not column level</span></td></tr>
+      <tr><td><span class="fr">refresh incrémentiel sur des fichiers plats</span><span class="en">incremental refresh on flat files</span></td><td><span class="fr"><b>Échec</b> — pas de folding possible</span><span class="en"><b>Failure</b> — no folding possible</span></td></tr>
+      <tr><td>out of resources <span class="fr">pendant un refresh</span><span class="en">during a refresh</span></td><td><span class="fr">Le filtre de partition n'est pas poussé à la source</span><span class="en">The partition filter is not pushed to the source</span></td></tr>
+      <tr><td>enable scale-out … first</td><td><b>Large dataset storage format = On</b></td></tr>
+      <tr><td>prevent implicit measures</td><td><span class="fr"><code>DiscourageImplicitMeasures</code> ou calculation group</span><span class="en"><code>DiscourageImplicitMeasures</code> or a calculation group</span></td></tr>
+      <tr><td><span class="fr">Modifier une propriété avancée du modèle</span><span class="en">Change an advanced model property</span></td><td><span class="fr">Tabular Editor ou SSMS — <b>jamais DAX Studio</b></span><span class="en">Tabular Editor or SSMS — <b>never DAX Studio</b></span></td></tr>
+      <tr><td>diagram of the model / related tables</td><td><span class="fr"><b>Model view</b> + layouts + Add related tables</span><span class="en"><b>Model view</b> + layouts + Add related tables</span></td></tr>
+      <tr><td>show data as soon as it is updated</td><td><span class="fr">DirectQuery ou Direct Lake, <b>pas Import</b></span><span class="en">DirectQuery or Direct Lake, <b>not Import</b></span></td></tr>
+    </table></div></div>
+  </section>
+
+  <section id="notebooks">
+    <h2><span class="fr">Notebooks, visuels et profilage</span><span class="en">Notebooks, visuals and profiling</span></h2>
+    <div class="rtbl"><div class="scroll"><table>
+      <tr><th><span class="fr">Si vous lisez dans l'énoncé…</span><span class="en">If the question says…</span></th><th><span class="fr">…pensez immédiatement à</span><span class="en">…think immediately of</span></th></tr>
+      <tr><td>in a Fabric notebook</td><td><span class="fr">PySpark / Spark SQL — <b>jamais T-SQL ni DAX</b></span><span class="en">PySpark / Spark SQL — <b>never T-SQL or DAX</b></span></td></tr>
+      <tr><td><span class="fr">Chart view, explorer, interactif</span><span class="en">Chart view, explore, interactive</span></td><td><code>display(df)</code>, <span class="fr">jamais</span><span class="en">never</span> <code>df.show()</code></td></tr>
+      <tr><td><code>QuickVisualize(get_dataset_config(df))</code></td><td><span class="fr">Crée un rapport autogénéré <b>qui résume</b> le DataFrame</span><span class="en">Creates an auto-generated report that <b>summarizes</b> the DataFrame</span></td></tr>
+      <tr><td><code>Report(group_id=..., report_id=...)</code></td><td><span class="fr">Intègre un rapport <b>existant</b></span><span class="en">Embeds an <b>existing</b> report</span></td></tr>
+      <tr><td>duplicate rows NOT displayed (Python/R visual)</td><td><span class="fr">Summarize By = None <b>ou</b> champ unique</span><span class="en">Summarize By = None <b>or</b> a unique field</span></td></tr>
+      <tr><td>max values for the numeric <b>columns</b></td><td><code>Table.Profile</code>, <span class="fr">pas</span><span class="en">not</span> <code>Table.Max</code></td></tr>
+      <tr><td><span class="fr">Un agrégat sur une seule colonne</span><span class="en">An aggregate over a single column</span></td><td><span class="fr">Préfixe <code>List.</code> et non <code>Table.</code></span><span class="en"><code>List.</code> prefix, not <code>Table.</code></span></td></tr>
+      <tr><td>Distinct count <span class="fr">contre</span><span class="en">versus</span> Unique count</td><td><span class="fr">Distinct = valeurs différentes ; Unique = vues une fois</span><span class="en">Distinct = different values; Unique = seen exactly once</span></td></tr>
+      <tr><td><span class="fr">Count du profil &lt; nombre de lignes</span><span class="en">Profile Count &lt; row count</span></td><td><span class="fr">Profilage limité aux <b>1 000 premières lignes</b></span><span class="en">Profiling limited to the <b>first 1,000 rows</b></span></td></tr>
+      <tr><td><span class="fr">min / max par colonne dans Power Query</span><span class="en">min / max per column in Power Query</span></td><td><span class="fr"><b>Column profile</b> dans le volet de détails</span><span class="en"><b>Column profile</b> in the details pane</span></td></tr>
+    </table></div></div>
+  </section>
+
+  <section id="formes">
+    <h2><span class="fr">Les formulations qui indiquent la forme de la réponse</span><span class="en">Phrasings that reveal the answer's shape</span></h2>
+    <div class="rtbl"><div class="scroll"><table>
+      <tr><th><span class="fr">Formulation</span><span class="en">Phrasing</span></th><th><span class="fr">Ce qu'elle signale</span><span class="en">What it signals</span></th></tr>
+      <tr><td>Each correct answer presents a <b>complete</b> solution</td><td><span class="fr">Chaque bonne réponse marche <b>seule</b></span><span class="en">Each right answer works <b>on its own</b></span></td></tr>
+      <tr><td>Each correct answer presents <b>part of</b> the solution</td><td><span class="fr">Une <b>chaîne</b> : chaque élément est nécessaire mais insuffisant</span><span class="en">A <b>chain</b>: each item is necessary but not sufficient</span></td></tr>
+      <tr><td>Enable X <span class="fr">et</span><span class="en">and</span> Show X</td><td><span class="fr">Les deux sont probablement nécessaires</span><span class="en">Both are probably needed</span></td></tr>
+      <tr><td><span class="fr">Choisissez <b>trois</b> actions</span><span class="en">Select <b>three</b> actions</span></td><td><span class="fr">Cherchez <b>trois couches différentes</b>, pas trois fois la même</span><span class="en">Look for <b>three different layers</b>, not the same thing thrice</span></td></tr>
+      <tr><td><span class="fr">Un énoncé déjà vu mais des options différentes</span><span class="en">A familiar stem with different options</span></td><td><span class="fr"><b>Relisez les options</b> : un mot change tout</span><span class="en"><b>Re-read the options</b>: one word changes everything</span></td></tr>
+    </table></div></div>
+  </section>
+
+  <section id="erreurs">
+    <h2><span class="fr">Les quatre erreurs classiques</span><span class="en">The four classic mistakes</span></h2>
+    <div class="errbox"><b><span class="fr">Lire tout le case study.</span><span class="en">Reading the whole case study.</span></b><p><span class="fr">Ciblez le verbe de la question, puis les sections Requirements et Planned Changes.</span><span class="en">Target the question's verb, then the Requirements and Planned Changes sections.</span></p></div>
+    <div class="errbox"><b><span class="fr">Appliquer un pattern sans vérifier la faisabilité.</span><span class="en">Applying a pattern without checking feasibility.</span></b><p><span class="fr">Une stored procedure est le bon outil de watermark… mais pas contre un lakehouse.</span><span class="en">A stored procedure is the right watermark tool… but not against a lakehouse.</span></p></div>
+    <div class="errbox"><b><span class="fr">Ignorer un fait technique de l'énoncé.</span><span class="en">Ignoring a technical fact in the stem.</span></b><p><span class="fr">Le format delta, le type d'objet, l'outil cité : l'option qui les utilise est généralement la bonne.</span><span class="en">The delta format, the object type, the named tool: the option that uses them is usually right.</span></p></div>
+    <div class="errbox"><b><span class="fr">Confondre le verbe et l'outil.</span><span class="en">Confusing the verb with the tool.</span></b><p><span class="fr">Sur les permissions, cherchez le mécanisme d'accès (Spark, T-SQL, dataset), pas l'action (read, write).</span><span class="en">On permission questions, look for the access mechanism (Spark, T-SQL, dataset), not the action (read, write).</span></p></div>
+  </section>
+
+  <section id="paires">
+    <h2><span class="fr">Les paires à travailler ensemble</span><span class="en">Pairs to study together</span></h2>
+    <p class="sub"><span class="fr">L'examen reprend régulièrement un énoncé connu en changeant une option. Ces paires sont là pour ça.</span><span class="en">The exam regularly reuses a familiar stem with one option changed. These pairs exist for that reason.</span></p>
+    <div class="pair"><b><span class="fr">Syntaxe notebook : <code>Tables/</code> contre <code>Files/</code></span><span class="en">Notebook syntax: <code>Tables/</code> versus <code>Files/</code></span></b><p><span class="fr">Avec <code>Tables/productline1/ResearchProduct</code> en option A, la réponse est A. Avec <code>Files/ResearchProduct</code>, A devient impossible et la réponse passe à <code>spark.sql("… Lakehouse1.ResearchProduct")</code>.</span><span class="en">With <code>Tables/productline1/ResearchProduct</code> as option A, the answer is A. With <code>Files/ResearchProduct</code>, A becomes impossible and the answer shifts to <code>spark.sql("… Lakehouse1.ResearchProduct")</code>.</span></p></div>
+    <div class="pair"><b><span class="fr">Raccourci S3 : delta contre Parquet</span><span class="en">S3 shortcut: delta versus Parquet</span></b><p><span class="fr">La section <b>Tables</b> est constante dans les deux corrigés. Seul le format diverge — et la raison invoquée dans le dump (la performance) est fausse : c'est la compatibilité avec la section Tables qui compte.</span><span class="en">The <b>Tables</b> section is constant across both answer keys. Only the format differs — and the reason given in the dump (performance) is wrong: what matters is compatibility with the Tables section.</span></p></div>
+    <div class="pair"><b><span class="fr">Quel data store : lakehouse contre warehouse</span><span class="en">Which data store: lakehouse versus warehouse</span></b><p><span class="fr">Données non structurées et accès Python → lakehouse. Optimisation Delta <i>automatique</i>, sans configuration → warehouse. Le lakehouse gagne sur la souplesse, le warehouse sur les garanties.</span><span class="en">Unstructured data and Python access → lakehouse. <i>Automatic</i> Delta optimization with no configuration → warehouse. The lakehouse wins on flexibility, the warehouse on guarantees.</span></p></div>
+    <div class="pair"><b><span class="fr">Une procédure stockée à exécuter : Lookup, Script ou Stored procedure</span><span class="en">Executing a stored procedure: Lookup, Script or Stored procedure</span></b><p><span class="fr">Le même énoncé revient <b>trois fois</b> avec des jeux d'options différents. Si <code>Lookup</code> est proposé, c'est Lookup. Sinon, c'est <code>Script</code>, qui expose ses <code>resultSets</code>. <code>Stored procedure</code> exécute mais ne retourne jamais rien au pipeline — elle est là pour être écartée.</span><span class="en">The same stem returns <b>three times</b> with different option sets. If <code>Lookup</code> is offered, it is Lookup. Otherwise it is <code>Script</code>, which exposes its <code>resultSets</code>. <code>Stored procedure</code> executes but never returns anything to the pipeline — it is there to be discarded.</span></p></div>
+    <div class="pair"><b><span class="fr">Compression et pruning : CSV contre Parquet</span><span class="en">Compression and pruning: CSV versus Parquet</span></b><p><span class="fr">Le <b>column pruning s'applique aussi au CSV</b> : le parser ne matérialise que les colonnes du <code>select</code> (défaut depuis Spark 2.4) — le fichier est parcouru en entier, mais les colonnes inutiles ne sont jamais parsées. Sur Parquet, elles ne sont même pas lues sur disque. Deux pièges de vocabulaire : <i>file compression</i> (non, la compression Parquet est interne au format) contre <i>data compression</i> (oui, snappy par défaut) ; et <code>inferSchema</code> coûte une passe de lecture complète.</span><span class="en"><b>Column pruning applies to CSV too</b>: the parser materialises only the <code>select</code>'s columns (default since Spark 2.4) — the file is scanned in full, but unneeded columns are never parsed. On Parquet they are not even read from disk. Two vocabulary traps: <i>file compression</i> (no, Parquet's compression is internal to the format) versus <i>data compression</i> (yes, snappy by default); and <code>inferSchema</code> costs a whole extra read pass.</span></p></div>
+  </section>
+
+  </main>
+
+  <footer>
+    <p><span class="fr"><b>Une note sur les corrigés.</b> Les énoncés proviennent de dumps d'examen, dont les corrigés divergent parfois. Vérifiez toujours contre Microsoft Learn.</span><span class="en"><b>A note on answer keys.</b> The stems come from exam dumps, whose answer keys sometimes disagree. Always verify against Microsoft Learn.</span></p>
+  </footer>
+
+</div>
+
+<script>
+(function(){
+  const root = document.getElementById("root");
+  const btns = document.querySelectorAll(".langsw button");
+  function setLang(l){
+    root.setAttribute("data-lang", l);
+    btns.forEach(b => b.setAttribute("aria-pressed", String(b.dataset.lang === l)));
+    document.documentElement.lang = l;
+    try { localStorage.setItem("site-lang", l); } catch(e){}
+  }
+  btns.forEach(b => b.addEventListener("click", () => setLang(b.dataset.lang)));
+  let saved = "fr";
+  try { saved = localStorage.getItem("site-lang") || "fr"; } catch(e){}
+  setLang(saved === "en" ? "en" : "fr");
+})();
+</script>
+
+<script>
+document.getElementById("themeBtn").addEventListener("click", () => {
+  const l = document.documentElement.classList.toggle("light");
+  try { localStorage.setItem("theme", l ? "light" : "dark"); } catch(e){}
+});
+</script>
+</body>
+</html>
